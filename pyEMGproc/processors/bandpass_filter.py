@@ -15,14 +15,17 @@ class BandpassFilter(BaseProcessor):
         Order of the butterworth filter.
 
     bf_cutoff_fq_lo : float, default=20
-        Low cutoff frequency of the bandpass filter.
+        Low cutoff frequency of the bandpass filter (i.e., frequency
+        higher than bf_cutoff_fq_lo will pass).
         For EMG placement on lower/upper limbs, the suggested value is
         10~20 (see ref. 1). For EMG placement around the heart (i.e.,
         trunk), the suggested value is 30 (see ref. 2).
 
     bf_cutoff_fq_hi : float, default=499
-        High cutoff frequency of the bandpass filter.
-        Suggested value is around 500 (see ref. 1).
+        High cutoff frequency of the bandpass filter (i.e., frequency
+        lower than bf_cutoff_fq_hi will pass).
+        Suggested value is around 500 (see ref. 1). Note that
+        bf_cutoff_fq_hi should be strictly less than half of hz.
 
     References
     ----------
@@ -36,7 +39,7 @@ class BandpassFilter(BaseProcessor):
         of Electromyography and Kinesiology, 16, 175–187.
     """
 
-    def __init__(self, hz, bf_order=2, bf_cutoff_fq_lo=20, bf_cutoff_fq_hi=500):
+    def __init__(self, hz, bf_order=2, bf_cutoff_fq_lo=20, bf_cutoff_fq_hi=499):
         self.hz = hz
         self.bf_order = bf_order
         self.bf_cutoff_fq_lo = bf_cutoff_fq_lo

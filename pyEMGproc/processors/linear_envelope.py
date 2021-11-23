@@ -14,16 +14,16 @@ class LinearEnvelope(BaseProcessor):
     le_order : int, default=2
         Order of the butterworth filter for linear envelope.
 
-    le_cutoff_fq_lo : float, default=6
-        Low cutoff frequency of the lowpass filter.
+    le_cutoff_fq : float, default=6
+        Cutoff frequency of the lowpass filter.
         Suggested value is 1~10. For standing scenario, use 1~2.
         For running scenario, use 10.
     """
 
-    def __init__(self, hz, le_order=2, le_cutoff_fq_lo=6):
+    def __init__(self, hz, le_order=2, le_cutoff_fq=6):
         self.hz = hz
         self.le_order = le_order
-        self.le_cutoff_fq_lo = le_cutoff_fq_lo
+        self.le_cutoff_fq = le_cutoff_fq
 
     def apply(self, x, **kwargs):
         """Apply linear envelope
@@ -49,7 +49,7 @@ class LinearEnvelope(BaseProcessor):
         super().assert_input(x)
         assert x.shape[0] > (self.le_order + 1) * 3, 'first dimension of x must have length > (le_order + 1) * 3'
 
-        b, a = signal.butter(N=self.le_order, Wn=self.le_cutoff_fq_lo,
+        b, a = signal.butter(N=self.le_order, Wn=self.le_cutoff_fq,
                              btype='lowpass', analog=False, output='ba', fs=self.hz)
         x_processed = signal.filtfilt(b, a, x, axis=0)
         return x_processed
@@ -66,5 +66,5 @@ class LinearEnvelope(BaseProcessor):
         params_in_str : str
         """
 
-        params_in_str = f'hz = {self.hz}, le_order = {self.le_order}, le_cutoff_fq_lo = {self.le_cutoff_fq_lo}'
+        params_in_str = f'hz = {self.hz}, le_order = {self.le_order}, le_cutoff_fq = {self.le_cutoff_fq}'
         return params_in_str

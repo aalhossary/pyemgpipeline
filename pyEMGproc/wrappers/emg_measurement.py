@@ -59,8 +59,8 @@ class EMGMeasurement:
     def apply_full_wave_rectifier(self):
         self.data = FullWaveRectifier().apply(self.data)
 
-    def apply_linear_envelope(self, le_order=2, le_cutoff_fq_lo=6):
-        self.data = LinearEnvelope(self.hz, le_order, le_cutoff_fq_lo).apply(self.data)
+    def apply_linear_envelope(self, le_order=2, le_cutoff_fq=6):
+        self.data = LinearEnvelope(self.hz, le_order, le_cutoff_fq).apply(self.data)
 
     def apply_end_frame_cutter(self, n_end_frames=30):
         self.data = EndFrameCutter(n_end_frames).apply(self.data)

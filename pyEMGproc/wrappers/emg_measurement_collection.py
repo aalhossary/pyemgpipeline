@@ -143,9 +143,9 @@ class EMGMeasurementCollection:
         for k in iter_dict_or_list(self.all_data):
             self.all_data[k] = FullWaveRectifier().apply(self.all_data[k])
 
-    def apply_linear_envelope(self, le_order=2, le_cutoff_fq_lo=6):
+    def apply_linear_envelope(self, le_order=2, le_cutoff_fq=6):
         for k in iter_dict_or_list(self.all_data):
-            self.all_data[k] = LinearEnvelope(self.hz, le_order, le_cutoff_fq_lo).apply(self.all_data[k])
+            self.all_data[k] = LinearEnvelope(self.hz, le_order, le_cutoff_fq).apply(self.all_data[k])
 
     def apply_end_frame_cutter(self, n_end_frames=30):
         for k in iter_dict_or_list(self.all_data):
