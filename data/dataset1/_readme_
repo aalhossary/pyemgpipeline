@@ -1,0 +1,6 @@
+This dataset is "EMG dataset in Lower Limb" from the UC Irvine Machine Learning
+Repository donated by Oscar Sanchez and Jose Sotelo under a CC BY 4.0 license
+(https://archive-beta.ics.uci.edu/ml/datasets/emg+dataset+in+lower+limb).
+
+We use the data of the abnormal subject #3 and the normal subject #5 as examples
+to demonstrate the usage of this package.

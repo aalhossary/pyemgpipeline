@@ -1,0 +1,10 @@
+This dataset is "EMG data for gestures" from the UC Irvine Machine Learning
+Repository under a CC BY 4.0 license
+(https://archive-beta.ics.uci.edu/ml/datasets/emg+data+for+gestures).
+Relevant Paper:
+Lobov S., Krilova N., Kastalskiy I., Kazantsev V., Makarov V.A. Latent Factors
+Limiting the Performance of sEMG-Interfaces. Sensors. 2018;18(4):1122.
+doi: 10.3390/s18041122
+
+We use the data of subject #10 as an example to demonstrate the usage of this
+package.
