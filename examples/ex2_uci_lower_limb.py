@@ -5,7 +5,7 @@
 import os
 import numpy as np
 from matplotlib.figure import SubplotParams
-import pyEMGproc as pep
+import pyemgpipeline as pep
 
 
 # Setup example data

@@ -3,7 +3,7 @@ import numpy as np
 
 
 class BaseProcessor(metaclass=ABCMeta):
-    """Base class for all signal processors in pyEMGproc
+    """Base class for all signal processors in pyemgpipeline
     """
 
     @abstractmethod
