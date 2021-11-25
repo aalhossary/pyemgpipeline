@@ -2,30 +2,39 @@
 # process EMG data of one trial.
 
 import os
+import pathlib
 import numpy as np
 from matplotlib.figure import SubplotParams
 import pyemgpipeline as pep
 
 
 # Setup example data
-data_folder = r'..\..\data\dataset1'
+repo_folder = pathlib.Path(__file__).parent.parent
+data_folder = os.path.join(repo_folder, 'data', 'dataset1')
 data_filename = '3Asen.txt'
 trial_name = 'Sit'
 channel_names = ['rectus femoris', 'biceps femoris', 'vastus internus', 'semitendinosus']
 frequency = 1000
 
 
+# Example data parsing function
+def load_uci_lower_limb_txt(_filepath):
+    with open(_filepath) as fp:
+        collect_values = np.array([])
+        lines = fp.readlines()
+        for line in lines[7:]:  # first few lines are data description
+            items = [float(e) for e in line.split('\t')[:4] if e != '']  # last column is not EMG data
+            if len(items) != 4:  # last few rows might not have EMG data
+                continue
+            collect_values = np.concatenate((collect_values, np.array(items)))
+    _data = collect_values.reshape(-1, 4)
+    return _data
+
+
 # Load example data
-with open(os.path.join(data_folder, data_filename)) as fp:
-    collect_values = np.array([])
-    lines = fp.readlines()
-    for line in lines[7:]:  # first few lines are data description
-        items = [float(e) for e in line.split('\t')[:4] if e != '']  # last column is not EMG data
-        if len(items) != 4:  # last few rows might not have EMG data
-            continue
-        collect_values = np.concatenate((collect_values, np.array(items)))
-    data = collect_values.reshape(-1, 4)
-    print('data shape:', data.shape)
+filepath = os.path.join(data_folder, data_filename)
+data = load_uci_lower_limb_txt(filepath)
+print('data shape:', data.shape)
 
 
 # Set EMG plot parameters

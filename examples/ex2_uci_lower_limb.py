@@ -3,23 +3,24 @@
 # a dict for demonstration purpose.
 
 import os
+import pathlib
 import numpy as np
 from matplotlib.figure import SubplotParams
 import pyemgpipeline as pep
 
 
 # Setup example data
-data_folder = r'..\..\data\dataset1'
+repo_folder = pathlib.Path(__file__).parent.parent
+data_folder = os.path.join(repo_folder, 'data', 'dataset1')
 data_filenames = ['5Nsen.txt', '5Npie.txt', '5Nmar.txt']
 all_trial_names = ['Sit', 'Stand', 'Gait']
 channel_names = ['rectus femoris', 'biceps femoris', 'vastus internus', 'semitendinosus']
 frequency = 1000
 
 
-# Load example data
-all_data = {}
-for i in range(len(data_filenames)):
-    with open(os.path.join(data_folder, data_filenames[i])) as fp:
+# Example data parsing function
+def load_uci_lower_limb_txt(_filepath):
+    with open(_filepath) as fp:
         collect_values = np.array([])
         lines = fp.readlines()
         for line in lines[7:]:  # first few lines are data description
@@ -27,9 +28,17 @@ for i in range(len(data_filenames)):
             if len(items) != 4:  # last few rows might not have EMG data
                 continue
             collect_values = np.concatenate((collect_values, np.array(items)))
-        data = collect_values.reshape(-1, 4)
-        print('data shape:', data.shape)
-        all_data[all_trial_names[i]] = data
+    _data = collect_values.reshape(-1, 4)
+    return _data
+
+
+# Load example data
+all_data = {}
+for i in range(len(data_filenames)):
+    filepath = os.path.join(data_folder, data_filenames[i])
+    data = load_uci_lower_limb_txt(filepath)
+    print('data shape:', data.shape)
+    all_data[all_trial_names[i]] = data
 print(f'Load {len(all_data)} data files')
 
 

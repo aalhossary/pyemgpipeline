@@ -3,13 +3,15 @@
 # steps. Data of multiple trials are stored in a list for demonstration purpose.
 
 import os
+import pathlib
 import numpy as np
 from matplotlib.figure import SubplotParams
 import pyemgpipeline as pep
 
 
 # Setup example data
-data_folder = r'..\..\data\dataset2'
+repo_folder = pathlib.Path(__file__).parent.parent
+data_folder = os.path.join(repo_folder, 'data', 'dataset2')
 data_filenames = ['1_raw_data_11-08_21.03.16.txt', '2_raw_data_11-10_21.03.16.txt']
 all_trial_names = ['trial 1', 'trial 2']
 channel_names = ['channel1', 'channel2', 'channel3', 'channel4', 'channel5', 'channel6', 'channel7', 'channel8']
@@ -52,6 +54,6 @@ c = mgr.process_all(is_plot_processing_chain=True, k_for_plot=0)  # execute proc
 
 
 # # save processed data as csv files
-# dest_dir = r'C:/Users/user1/Downloads'
+# dest_dir = r'my_dest_dir'
 # all_csv_path = [os.path.join(dest_dir, e + '.csv') for e in all_trial_names]
 # c.export_csv_all(all_csv_path)
