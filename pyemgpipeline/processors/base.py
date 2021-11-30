@@ -91,6 +91,7 @@ class BaseProcessor(metaclass=ABCMeta):
             assert not np.isnan(np.sum(timestamp)), 'timestamp must not contain nan values'
         elif hz is not None:
             assert isinstance(hz, float) or isinstance(hz, int), 'hz must be a number'
+            assert hz > 0, 'hz must be positive'
             timestamp = np.array([e / hz for e in range(x_shape[0])])
         else:
             timestamp = np.array(range(x_shape[0]))

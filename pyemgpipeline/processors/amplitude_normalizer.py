@@ -21,9 +21,10 @@ class AmplitudeNormalizer(BaseProcessor):
         x : ndarray of shape (n_samples,) or (n_samples, n_channels)
             Signal data to be processed.
 
-        divisor : one or more numbers in scalar, list, or ndarray
+        divisor : one or more numeric values in scalar, list, or ndarray
             If x is in 1-dim or n_channels is 1, then divisor should be
-            one number; otherwise divisor should be n_channels numbers.
+            one value; otherwise divisor should be n_channels values.
+            All values should be positive.
 
         Returns
         -------
@@ -40,6 +41,8 @@ class AmplitudeNormalizer(BaseProcessor):
             assert divisor.shape == (1,), 'divisor must be one number'
         else:
             assert divisor.shape == (x.shape[1],), 'divisor must be x.shape[1] numbers'
+
+        assert np.all(divisor > 0), 'divisor must contain positive values'
 
         x_processed = x / divisor
         return x_processed
