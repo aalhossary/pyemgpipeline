@@ -107,7 +107,7 @@ class EMGMeasurement:
     def plot(self):
         """Plot the data
         """
-        emg_plot(self.data, self.timestamp, channel_names=self.channel_names,
+        plot_emg(self.data, self.timestamp, channel_names=self.channel_names,
                  main_title=self.main_title, emg_plot_params=self.emg_plot_params)
 
     def export_csv(self, csv_path):

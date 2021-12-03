@@ -264,7 +264,7 @@ class EMGMeasurementCollection:
         if main_title is None:
             main_title = self.all_main_titles[k]
 
-        emg_plot(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,
+        plot_emg(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,
                  main_title=main_title, emg_plot_params=self.emg_plot_params)
 
     def plot_all(self):
@@ -272,7 +272,7 @@ class EMGMeasurementCollection:
         """
 
         for k in iter_dict_or_list(self.all_data):
-            emg_plot(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,
+            plot_emg(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,
                      main_title=self.all_main_titles[k], emg_plot_params=self.emg_plot_params)
 
     def export_csv(self, k, csv_path):

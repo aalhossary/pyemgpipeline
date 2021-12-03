@@ -1,7 +1,7 @@
 from . emg_plot import EMGPlotParams
-from . emg_plot import emg_plot
+from . emg_plot import plot_emg
 
 __all__ = [
     "EMGPlotParams",
-    "emg_plot",
+    "plot_emg",
 ]

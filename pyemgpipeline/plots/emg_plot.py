@@ -40,7 +40,7 @@ def _get_default_nrows_ncols(n_channels):
     return n_rows, n_cols
 
 
-def emg_plot(x, timestamp, channel_names=None, main_title=None, emg_plot_params=None):
+def plot_emg(x, timestamp, channel_names=None, main_title=None, emg_plot_params=None):
     """Plot EMG signals on a created matplotlib figure
 
     Parameters
