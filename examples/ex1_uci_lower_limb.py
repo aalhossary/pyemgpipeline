@@ -7,7 +7,6 @@ import numpy as np
 from matplotlib.figure import SubplotParams
 import pyemgpipeline as pep
 
-
 # Setup example data
 repo_folder = pathlib.Path(__file__).parent.parent
 data_folder = os.path.join(repo_folder, 'data', 'dataset1')
@@ -36,9 +35,8 @@ filepath = os.path.join(data_folder, data_filename)
 data = load_uci_lower_limb_txt(filepath)
 print('data shape:', data.shape)
 
-
 # Set EMG plot parameters
-emg_plot_params = pep.EMGPlotParams(
+emg_plot_params = pep.plots.EMGPlotParams(
     n_rows=4,
     fig_kwargs={
         'figsize': (5, 4),
@@ -48,8 +46,8 @@ emg_plot_params = pep.EMGPlotParams(
 
 
 # Process EMG by using class EMGMeasurement
-m = pep.EMGMeasurement(data, hz=frequency, channel_names=channel_names,
-                       main_title=trial_name, emg_plot_params=emg_plot_params)
+m = pep.wrappers.EMGMeasurement(data, hz=frequency, channel_names=channel_names,
+                                main_title=trial_name, emg_plot_params=emg_plot_params)
 m.apply_dc_offset_remover()
 m.apply_bandpass_filter()
 m.apply_full_wave_rectifier()

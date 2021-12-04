@@ -1,7 +1,8 @@
 from unittest import TestCase
 import numpy as np
-from pyemgpipeline import DataProcessingManager, BandpassFilter, LinearEnvelope, EndFrameCutter
-from pyemgpipeline import AmplitudeNormalizer, Segmenter
+from pyemgpipeline.wrappers import DataProcessingManager
+from pyemgpipeline.processors import BandpassFilter, LinearEnvelope, EndFrameCutter
+from pyemgpipeline.processors import AmplitudeNormalizer, Segmenter
 
 
 class TestDataProcessingManager(TestCase):

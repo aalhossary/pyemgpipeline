@@ -6,7 +6,9 @@ import os
 import pathlib
 import numpy as np
 from matplotlib.figure import SubplotParams
-import pyemgpipeline as pep
+from pyemgpipeline.wrappers import DataProcessingManager
+from pyemgpipeline.processors import BandpassFilter, AmplitudeNormalizer
+from pyemgpipeline.plots import EMGPlotParams
 
 
 # Setup example data
@@ -30,7 +32,7 @@ print(f'Load {len(all_data)} data files')
 
 
 # Set EMG plot parameters
-emg_plot_params = pep.EMGPlotParams(
+emg_plot_params = EMGPlotParams(
     n_rows=4,
     n_cols=2,
     fig_kwargs={
@@ -41,12 +43,12 @@ emg_plot_params = pep.EMGPlotParams(
 
 
 # Process EMG by using class DataProcessingManager
-mgr = pep.DataProcessingManager()
+mgr = DataProcessingManager()
 mgr.set_data_and_params(all_data, hz=frequency,
                         all_timestamp=all_timestamp, channel_names=channel_names,
                         all_main_titles=all_trial_names, emg_plot_params=emg_plot_params)
-mgr.set_bandpass_filter(pep.BandpassFilter(hz=frequency, bf_cutoff_fq_hi=495))  # can change processor's parameter
-mgr.set_amplitude_normalizer(pep.AmplitudeNormalizer())  # add non-default processor
+mgr.set_bandpass_filter(BandpassFilter(hz=frequency, bf_cutoff_fq_hi=495))  # can change processor's parameter
+mgr.set_amplitude_normalizer(AmplitudeNormalizer())  # add non-default processor
 mgr.show_current_processes_and_related_params()  # display current setting
 c = mgr.process_all(is_plot_processing_chain=True, k_for_plot=0)  # execute processing steps in the standard order,
                                                     # plot the processing chain of trial k=0,

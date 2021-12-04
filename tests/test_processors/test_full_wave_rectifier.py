@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from pyemgpipeline import FullWaveRectifier
+from pyemgpipeline.processors import FullWaveRectifier
 
 
 class TestFullWaveRectifier(TestCase):

@@ -1,7 +1,6 @@
 from unittest import TestCase
-import io
 import numpy as np
-from pyemgpipeline import BaseProcessor
+from pyemgpipeline.processors import BaseProcessor
 
 
 class TestBaseProcessor(TestCase):

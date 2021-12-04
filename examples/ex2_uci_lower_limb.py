@@ -8,7 +8,6 @@ import numpy as np
 from matplotlib.figure import SubplotParams
 import pyemgpipeline as pep
 
-
 # Setup example data
 repo_folder = pathlib.Path(__file__).parent.parent
 data_folder = os.path.join(repo_folder, 'data', 'dataset1')
@@ -43,7 +42,7 @@ print(f'Load {len(all_data)} data files')
 
 
 # Set EMG plot parameters
-emg_plot_params = pep.EMGPlotParams(
+emg_plot_params = pep.plots.EMGPlotParams(
     n_rows=4,
     fig_kwargs={
         'figsize': (5, 4),
@@ -53,8 +52,8 @@ emg_plot_params = pep.EMGPlotParams(
 
 
 # Process EMG by using class EMGMeasurementCollection
-c = pep.EMGMeasurementCollection(all_data, hz=frequency, channel_names=channel_names,
-                                 emg_plot_params=emg_plot_params)
+c = pep.wrappers.EMGMeasurementCollection(all_data, hz=frequency, channel_names=channel_names,
+                                          emg_plot_params=emg_plot_params)
 c.apply_dc_offset_remover()
 c.apply_bandpass_filter()
 c.apply_full_wave_rectifier()

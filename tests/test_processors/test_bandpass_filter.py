@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from pyemgpipeline import BandpassFilter
+from pyemgpipeline.processors import BandpassFilter
 
 
 class TestBandpassFilter(TestCase):

@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from pyemgpipeline import EndFrameCutter
+from pyemgpipeline.processors import EndFrameCutter
 
 
 class TestEndFrameCutter(TestCase):

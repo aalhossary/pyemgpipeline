@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from pyemgpipeline import LinearEnvelope
+from pyemgpipeline.processors import LinearEnvelope
 
 
 class TestLinearEnvelope(TestCase):

@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from pyemgpipeline import EMGMeasurementCollection
+from pyemgpipeline.wrappers import EMGMeasurementCollection
 
 
 class TestEMGMeasurementCollection(TestCase):

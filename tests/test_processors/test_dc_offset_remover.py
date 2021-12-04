@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from pyemgpipeline import DCOffsetRemover
+from pyemgpipeline.processors import DCOffsetRemover
 
 
 class TestDCOffsetRemover(TestCase):

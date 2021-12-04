@@ -1,6 +1,6 @@
 from unittest import TestCase
 import numpy as np
-from pyemgpipeline import AmplitudeNormalizer
+from pyemgpipeline.processors import AmplitudeNormalizer
 
 
 class TestAmplitudeNormalizer(TestCase):
