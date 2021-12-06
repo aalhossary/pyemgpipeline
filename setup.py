@@ -22,5 +22,6 @@ setup(
         'Operating System :: OS Independent',
     ],
     packages=find_packages(),
+    install_requires = ['numpy', 'scipy', 'matplotlib'],
     python_requires='>=3.6',
 )
