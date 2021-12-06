@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 
 class EMGPlotParams:
-    """Parameters for EMG plots
+    """Parameters of EMG plots
 
     Parameters
     ----------
@@ -100,6 +100,7 @@ def plot_emg(x, timestamp, channel_names=None, main_title=None, emg_plot_params=
         fig_kwargs = {}
 
     fig, axs = plt.subplots(n_rows, n_cols, sharex='all', sharey='all', **fig_kwargs)
+    plt.xlabel('Time')
     if main_title is not None:
         fig.suptitle(main_title)
     axs = np.array(axs).flat
