@@ -57,6 +57,6 @@ class TestSegmenter(TestCase):
             self.segmenter.apply(x, beg_idx=beg_idx, end_idx=end_idx)
 
     def test_get_parameter_str(self):
-        actual = self.segmenter.get_parameter_str()
+        actual = self.segmenter.get_param_values_in_str()
         desired = 'No parameters'
         self.assertEqual(actual, desired)

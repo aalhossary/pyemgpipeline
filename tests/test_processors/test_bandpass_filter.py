@@ -58,6 +58,6 @@ class TestBandpassFilter(TestCase):
             self.bandpass_filter.apply(x)  # (2 * bf_order + 1) * 3 = 15
 
     def test_get_parameter_str(self):
-        actual = self.bandpass_filter.get_parameter_str()
+        actual = self.bandpass_filter.get_param_values_in_str()
         desired = 'hz = 1000, bf_order = 2, bf_cutoff_fq_lo = 10, bf_cutoff_fq_hi = 450'
         self.assertEqual(actual, desired)

@@ -55,6 +55,6 @@ class TestLinearEnvelope(TestCase):
             self.linear_envelope.apply(x)  # (le_order + 1) * 3 = 9
 
     def test_get_parameter_str(self):
-        actual = self.linear_envelope.get_parameter_str()
+        actual = self.linear_envelope.get_param_values_in_str()
         desired = 'hz = 1000, le_order = 2, le_cutoff_fq = 5'
         self.assertEqual(actual, desired)

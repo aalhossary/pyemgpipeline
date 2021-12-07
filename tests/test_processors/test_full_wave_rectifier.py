@@ -39,6 +39,6 @@ class TestFullWaveRectifier(TestCase):
         np.testing.assert_allclose(actual, desired)
 
     def test_get_parameter_str(self):
-        actual = self.full_wave_rectifier.get_parameter_str()
+        actual = self.full_wave_rectifier.get_param_values_in_str()
         desired = 'No parameters'
         self.assertEqual(actual, desired)

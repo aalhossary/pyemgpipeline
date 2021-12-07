@@ -46,6 +46,6 @@ class TestEndFrameCutter(TestCase):
             self.end_frame_cutter.apply(x)  # 2 * n_end_frame = 6
 
     def test_get_parameter_str(self):
-        actual = self.end_frame_cutter.get_parameter_str()
+        actual = self.end_frame_cutter.get_param_values_in_str()
         desired = 'n_end_frames = 3'
         self.assertEqual(actual, desired)

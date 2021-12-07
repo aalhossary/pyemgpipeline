@@ -74,6 +74,6 @@ class TestAmplitudeNormalizer(TestCase):
             self.amplitude_normalizer.apply(x, divisor=divisor)
 
     def test_get_parameter_str(self):
-        actual = self.amplitude_normalizer.get_parameter_str()
+        actual = self.amplitude_normalizer.get_param_values_in_str()
         desired = 'No parameters'
         self.assertEqual(actual, desired)
