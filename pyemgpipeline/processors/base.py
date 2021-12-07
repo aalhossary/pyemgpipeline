@@ -3,7 +3,7 @@ import numpy as np
 
 
 class BaseProcessor(metaclass=ABCMeta):
-    """Base class for all signal processors in pyemgpipeline
+    """Base class of all EMG signal processors in pyemgpipeline
     """
 
     @abstractmethod
@@ -12,11 +12,13 @@ class BaseProcessor(metaclass=ABCMeta):
 
         Parameters
         ----------
-        x : ndarray of shape (n_samples,) or (n_samples, n_channels),
+        x : ndarray
+            Shape (n_samples,) or (n_samples, n_channels),
             where processors may require conditions on n_samples.
             Signal data to be processed.
 
-        **kwargs : processor-specific arguments
+        **kwargs : keyword arguments
+            Processor-specific arguments.
 
         Returns
         -------
@@ -26,20 +28,18 @@ class BaseProcessor(metaclass=ABCMeta):
         return
 
     @abstractmethod
-    def get_parameter_str(self):
-        """Abstract method of getting the parameters of the processor
-        for display purpose
-
-        Parameters
-        ----------
-        No parameters
+    def get_param_values_in_str(self):
+        """Abstract method of getting the parameter values of the
+        processor for display purpose
 
         Returns
         -------
-        Parameters of the processor in str
+        params_in_str : str
+            Parameter values.
         """
 
-        return ""
+        params_in_str = 'No parameters'
+        return params_in_str
 
     @staticmethod
     def assert_input(x):
@@ -47,7 +47,8 @@ class BaseProcessor(metaclass=ABCMeta):
 
         Parameters
         ----------
-        x : ndarray of shape (n_samples,) or (n_samples, n_channels)
+        x : ndarray
+            Shape (n_samples,) or (n_samples, n_channels).
             Signal data to be processed.
 
         Returns
@@ -65,7 +66,8 @@ class BaseProcessor(metaclass=ABCMeta):
 
         Parameters
         ----------
-        x_shape : shape of the signal data in ndarray
+        x_shape : tuple
+            Shape of the signal data in ndarray.
             x_shape is (n_samples,) or (n_samples, n_channels).
 
         timestamp : ndarray or None, default None
@@ -78,7 +80,8 @@ class BaseProcessor(metaclass=ABCMeta):
 
         Returns
         -------
-        timestamp: ndarray of shape (n_samples,)
+        timestamp: ndarray
+            Shape (n_samples,).
             The deduced timestamp corresponding to the signal. If
             getting None for both timestamp and hz from the input,
             this return value will be integers starting from 0.
@@ -103,7 +106,8 @@ class BaseProcessor(metaclass=ABCMeta):
 
         Parameters
         ----------
-        timestamp : ndarray in 1-dim
+        timestamp : ndarray
+            In 1-dim.
 
         beg_ts : float
             Beginning time of interest. beg_ts <= timestamp[-1].
@@ -140,10 +144,12 @@ class BaseProcessor(metaclass=ABCMeta):
         filepath : str
             Filepath for data to export.
 
-        x : ndarray of shape (n_samples,) or (n_samples, n_channels)
+        x : ndarray
+            Shape (n_samples,) or (n_samples, n_channels).
             Signal data to be exported.
 
-        timestamp : ndarray of shape (n_samples,) or None, default None
+        timestamp : ndarray or None, default None
+            If ndarray, shape is (n_samples,).
             The timestamp corresponding to the signal.
 
         channel_names : list of str, or None, default None

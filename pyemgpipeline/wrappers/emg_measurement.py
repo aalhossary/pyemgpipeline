@@ -4,7 +4,7 @@ import copy
 
 
 class EMGMeasurement:
-    """EMG measurement of one trial
+    """Wrapper of single-trial EMG processing
 
     Parameters
     ----------
@@ -51,29 +51,94 @@ class EMGMeasurement:
         self.emg_plot_params = emg_plot_params
 
     def apply_dc_offset_remover(self):
+        """Apply DC offset remover to the data
+
+        Returns
+        -------
+        None
+        """
+
         self.data = DCOffsetRemover().apply(self.data)
 
     def apply_bandpass_filter(self, bf_order=2, bf_cutoff_fq_lo=20, bf_cutoff_fq_hi=499):
+        """Apply bandpass filter to the data
+
+        Parameters
+        ----------
+        bf_order : int, default=2
+            Order of the butterworth filter.
+
+        bf_cutoff_fq_lo : float, default=20
+            Low cutoff frequency of the bandpass filter.
+            See class BandpassFilter.
+
+        bf_cutoff_fq_hi : float, default=499
+            High cutoff frequency of the bandpass filter.
+            See class BandpassFilter.
+
+        Returns
+        -------
+        None
+        """
+
         self.data = BandpassFilter(self.hz, bf_order, bf_cutoff_fq_lo, bf_cutoff_fq_hi).apply(self.data)
 
     def apply_full_wave_rectifier(self):
+        """Apply full wave rectifier to the data
+
+        Returns
+        -------
+        None
+        """
+
         self.data = FullWaveRectifier().apply(self.data)
 
     def apply_linear_envelope(self, le_order=2, le_cutoff_fq=6):
+        """Apply linear envelope to the data
+
+        Parameters
+        ----------
+        le_order : int, default=2
+            Order of the butterworth filter for linear envelope.
+
+        le_cutoff_fq : float, default=6
+            Cutoff frequency of the lowpass filter.
+            See class LinearEnvelope.
+
+        Returns
+        -------
+        None
+        """
+
         self.data = LinearEnvelope(self.hz, le_order, le_cutoff_fq).apply(self.data)
 
     def apply_end_frame_cutter(self, n_end_frames=30):
+        """Apply end frame cutter to the data (signal and timestamp)
+
+        Parameters
+        ----------
+        n_end_frames : int, default=30
+            Number of frames to be cut off in both ends of the signal.
+            n_end_frames >= 0.
+
+        Returns
+        -------
+        None
+        """
+
         self.data = EndFrameCutter(n_end_frames).apply(self.data)
         self.timestamp = EndFrameCutter(n_end_frames).apply(self.timestamp)
 
     def apply_amplitude_normalizer(self, max_amplitude):
-        """
+        """Apply amplitude normalizer to the data
+
         Parameters
         ----------
-        max_amplitude : one or more numbers in scalar, list, or ndarray
-            If data is in 1-dim or n_channels is 1, then max_amplitude
-            should be one number; otherwise max_amplitude should be
-            n_channels numbers.
+        max_amplitude : scalar, list, or ndarray
+            One or more positive values.
+            If data is in 1-dim or n_channels is 1, then
+            max_amplitude should be one value; otherwise max_amplitude
+            should be n_channels values.
             max_amplitude is the value used as divisor in amplitude
             normalization.
 
@@ -85,7 +150,8 @@ class EMGMeasurement:
         self.data = AmplitudeNormalizer().apply(self.data, divisor=max_amplitude)
 
     def apply_segmenter(self, beg_ts, end_ts):
-        """
+        """Apply segmenter to the data (signal and timestamp)
+
         Parameters
         ----------
         beg_ts : float
@@ -106,6 +172,10 @@ class EMGMeasurement:
 
     def plot(self):
         """Plot the data
+
+        Returns
+        -------
+        None
         """
         plot_emg(self.data, self.timestamp, channel_names=self.channel_names,
                  main_title=self.main_title, emg_plot_params=self.emg_plot_params)

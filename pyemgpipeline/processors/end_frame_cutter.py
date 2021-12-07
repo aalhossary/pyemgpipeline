@@ -20,16 +20,17 @@ class EndFrameCutter(BaseProcessor):
 
         Parameters
         ----------
-        x : ndarray of shape (n_samples,) or (n_samples, n_channels),
-            where n_samples > 2 * n_end_frame
+        x : ndarray
+            Shape (n_samples,) or (n_samples, n_channels),
+            where n_samples > 2 * n_end_frame.
             Signal data to be processed or timestamp corresponding to
             the signal.
 
         Returns
         -------
-        x_processed : ndarray of the same dimension as x, where the
-            first dimension reduces its length from 'n_samples' to
-            'n_samples - 2 * n_end_frame'
+        x_processed : ndarray
+            Same dimension as x, where the first dimension reduces its
+            length from 'n_samples' to 'n_samples - 2 * n_end_frame'.
             The result of applying end frame cutter to x.
         """
 
@@ -42,16 +43,14 @@ class EndFrameCutter(BaseProcessor):
             x_processed = x
         return x_processed
 
-    def get_parameter_str(self):
-        """Get the parameters of the end frame cutter in str
-
-        Parameters
-        ----------
-        No parameters
+    def get_param_values_in_str(self):
+        """Getting the parameter values of the processor for display
+        purpose
 
         Returns
         -------
         params_in_str : str
+            Parameter values.
         """
 
         params_in_str = f'n_end_frames = {self.n_end_frames}'

@@ -3,11 +3,8 @@ import numpy as np
 
 
 class AmplitudeNormalizer(BaseProcessor):
-    """Amplitude normalizer
+    """Amplitude normalizer for EMG signals
 
-    Parameters
-    ----------
-    No parameters
     """
 
     def __init__(self):
@@ -18,17 +15,19 @@ class AmplitudeNormalizer(BaseProcessor):
 
         Parameters
         ----------
-        x : ndarray of shape (n_samples,) or (n_samples, n_channels)
+        x : ndarray
+            Shape (n_samples,) or (n_samples, n_channels).
             Signal data to be processed.
 
-        divisor : one or more numeric values in scalar, list, or ndarray
+        divisor : scalar, list, or ndarray
+            One or more positive values.
             If x is in 1-dim or n_channels is 1, then divisor should be
             one value; otherwise divisor should be n_channels values.
-            All values should be positive.
 
         Returns
         -------
-        x_processed : ndarray of the same shape as x
+        x_processed : ndarray
+            Same shape as x.
             The result of applying amplitude normalizer to x.
         """
 
@@ -47,17 +46,15 @@ class AmplitudeNormalizer(BaseProcessor):
         x_processed = x / divisor
         return x_processed
 
-    def get_parameter_str(self):
-        """Get the parameters of the amplitude normalizer in str
-
-        Parameters
-        ----------
-        No parameters
+    def get_param_values_in_str(self):
+        """Getting the parameter values of the processor for display
+        purpose
 
         Returns
         -------
         params_in_str : str
+            Parameter values.
         """
 
-        params_in_str = 'No parameters'
+        params_in_str = super().get_param_values_in_str()
         return params_in_str

@@ -19,7 +19,7 @@ class EMGPlotParams:
         Parameters to control the figures. They are parameters of
         class matplotlib.figure.Figure, including figsize, dpi,
         facecolor, edgecolor, linewidth, frameon, subplotpars,
-        tight_layout, constrained_layout
+        tight_layout, constrained_layout, etc.
         (See https://matplotlib.org/stable/api/figure_api.html).
     """
 
@@ -45,20 +45,23 @@ def plot_emg(x, timestamp, channel_names=None, main_title=None, emg_plot_params=
 
     Parameters
     ----------
-    x : ndarray of shape (n_samples,) or (n_samples, n_channels)
+    x : ndarray
+        Shape (n_samples,) or (n_samples, n_channels).
         Signal data to be processed.
 
-    timestamp : ndarray of shape (n_samples,)
+    timestamp : ndarray
+        Shape (n_samples,).
         The timestamp corresponding to the signal.
 
-    channel_names : list of str, or None, default None
-        If list, its length should be equal to n_channels.
+    channel_names : list or None, default None
+        If list, elements are str and its length should be equal to
+        n_channels.
         Channel names to be shown in plots.
 
-    main_title : str or None
+    main_title : str or None, default None
         The main title of the plot.
 
-    emg_plot_params : EMGPlotParams, default None
+    emg_plot_params : EMGPlotParams or None, default None
         See class EMGPlotParams.
         If this is not None, then for its n_rows and n_cols,
         (1) If n_rows and n_cols both have values, n_rows times n_cols

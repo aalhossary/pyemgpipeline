@@ -3,7 +3,7 @@ from scipy import signal
 
 
 class BandpassFilter(BaseProcessor):
-    """Bandpass filter
+    """Bandpass filter for EMG signals
 
     Parameters
     ----------
@@ -29,14 +29,16 @@ class BandpassFilter(BaseProcessor):
 
     References
     ----------
-    1. Stegeman, D.F., & Hermens, H.J. (1996-1999). Standards for
-        surface electromyography: the European project "Surface EMG for
-        non invasive assessment of muscles (SENIAM)". Biomed 2 program
-        of the European Community. European concerted action.
-    2. Drake, J.D.M., & Callaghan, J.P. (2006). Elimination of
-        electrocardiogram contamination from electromyogram signals:
-        An evaluation of currently used removal techniques. Journal
-        of Electromyography and Kinesiology, 16, 175–187.
+    1. Stegeman, D.F., & Hermens, H.J. (1996-1999).
+        Standards for surface electromyography: the European project
+        "Surface EMG for non invasive assessment of muscles (SENIAM)".
+        Biomed 2 program of the European Community. European concerted
+        action.
+    2. Drake, J.D.M., & Callaghan, J.P. (2006).
+        Elimination of electrocardiogram contamination from
+        electromyogram signals: An evaluation of currently used removal
+        techniques. Journal of Electromyography and Kinesiology, 16,
+        175–187.
     """
 
     def __init__(self, hz, bf_order=2, bf_cutoff_fq_lo=20, bf_cutoff_fq_hi=499):
@@ -50,13 +52,15 @@ class BandpassFilter(BaseProcessor):
 
         Parameters
         ----------
-        x : ndarray of shape (n_samples,) or (n_samples, n_channels),
-            where n_samples > (2 * bf_order + 1) * 3 (See Notes)
+        x : ndarray
+            Shape (n_samples,) or (n_samples, n_channels),
+            where n_samples > (2 * bf_order + 1) * 3 (See Notes).
             Signal data to be processed.
 
         Returns
         -------
-        x_processed : ndarray of the same shape as x
+        x_processed : ndarray
+            Same shape as x.
             The result of applying bandpass filter to x.
 
         Notes
@@ -74,16 +78,14 @@ class BandpassFilter(BaseProcessor):
         x_processed = signal.filtfilt(b, a, x, axis=0)
         return x_processed
 
-    def get_parameter_str(self):
-        """Get the parameters of the bandpass filter in str
-
-        Parameters
-        ----------
-        No parameters
+    def get_param_values_in_str(self):
+        """Getting the parameter values of the processor for display
+        purpose
 
         Returns
         -------
         params_in_str : str
+            Parameter values.
         """
 
         params_in_str = f'hz = {self.hz}, bf_order = {self.bf_order}, bf_cutoff_fq_lo = {self.bf_cutoff_fq_lo}, ' \

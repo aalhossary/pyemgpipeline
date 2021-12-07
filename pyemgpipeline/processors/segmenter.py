@@ -3,11 +3,8 @@ import numpy as np
 
 
 class Segmenter(BaseProcessor):
-    """Segmenter
+    """Segmenter for EMG signals
 
-    Parameters
-    ----------
-    No parameters
     """
 
     def __init__(self):
@@ -18,7 +15,8 @@ class Segmenter(BaseProcessor):
 
         Parameters
         ----------
-        x : ndarray of shape (n_samples,) or (n_samples, n_channels)
+        x : ndarray
+            Shape (n_samples,) or (n_samples, n_channels).
             Signal data to be processed or timestamp corresponding to
             the signal.
 
@@ -32,9 +30,9 @@ class Segmenter(BaseProcessor):
 
         Returns
         -------
-        x_processed : ndarray of the same dimension as x, where the
-            first dimension reduces its length from 'n_samples' to
-            'end_idx - beg_idx + 1'
+        x_processed : ndarray
+            Same dimension as x, where the first dimension reduces its
+            length from 'n_samples' to 'end_idx - beg_idx + 1'.
             The result of applying segmenter to x.
         """
 
@@ -50,17 +48,15 @@ class Segmenter(BaseProcessor):
         x_processed = x[beg_idx:(end_idx + 1), ]
         return x_processed
 
-    def get_parameter_str(self):
-        """Get the parameters of the segmenter in str
-
-        Parameters
-        ----------
-        No parameters
+    def get_param_values_in_str(self):
+        """Getting the parameter values of the processor for display
+        purpose
 
         Returns
         -------
         params_in_str : str
+            Parameter values.
         """
 
-        params_in_str = 'No parameters'
+        params_in_str = super().get_param_values_in_str()
         return params_in_str

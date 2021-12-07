@@ -3,7 +3,7 @@ from scipy import signal
 
 
 class LinearEnvelope(BaseProcessor):
-    """Linear envelope
+    """Linear envelope for EMG signals
 
     Parameters
     ----------
@@ -30,13 +30,15 @@ class LinearEnvelope(BaseProcessor):
 
         Parameters
         ----------
-        x : ndarray of shape (n_samples,) or (n_samples, n_channels),
-            where n_samples > (le_order + 1) * 3 (See Notes)
+        x : ndarray
+            Shape (n_samples,) or (n_samples, n_channels),
+            where n_samples > (le_order + 1) * 3 (See Notes).
             Signal data to be processed.
 
         Returns
         -------
-        x_processed : ndarray of the same shape as x
+        x_processed : ndarray
+            Same shape as x.
             The result of applying linear envelope to x.
 
         Notes
@@ -54,16 +56,14 @@ class LinearEnvelope(BaseProcessor):
         x_processed = signal.filtfilt(b, a, x, axis=0)
         return x_processed
 
-    def get_parameter_str(self):
-        """Get the parameters of the linear envelope in str
-
-        Parameters
-        ----------
-        No parameters
+    def get_param_values_in_str(self):
+        """Getting the parameter values of the processor for display
+        purpose
 
         Returns
         -------
         params_in_str : str
+            Parameter values.
         """
 
         params_in_str = f'hz = {self.hz}, le_order = {self.le_order}, le_cutoff_fq = {self.le_cutoff_fq}'

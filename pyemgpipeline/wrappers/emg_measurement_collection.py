@@ -22,11 +22,11 @@ def iter_dict_or_list(data_structure):
 
 
 class EMGMeasurementCollection:
-    """EMG measurement of multiple trials
+    """Wrapper of multiple-trial EMG processing
 
     Parameters
     ----------
-    all_data : dict with ndarray values or list of ndarray
+    all_data : dict or list
         If dict, keys can be trial names and values are signal data of
         the trials.
         If list, elements are signal data of the trials.
@@ -54,18 +54,19 @@ class EMGMeasurementCollection:
         length as the first dimension of its corresponding element in
         all_data.
 
-    channel_names : list of str, or None, default None
-        If list, its length should be equal to n_channels.
+    channel_names : list or None, default None
+        If list, elements are str and its length should be equal to
+        n_channels.
         Channel names of all trials to be shown in plots.
 
-    all_main_titles : list of str, or None, default None
+    all_main_titles : list or None, default None
         The main title in the plot, which is valid only when all_data
         is a list. (If all_data is a dict, its keys will be used as
         main titles.)
         If not None, all_main_titles and all_data should have the same
         length.
 
-    emg_plot_params : EMGPlotParams, default None
+    emg_plot_params : EMGPlotParams or None, default None
         See class EMGPlotParams and function emg_plot.
 
     Notes
@@ -76,10 +77,11 @@ class EMGMeasurementCollection:
 
     References
     ----------
-    1. Stegeman, D.F., & Hermens, H.J. (1996-1999). Standards for
-        surface electromyography: the European project "Surface EMG for
-        non invasive assessment of muscles (SENIAM)". Biomed 2 program
-        of the European Community. European concerted action.
+    1. Stegeman, D.F., & Hermens, H.J. (1996-1999).
+        Standards for surface electromyography: the European project
+        "Surface EMG for non invasive assessment of muscles (SENIAM)".
+        Biomed 2 program of the European Community. European concerted
+        action.
     """
 
     def __init__(self, all_data, hz, all_timestamp=None, channel_names=None, all_main_titles=None, emg_plot_params=None):
@@ -131,36 +133,97 @@ class EMGMeasurementCollection:
         self.emg_plot_params = emg_plot_params
 
     def apply_dc_offset_remover(self):
+        """Apply DC offset remover to the data
+
+        Returns
+        -------
+        None
+        """
+
         for k in iter_dict_or_list(self.all_data):
             self.all_data[k] = DCOffsetRemover().apply(self.all_data[k])
 
     def apply_bandpass_filter(self, bf_order=2, bf_cutoff_fq_lo=20, bf_cutoff_fq_hi=499):
+        """Apply bandpass filter to the data
+
+        Parameters
+        ----------
+        bf_order : int, default=2
+            Order of the butterworth filter.
+
+        bf_cutoff_fq_lo : float, default=20
+            Low cutoff frequency of the bandpass filter.
+            See class BandpassFilter.
+
+        bf_cutoff_fq_hi : float, default=499
+            High cutoff frequency of the bandpass filter.
+            See class BandpassFilter.
+
+        Returns
+        -------
+        None
+        """
+
         for k in iter_dict_or_list(self.all_data):
             self.all_data[k] = BandpassFilter(self.hz, bf_order, bf_cutoff_fq_lo, bf_cutoff_fq_hi).apply(
                 self.all_data[k])
 
     def apply_full_wave_rectifier(self):
+        """Apply full wave rectifier to the data
+
+        Returns
+        -------
+        None
+        """
+
         for k in iter_dict_or_list(self.all_data):
             self.all_data[k] = FullWaveRectifier().apply(self.all_data[k])
 
     def apply_linear_envelope(self, le_order=2, le_cutoff_fq=6):
+        """Apply linear envelope to the data
+
+        Parameters
+        ----------
+        le_order : int, default=2
+            Order of the butterworth filter for linear envelope.
+
+        le_cutoff_fq : float, default=6
+            Cutoff frequency of the lowpass filter.
+            See class LinearEnvelope.
+
+        Returns
+        -------
+        None
+        """
+
         for k in iter_dict_or_list(self.all_data):
             self.all_data[k] = LinearEnvelope(self.hz, le_order, le_cutoff_fq).apply(self.all_data[k])
 
     def apply_end_frame_cutter(self, n_end_frames=30):
+        """Apply end frame cutter to the data (signal and timestamp)
+
+        Parameters
+        ----------
+        n_end_frames : int, default=30
+            Number of frames to be cut off in both ends of the signal.
+            n_end_frames >= 0.
+
+        Returns
+        -------
+        None
+        """
+
         for k in iter_dict_or_list(self.all_data):
             self.all_data[k] = EndFrameCutter(n_end_frames).apply(self.all_data[k])
             self.all_timestamp[k] = EndFrameCutter(n_end_frames).apply(self.all_timestamp[k])
 
     def find_max_amplitude_of_each_channel_across_trials(self):
-        """
-        Parameters
-        ----------
-        No parameters
+        """Find max amplitude of each channel across trials
 
         Returns
         -------
-        max_amplitude : ndarray of shape (n_channels,)
+        max_amplitude : ndarray
+            Shape (n_channels,).
             Max amplitude of each channel which is found across all trials.
         """
 
@@ -171,13 +234,15 @@ class EMGMeasurementCollection:
         return max_amplitude
 
     def apply_amplitude_normalizer(self, max_amplitude):
-        """
+        """Apply amplitude normalizer to the data
+
         Parameters
         ----------
-        max_amplitude : one or more numbers in scalar, list, or ndarray
+        max_amplitude : scalar, list, or ndarray
+            One or more positive values.
             If data in all_data is in 1-dim or n_channels is 1, then
-            max_amplitude should be one number; otherwise max_amplitude
-            should be n_channels numbers.
+            max_amplitude should be one value; otherwise max_amplitude
+            should be n_channels values.
             max_amplitude is the value used as divisor in amplitude
             normalization for all trials.
 
@@ -190,22 +255,25 @@ class EMGMeasurementCollection:
             self.all_data[k] = AmplitudeNormalizer().apply(self.all_data[k], divisor=max_amplitude)
 
     def apply_segmenter(self, all_beg_ts, all_end_ts):
-        """
+        """Apply segmenter to the data (signal and timestamp)
+
         Parameters
         ----------
-        all_beg_ts : dict with float values or list of float
+        all_beg_ts : dict or list
             all_beg_ts should be of the same type as all_data.
-            If dict, keys should be identical to those of all_data.
-            If list, its length should be the same as the length of
-            all_data.
+            If dict, keys should be identical to those of all_data
+            and values are float.
+            If list, elements are float and the length should be
+            equal to the length of all_data.
             Beginning time of interest for each trial. For trial k,
             all_beg_ts[k] <= all_timestamp[k][-1].
 
-        all_end_ts : dict with float values or list of float
+        all_end_ts : dict or list
             all_end_ts should be of the same type as all_data.
-            If dict, keys should be identical to those of all_data.
-            If list, its length should be the same as the length of
-            all_data.
+            If dict, keys should be identical to those of all_data
+            and values are float.
+            If list, elements are float and the length should be
+            equal to the length of all_data.
             End time of interest for each trial. For trial k,
             all_end_ts[k] >= all_timestamp[k][0] and
             all_beg_ts[k] < all_end_ts[k].
@@ -246,9 +314,10 @@ class EMGMeasurementCollection:
 
         Parameters
         ----------
-        k : if all_data is a dict, k is one of its key
-            if all_data is a list, k is an integer between 0 and
-            len(all_data) - 1
+        k : key of dict or index of list.
+            If all_data is a dict, k is one of its key.
+            If all_data is a list, k is an integer between 0 and
+            len(all_data) - 1.
 
         main_title : str or None
             The main title of the plot.
@@ -269,6 +338,10 @@ class EMGMeasurementCollection:
 
     def plot_all(self):
         """Plot all trials
+
+        Returns
+        -------
+        None
         """
 
         for k in iter_dict_or_list(self.all_data):
@@ -280,12 +353,13 @@ class EMGMeasurementCollection:
 
         Parameters
         ----------
-        k : if all_data is a dict, k is one of its key
-            if all_data is a list, k is an integer between 0 and
-            len(all_data) - 1
+        k : key of dict or index of list.
+            If all_data is a dict, k is one of its key.
+            If all_data is a list, k is an integer between 0 and
+            len(all_data) - 1.
 
         csv_path : str
-            The destination path to export data.
+            The destination path to export data of trial k.
 
         Returns
         -------
@@ -302,12 +376,12 @@ class EMGMeasurementCollection:
 
         Parameters
         ----------
-        all_csv_path : dict with str values or list of str
+        all_csv_path : dict or list
             all_csv_path should be of the same type as all_data.
             If dict, keys should be identical to those of all_data.
             If list, its length should be the same as the length of
             all_data.
-            The destination paths to export data.
+            The destination paths to export data of all trials.
 
         Returns
         -------
