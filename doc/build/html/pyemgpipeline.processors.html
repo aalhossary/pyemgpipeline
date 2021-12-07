@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyemgpipeline.processors &mdash; pyemgpipeline 0.1.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pyemgpipeline.wrappers" href="pyemgpipeline.wrappers.html" />
+    <link rel="prev" title="pyemgpipeline.plots" href="pyemgpipeline.plots.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> pyemgpipeline
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="pyemgpipeline.plots.html">pyemgpipeline.plots</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">pyemgpipeline.processors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pyemgpipeline.wrappers.html">pyemgpipeline.wrappers</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyemgpipeline</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>pyemgpipeline.processors</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/pyemgpipeline.processors.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="pyemgpipeline-processors">
+<h1>pyemgpipeline.processors<a class="headerlink" href="#pyemgpipeline-processors" title="Permalink to this headline"></a></h1>
+<p><strong>Summary – Base Classes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.BaseProcessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BaseProcessor</span></code></a></p></td>
+<td><p>Base class of all EMG signal processors in pyemgpipeline</p></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Summary – Classes</strong></p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyemgpipeline.processors.AmplitudeNormalizer" title="pyemgpipeline.processors.AmplitudeNormalizer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AmplitudeNormalizer</span></code></a></p></td>
+<td><p>Amplitude normalizer for EMG signals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyemgpipeline.processors.BandpassFilter" title="pyemgpipeline.processors.BandpassFilter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BandpassFilter</span></code></a></p></td>
+<td><p>Bandpass filter for EMG signals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyemgpipeline.processors.DCOffsetRemover" title="pyemgpipeline.processors.DCOffsetRemover"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DCOffsetRemover</span></code></a></p></td>
+<td><p>DC offset remover for EMG signals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyemgpipeline.processors.EndFrameCutter" title="pyemgpipeline.processors.EndFrameCutter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EndFrameCutter</span></code></a></p></td>
+<td><p>End frame cutter for EMG signals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyemgpipeline.processors.FullWaveRectifier" title="pyemgpipeline.processors.FullWaveRectifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FullWaveRectifier</span></code></a></p></td>
+<td><p>Full wave rectifier for EMG signals</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyemgpipeline.processors.LinearEnvelope" title="pyemgpipeline.processors.LinearEnvelope"><code class="xref py py-obj docutils literal notranslate"><span class="pre">LinearEnvelope</span></code></a></p></td>
+<td><p>Linear envelope for EMG signals</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pyemgpipeline.processors.Segmenter" title="pyemgpipeline.processors.Segmenter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Segmenter</span></code></a></p></td>
+<td><p>Segmenter for EMG signals</p></td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="module-pyemgpipeline.processors"></span><dl class="py class">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.AmplitudeNormalizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">AmplitudeNormalizer</span></span><a class="headerlink" href="#pyemgpipeline.processors.AmplitudeNormalizer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.base.BaseProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyemgpipeline.processors.base.BaseProcessor</span></code></a></p>
+<p>Amplitude normalizer for EMG signals</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.AmplitudeNormalizer.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.AmplitudeNormalizer.apply" title="Permalink to this definition"></a></dt>
+<dd><p>Apply amplitude normalizer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels).
+Signal data to be processed.</p></li>
+<li><p><strong>divisor</strong> (<em>scalar</em><em>, </em><em>list</em><em>, or </em><em>ndarray</em>) – One or more positive values.
+If x is in 1-dim or n_channels is 1, then divisor should be
+one value; otherwise divisor should be n_channels values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x_processed</strong> – Same shape as x.
+The result of applying amplitude normalizer to x.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.AmplitudeNormalizer.get_param_values_in_str">
+<span class="sig-name descname"><span class="pre">get_param_values_in_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.AmplitudeNormalizer.get_param_values_in_str" title="Permalink to this definition"></a></dt>
+<dd><p>Getting the parameter values of the processor for display
+purpose</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>params_in_str</strong> – Parameter values.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.BandpassFilter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">BandpassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">499</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BandpassFilter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.base.BaseProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyemgpipeline.processors.base.BaseProcessor</span></code></a></p>
+<p>Bandpass filter for EMG signals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hz</strong> (<em>float</em>) – Sample rate in hertz.
+See class EMGMeasurementCollection for suggested values of hz.</p></li>
+<li><p><strong>bf_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter.</p></li>
+<li><p><strong>bf_cutoff_fq_lo</strong> (<em>float</em><em>, </em><em>default=20</em>) – Low cutoff frequency of the bandpass filter (i.e., frequency
+higher than bf_cutoff_fq_lo will pass).
+For EMG placement on lower/upper limbs, the suggested value is
+10~20 (see ref. 1). For EMG placement around the heart (i.e.,
+trunk), the suggested value is 30 (see ref. 2).</p></li>
+<li><p><strong>bf_cutoff_fq_hi</strong> (<em>float</em><em>, </em><em>default=499</em>) – High cutoff frequency of the bandpass filter (i.e., frequency
+lower than bf_cutoff_fq_hi will pass).
+Suggested value is around 500 (see ref. 1). Note that
+bf_cutoff_fq_hi should be strictly less than half of hz.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>Stegeman, D.F., &amp; Hermens, H.J. (1996-1999).</dt><dd><p>Standards for surface electromyography: the European project
+“Surface EMG for non invasive assessment of muscles (SENIAM)”.
+Biomed 2 program of the European Community. European concerted
+action.</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Drake, J.D.M., &amp; Callaghan, J.P. (2006).</dt><dd><p>Elimination of electrocardiogram contamination from
+electromyogram signals: An evaluation of currently used removal
+techniques. Journal of Electromyography and Kinesiology, 16,
+175–187.</p>
+</dd>
+</dl>
+</li>
+</ol>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.BandpassFilter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BandpassFilter.apply" title="Permalink to this definition"></a></dt>
+<dd><p>Apply bandpass filter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels),
+where n_samples &gt; (2 * bf_order + 1) * 3 (See Notes).
+Signal data to be processed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x_processed</strong> – Same shape as x.
+The result of applying bandpass filter to x.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Using scipy.signal.filtfilt requires the length of the input
+vector x greater than the padding length, padlen, which is
+(2 * bf_order + 1) * 3 for a bandpass Butterworth filter.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.BandpassFilter.get_param_values_in_str">
+<span class="sig-name descname"><span class="pre">get_param_values_in_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BandpassFilter.get_param_values_in_str" title="Permalink to this definition"></a></dt>
+<dd><p>Getting the parameter values of the processor for display
+purpose</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>params_in_str</strong> – Parameter values.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.BaseProcessor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">BaseProcessor</span></span><a class="headerlink" href="#pyemgpipeline.processors.BaseProcessor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Base class of all EMG signal processors in pyemgpipeline</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.BaseProcessor.apply">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BaseProcessor.apply" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method of applying any EMG signal processing steps</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels),
+where processors may require conditions on n_samples.
+Signal data to be processed.</p></li>
+<li><p><strong>**kwargs</strong> (<em>keyword arguments</em>) – Processor-specific arguments.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None (in abstract method)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.BaseProcessor.assert_input">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">assert_input</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BaseProcessor.assert_input" title="Permalink to this definition"></a></dt>
+<dd><p>Check the input signal</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels).
+Signal data to be processed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.BaseProcessor.export_csv">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">export_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BaseProcessor.export_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Export data to csv file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filepath</strong> (<em>str</em>) – Filepath for data to export.</p></li>
+<li><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels).
+Signal data to be exported.</p></li>
+<li><p><strong>timestamp</strong> (<em>ndarray</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – If ndarray, shape is (n_samples,).
+The timestamp corresponding to the signal.</p></li>
+<li><p><strong>channel_names</strong> (<em>list of str</em><em>, or </em><em>None</em><em>, </em><em>default None</em>) – If list, its length should be equal to n_channels.
+Channel names to be shown as the header of the csv file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.BaseProcessor.get_indices_from_timestamp">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_indices_from_timestamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beg_ts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_ts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BaseProcessor.get_indices_from_timestamp" title="Permalink to this definition"></a></dt>
+<dd><p>Get the corresponding indices from timestamp</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>timestamp</strong> (<em>ndarray</em>) – In 1-dim.</p></li>
+<li><p><strong>beg_ts</strong> (<em>float</em>) – Beginning time of interest. beg_ts &lt;= timestamp[-1].</p></li>
+<li><p><strong>end_ts</strong> (<em>float</em>) – End time of interest. end_ts &gt;= timestamp[0].
+Also beg_ts &lt; end_ts.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>beg_idx</strong> (<em>int</em>) – The smallest index of timestamp in which the time is
+greater than or equal to beg_ts.</p></li>
+<li><p><strong>end_idx</strong> (<em>int</em>) – The largest index of timestamp in which the time is
+less than or equal to end_ts.</p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.BaseProcessor.get_param_values_in_str">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_param_values_in_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BaseProcessor.get_param_values_in_str" title="Permalink to this definition"></a></dt>
+<dd><p>Abstract method of getting the parameter values of the
+processor for display purpose</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>params_in_str</strong> – Parameter values.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.BaseProcessor.get_timestamp">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_timestamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BaseProcessor.get_timestamp" title="Permalink to this definition"></a></dt>
+<dd><p>Get the timestamp from one of the arguments</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_shape</strong> (<em>tuple</em>) – Shape of the signal data in ndarray.
+x_shape is (n_samples,) or (n_samples, n_channels).</p></li>
+<li><p><strong>timestamp</strong> (<em>ndarray</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – The actual timestamp corresponding to the signal. If it is
+an ndarray, it should be in 1-dim and have length equal to
+x_shape[0].</p></li>
+<li><p><strong>hz</strong> (<em>float</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – Sample rate in hertz.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>timestamp</strong> – Shape (n_samples,).
+The deduced timestamp corresponding to the signal. If
+getting None for both timestamp and hz from the input,
+this return value will be integers starting from 0.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.DCOffsetRemover">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">DCOffsetRemover</span></span><a class="headerlink" href="#pyemgpipeline.processors.DCOffsetRemover" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.base.BaseProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyemgpipeline.processors.base.BaseProcessor</span></code></a></p>
+<p>DC offset remover for EMG signals</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.DCOffsetRemover.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.DCOffsetRemover.apply" title="Permalink to this definition"></a></dt>
+<dd><p>Apply DC offset remover</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels).
+Signal data to be processed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x_processed</strong> – Same shape as x.
+The result of applying DC offset remover to x.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.DCOffsetRemover.get_param_values_in_str">
+<span class="sig-name descname"><span class="pre">get_param_values_in_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.DCOffsetRemover.get_param_values_in_str" title="Permalink to this definition"></a></dt>
+<dd><p>Getting the parameter values of the processor for display
+purpose</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>params_in_str</strong> – Parameter values.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.EndFrameCutter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">EndFrameCutter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_end_frames</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.EndFrameCutter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.base.BaseProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyemgpipeline.processors.base.BaseProcessor</span></code></a></p>
+<p>End frame cutter for EMG signals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n_end_frames</strong> (<em>int</em><em>, </em><em>default=30</em>) – Number of frames to be cut off in both ends of the signal.
+n_end_frames &gt;= 0.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.EndFrameCutter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.EndFrameCutter.apply" title="Permalink to this definition"></a></dt>
+<dd><p>Apply end frame cutter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels),
+where n_samples &gt; 2 * n_end_frame.
+Signal data to be processed or timestamp corresponding to
+the signal.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x_processed</strong> – Same dimension as x, where the first dimension reduces its
+length from ‘n_samples’ to ‘n_samples - 2 * n_end_frame’.
+The result of applying end frame cutter to x.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.EndFrameCutter.get_param_values_in_str">
+<span class="sig-name descname"><span class="pre">get_param_values_in_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.EndFrameCutter.get_param_values_in_str" title="Permalink to this definition"></a></dt>
+<dd><p>Getting the parameter values of the processor for display
+purpose</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>params_in_str</strong> – Parameter values.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.FullWaveRectifier">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">FullWaveRectifier</span></span><a class="headerlink" href="#pyemgpipeline.processors.FullWaveRectifier" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.base.BaseProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyemgpipeline.processors.base.BaseProcessor</span></code></a></p>
+<p>Full wave rectifier for EMG signals</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.FullWaveRectifier.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.FullWaveRectifier.apply" title="Permalink to this definition"></a></dt>
+<dd><p>Apply full wave rectifier</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels).
+Signal data to be processed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x_processed</strong> – Same shape as x.
+The result of applying full wave rectifier to x.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.FullWaveRectifier.get_param_values_in_str">
+<span class="sig-name descname"><span class="pre">get_param_values_in_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.FullWaveRectifier.get_param_values_in_str" title="Permalink to this definition"></a></dt>
+<dd><p>Getting the parameter values of the processor for display
+purpose</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>params_in_str</strong> – Parameter values.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.LinearEnvelope">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">LinearEnvelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">le_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">le_cutoff_fq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.LinearEnvelope" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.base.BaseProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyemgpipeline.processors.base.BaseProcessor</span></code></a></p>
+<p>Linear envelope for EMG signals</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>hz</strong> (<em>float</em>) – Sample rate in hertz.
+See class EMGMeasurementCollection for suggested values of hz.</p></li>
+<li><p><strong>le_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter for linear envelope.</p></li>
+<li><p><strong>le_cutoff_fq</strong> (<em>float</em><em>, </em><em>default=6</em>) – Cutoff frequency of the lowpass filter.
+Suggested value is 1~10. For standing scenario, use 1~2.
+For running scenario, use 10.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.LinearEnvelope.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.LinearEnvelope.apply" title="Permalink to this definition"></a></dt>
+<dd><p>Apply linear envelope</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels),
+where n_samples &gt; (le_order + 1) * 3 (See Notes).
+Signal data to be processed.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x_processed</strong> – Same shape as x.
+The result of applying linear envelope to x.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Using scipy.signal.filtfilt requires the length of the input
+vector x greater than the padding length, padlen, which is
+(le_order + 1) * 3 for a lowpass Butterworth filter.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.LinearEnvelope.get_param_values_in_str">
+<span class="sig-name descname"><span class="pre">get_param_values_in_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.LinearEnvelope.get_param_values_in_str" title="Permalink to this definition"></a></dt>
+<dd><p>Getting the parameter values of the processor for display
+purpose</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>params_in_str</strong> – Parameter values.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.Segmenter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">Segmenter</span></span><a class="headerlink" href="#pyemgpipeline.processors.Segmenter" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.base.BaseProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyemgpipeline.processors.base.BaseProcessor</span></code></a></p>
+<p>Segmenter for EMG signals</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.Segmenter.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.Segmenter.apply" title="Permalink to this definition"></a></dt>
+<dd><p>Apply segmenter</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels).
+Signal data to be processed or timestamp corresponding to
+the signal.</p></li>
+<li><p><strong>beg_idx</strong> (<em>int</em>) – Beginning index (inclusive) for segmentation of x at its
+first dimension. 0 &lt;= beg_idx &lt;= end_idx &lt; n_samples.</p></li>
+<li><p><strong>end_idx</strong> (<em>int</em>) – End index (inclusive) for segmentation of x at its first
+dimension. 0 &lt;= beg_idx &lt;= end_idx &lt; n_samples.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>x_processed</strong> – Same dimension as x, where the first dimension reduces its
+length from ‘n_samples’ to ‘end_idx - beg_idx + 1’.
+The result of applying segmenter to x.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pyemgpipeline.processors.Segmenter.get_param_values_in_str">
+<span class="sig-name descname"><span class="pre">get_param_values_in_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.Segmenter.get_param_values_in_str" title="Permalink to this definition"></a></dt>
+<dd><p>Getting the parameter values of the processor for display
+purpose</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><strong>params_in_str</strong> – Parameter values.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pyemgpipeline.plots.html" class="btn btn-neutral float-left" title="pyemgpipeline.plots" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pyemgpipeline.wrappers.html" class="btn btn-neutral float-right" title="pyemgpipeline.wrappers" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, tlwu et al..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
