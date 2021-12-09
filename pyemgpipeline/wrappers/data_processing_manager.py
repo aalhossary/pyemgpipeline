@@ -278,7 +278,9 @@ class DataProcessingManager:
 
         Returns
         -------
-        None
+        c : EMGMeasurementCollection
+            An EMGMeasurementCollection instance which saves the
+            processed data.
         """
 
         assert self.c is not None, 'Data and parameters must be set by using function set_data_and_params'
