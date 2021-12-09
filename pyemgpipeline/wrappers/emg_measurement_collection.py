@@ -38,9 +38,13 @@ class EMGMeasurementCollection:
 
     hz : float
         Sample rate in hertz.
-        For surface EMG, suggested minimum sample rate is 1000 (see
-        ref. 1).
-        For fine wire EMG, suggested minimum sample rate is 2000.
+        Ref [1] suggests that minimum sample rate be at least twice the
+        highest cutoff frequency of the bandpass filter (Nyquist
+        theorem) and preferably higher.
+        Ref [2] suggests a minimum sample rate of 1000 Hz for surface
+        EMG.
+        For fine wire EMG, the authors suggest a minimum sample rate of
+        2000 Hz.
 
     all_timestamp : dict, list, or None, default None
         If dict or list, all_timestamp should be of the same type as
@@ -77,7 +81,11 @@ class EMGMeasurementCollection:
 
     References
     ----------
-    1. Stegeman, D.F., & Hermens, H.J. (1996-1999).
+    [1] Editors (2018).
+        Standards for reporting EMG data.
+        Journal of Electromyography and Kinesiology, 42, I-II.
+        Doi: 10.1016/S1050-6411(18)30348-1.
+    [2] Stegeman, D.F., & Hermens, H.J. (1996-1999).
         Standards for surface electromyography: the European project
         "Surface EMG for non invasive assessment of muscles (SENIAM)".
         Biomed 2 program of the European Community. European concerted
@@ -143,7 +151,7 @@ class EMGMeasurementCollection:
         for k in iter_dict_or_list(self.all_data):
             self.all_data[k] = DCOffsetRemover().apply(self.all_data[k])
 
-    def apply_bandpass_filter(self, bf_order=2, bf_cutoff_fq_lo=20, bf_cutoff_fq_hi=499):
+    def apply_bandpass_filter(self, bf_order=2, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450):
         """Apply bandpass filter to the data
 
         Parameters
@@ -151,11 +159,11 @@ class EMGMeasurementCollection:
         bf_order : int, default=2
             Order of the butterworth filter.
 
-        bf_cutoff_fq_lo : float, default=20
+        bf_cutoff_fq_lo : float, default=10
             Low cutoff frequency of the bandpass filter.
             See class BandpassFilter.
 
-        bf_cutoff_fq_hi : float, default=499
+        bf_cutoff_fq_hi : float, default=450
             High cutoff frequency of the bandpass filter.
             See class BandpassFilter.
 

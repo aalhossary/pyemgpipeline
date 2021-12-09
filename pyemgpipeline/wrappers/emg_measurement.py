@@ -60,7 +60,7 @@ class EMGMeasurement:
 
         self.data = DCOffsetRemover().apply(self.data)
 
-    def apply_bandpass_filter(self, bf_order=2, bf_cutoff_fq_lo=20, bf_cutoff_fq_hi=499):
+    def apply_bandpass_filter(self, bf_order=2, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450):
         """Apply bandpass filter to the data
 
         Parameters
@@ -68,11 +68,11 @@ class EMGMeasurement:
         bf_order : int, default=2
             Order of the butterworth filter.
 
-        bf_cutoff_fq_lo : float, default=20
+        bf_cutoff_fq_lo : float, default=10
             Low cutoff frequency of the bandpass filter.
             See class BandpassFilter.
 
-        bf_cutoff_fq_hi : float, default=499
+        bf_cutoff_fq_hi : float, default=450
             High cutoff frequency of the bandpass filter.
             See class BandpassFilter.
 

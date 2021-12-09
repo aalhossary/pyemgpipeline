@@ -14,34 +14,59 @@ class BandpassFilter(BaseProcessor):
     bf_order : int, default=2
         Order of the butterworth filter.
 
-    bf_cutoff_fq_lo : float, default=20
+    bf_cutoff_fq_lo : float, default=10
         Low cutoff frequency of the bandpass filter (i.e., frequency
         higher than bf_cutoff_fq_lo will pass).
-        For EMG placement on lower/upper limbs, the suggested value is
-        10~20 (see ref. 1). For EMG placement around the heart (i.e.,
-        trunk), the suggested value is 30 (see ref. 2).
+        See Notes and References for some suggestions in different
+        circumstances.
 
-    bf_cutoff_fq_hi : float, default=499
+    bf_cutoff_fq_hi : float, default=450
         High cutoff frequency of the bandpass filter (i.e., frequency
         lower than bf_cutoff_fq_hi will pass).
-        Suggested value is around 500 (see ref. 1). Note that
-        bf_cutoff_fq_hi should be strictly less than half of hz.
+        See Notes and References for some suggestions in different
+        circumstances. Note that bf_cutoff_fq_hi should be strictly
+        less than half of hz.
+
+    Notes
+    -----
+    Ref [1] suggests a bandwidth of 10–350 Hz for surface recording,
+    10–450 Hz for intramuscular recording, and 10–1500 Hz for needle
+    recording.
+
+    Ref [2] suggests a bandwidth of from 5-10 Hz to 400-450 Hz for
+    surface EMG and a high cutoff of at least 1500 Hz for
+    intramuscular and needle recordings.
+
+    Ref [3] suggests a bandwidth of from 10-20 Hz to 500-1000 Hz for
+    surface EMG.
+
+    Ref [4] suggests a low cutoff of 30 Hz when the placement of
+    surface EMG is around the heart on the trunk.
 
     References
     ----------
-    1. Stegeman, D.F., & Hermens, H.J. (1996-1999).
+    [1] Editors (2018).
+        Standards for reporting EMG data.
+        Journal of Electromyography and Kinesiology, 42, I-II.
+        Doi: 10.1016/S1050-6411(18)30348-1.
+    [2] Merletti, R, & di Torino, P. (1999).
+        Standards for reporting EMG data.
+        Journal of Electromyography and Kinesiology.
+    [3] Stegeman, D.F., & Hermens, H.J. (1996-1999).
         Standards for surface electromyography: the European project
         "Surface EMG for non invasive assessment of muscles (SENIAM)".
         Biomed 2 program of the European Community. European concerted
         action.
-    2. Drake, J.D.M., & Callaghan, J.P. (2006).
+    [4] Drake, J.D.M., & Callaghan, J.P. (2006).
         Elimination of electrocardiogram contamination from
         electromyogram signals: An evaluation of currently used removal
-        techniques. Journal of Electromyography and Kinesiology, 16,
-        175–187.
+        techniques.
+        Journal of Electromyography and Kinesiology, 16, 175–187.
     """
 
-    def __init__(self, hz, bf_order=2, bf_cutoff_fq_lo=20, bf_cutoff_fq_hi=499):
+    def __init__(self, hz, bf_order=2, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450):
+        assert hz > 2 * bf_cutoff_fq_hi, 'hz must be greater than 2 * bf_cutoff_fq_hi'
+
         self.hz = hz
         self.bf_order = bf_order
         self.bf_cutoff_fq_lo = bf_cutoff_fq_lo

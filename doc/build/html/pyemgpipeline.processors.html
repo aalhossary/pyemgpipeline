@@ -158,7 +158,7 @@ purpose</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pyemgpipeline.processors.BandpassFilter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">BandpassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">499</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BandpassFilter" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">BandpassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">450</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BandpassFilter" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.base.BaseProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyemgpipeline.processors.base.BaseProcessor</span></code></a></p>
 <p>Bandpass filter for EMG signals</p>
 <dl class="field-list simple">
@@ -167,37 +167,49 @@ purpose</p>
 <li><p><strong>hz</strong> (<em>float</em>) – Sample rate in hertz.
 See class EMGMeasurementCollection for suggested values of hz.</p></li>
 <li><p><strong>bf_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter.</p></li>
-<li><p><strong>bf_cutoff_fq_lo</strong> (<em>float</em><em>, </em><em>default=20</em>) – Low cutoff frequency of the bandpass filter (i.e., frequency
+<li><p><strong>bf_cutoff_fq_lo</strong> (<em>float</em><em>, </em><em>default=10</em>) – Low cutoff frequency of the bandpass filter (i.e., frequency
 higher than bf_cutoff_fq_lo will pass).
-For EMG placement on lower/upper limbs, the suggested value is
-10~20 (see ref. 1). For EMG placement around the heart (i.e.,
-trunk), the suggested value is 30 (see ref. 2).</p></li>
-<li><p><strong>bf_cutoff_fq_hi</strong> (<em>float</em><em>, </em><em>default=499</em>) – High cutoff frequency of the bandpass filter (i.e., frequency
+See Notes and References for some suggestions in different
+circumstances.</p></li>
+<li><p><strong>bf_cutoff_fq_hi</strong> (<em>float</em><em>, </em><em>default=450</em>) – High cutoff frequency of the bandpass filter (i.e., frequency
 lower than bf_cutoff_fq_hi will pass).
-Suggested value is around 500 (see ref. 1). Note that
-bf_cutoff_fq_hi should be strictly less than half of hz.</p></li>
+See Notes and References for some suggestions in different
+circumstances. Note that bf_cutoff_fq_hi should be strictly
+less than half of hz.</p></li>
 </ul>
 </dd>
 </dl>
+<p class="rubric">Notes</p>
+<p>Ref [1] suggests a bandwidth of 10–350 Hz for surface recording,
+10–450 Hz for intramuscular recording, and 10–1500 Hz for needle
+recording.</p>
+<p>Ref [2] suggests a bandwidth of from 5-10 Hz to 400-450 Hz for
+surface EMG and a high cutoff of at least 1500 Hz for
+intramuscular and needle recordings.</p>
+<p>Ref [3] suggests a bandwidth of from 10-20 Hz to 500-1000 Hz for
+surface EMG.</p>
+<p>Ref [4] suggests a low cutoff of 30 Hz when the placement of
+surface EMG is around the heart on the trunk.</p>
 <p class="rubric">References</p>
-<ol class="arabic simple">
-<li><dl class="simple">
-<dt>Stegeman, D.F., &amp; Hermens, H.J. (1996-1999).</dt><dd><p>Standards for surface electromyography: the European project
+<dl class="simple">
+<dt>[1] Editors (2018).</dt><dd><p>Standards for reporting EMG data.
+Journal of Electromyography and Kinesiology, 42, I-II.
+Doi: 10.1016/S1050-6411(18)30348-1.</p>
+</dd>
+<dt>[2] Merletti, R, &amp; di Torino, P. (1999).</dt><dd><p>Standards for reporting EMG data.
+Journal of Electromyography and Kinesiology.</p>
+</dd>
+<dt>[3] Stegeman, D.F., &amp; Hermens, H.J. (1996-1999).</dt><dd><p>Standards for surface electromyography: the European project
 “Surface EMG for non invasive assessment of muscles (SENIAM)”.
 Biomed 2 program of the European Community. European concerted
 action.</p>
 </dd>
-</dl>
-</li>
-<li><dl class="simple">
-<dt>Drake, J.D.M., &amp; Callaghan, J.P. (2006).</dt><dd><p>Elimination of electrocardiogram contamination from
+<dt>[4] Drake, J.D.M., &amp; Callaghan, J.P. (2006).</dt><dd><p>Elimination of electrocardiogram contamination from
 electromyogram signals: An evaluation of currently used removal
-techniques. Journal of Electromyography and Kinesiology, 16,
-175–187.</p>
+techniques.
+Journal of Electromyography and Kinesiology, 16, 175–187.</p>
 </dd>
 </dl>
-</li>
-</ol>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.processors.BandpassFilter.apply">
 <span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BandpassFilter.apply" title="Permalink to this definition"></a></dt>

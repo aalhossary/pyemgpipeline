@@ -367,15 +367,15 @@ normalization.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.EMGMeasurement.apply_bandpass_filter">
-<span class="sig-name descname"><span class="pre">apply_bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">499</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurement.apply_bandpass_filter" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">450</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurement.apply_bandpass_filter" title="Permalink to this definition"></a></dt>
 <dd><p>Apply bandpass filter to the data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bf_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter.</p></li>
-<li><p><strong>bf_cutoff_fq_lo</strong> (<em>float</em><em>, </em><em>default=20</em>) – Low cutoff frequency of the bandpass filter.
+<li><p><strong>bf_cutoff_fq_lo</strong> (<em>float</em><em>, </em><em>default=10</em>) – Low cutoff frequency of the bandpass filter.
 See class BandpassFilter.</p></li>
-<li><p><strong>bf_cutoff_fq_hi</strong> (<em>float</em><em>, </em><em>default=499</em>) – High cutoff frequency of the bandpass filter.
+<li><p><strong>bf_cutoff_fq_hi</strong> (<em>float</em><em>, </em><em>default=450</em>) – High cutoff frequency of the bandpass filter.
 See class BandpassFilter.</p></li>
 </ul>
 </dd>
@@ -526,9 +526,13 @@ Signal data of each trial should be ndarray of shape
 Dimensions and n_channels (if 2-dim) of all trials should be
 the same.</p></li>
 <li><p><strong>hz</strong> (<em>float</em>) – Sample rate in hertz.
-For surface EMG, suggested minimum sample rate is 1000 (see
-ref. 1).
-For fine wire EMG, suggested minimum sample rate is 2000.</p></li>
+Ref [1] suggests that minimum sample rate be at least twice the
+highest cutoff frequency of the bandpass filter (Nyquist
+theorem) and preferably higher.
+Ref [2] suggests a minimum sample rate of 1000 Hz for surface
+EMG.
+For fine wire EMG, the authors suggest a minimum sample rate of
+2000 Hz.</p></li>
 <li><p><strong>all_timestamp</strong> (<em>dict</em><em>, </em><em>list</em><em>, or </em><em>None</em><em>, </em><em>default None</em>) – If dict or list, all_timestamp should be of the same type as
 all_data.
 If dict, keys should be identical to those of all_data and
@@ -556,16 +560,17 @@ length.</p></li>
 filter. With the default parameter in BandpassFilter, n_samples
 must exceed 15. (See class BandpassFilter, function apply)</p>
 <p class="rubric">References</p>
-<ol class="arabic simple">
-<li><dl class="simple">
-<dt>Stegeman, D.F., &amp; Hermens, H.J. (1996-1999).</dt><dd><p>Standards for surface electromyography: the European project
+<dl class="simple">
+<dt>[1] Editors (2018).</dt><dd><p>Standards for reporting EMG data.
+Journal of Electromyography and Kinesiology, 42, I-II.
+Doi: 10.1016/S1050-6411(18)30348-1.</p>
+</dd>
+<dt>[2] Stegeman, D.F., &amp; Hermens, H.J. (1996-1999).</dt><dd><p>Standards for surface electromyography: the European project
 “Surface EMG for non invasive assessment of muscles (SENIAM)”.
 Biomed 2 program of the European Community. European concerted
 action.</p>
 </dd>
 </dl>
-</li>
-</ol>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.EMGMeasurementCollection.apply_amplitude_normalizer">
 <span class="sig-name descname"><span class="pre">apply_amplitude_normalizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">max_amplitude</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection.apply_amplitude_normalizer" title="Permalink to this definition"></a></dt>
@@ -590,15 +595,15 @@ normalization for all trials.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.EMGMeasurementCollection.apply_bandpass_filter">
-<span class="sig-name descname"><span class="pre">apply_bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">499</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection.apply_bandpass_filter" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">450</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection.apply_bandpass_filter" title="Permalink to this definition"></a></dt>
 <dd><p>Apply bandpass filter to the data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bf_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter.</p></li>
-<li><p><strong>bf_cutoff_fq_lo</strong> (<em>float</em><em>, </em><em>default=20</em>) – Low cutoff frequency of the bandpass filter.
+<li><p><strong>bf_cutoff_fq_lo</strong> (<em>float</em><em>, </em><em>default=10</em>) – Low cutoff frequency of the bandpass filter.
 See class BandpassFilter.</p></li>
-<li><p><strong>bf_cutoff_fq_hi</strong> (<em>float</em><em>, </em><em>default=499</em>) – High cutoff frequency of the bandpass filter.
+<li><p><strong>bf_cutoff_fq_hi</strong> (<em>float</em><em>, </em><em>default=450</em>) – High cutoff frequency of the bandpass filter.
 See class BandpassFilter.</p></li>
 </ul>
 </dd>
