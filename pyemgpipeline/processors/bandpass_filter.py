@@ -51,7 +51,7 @@ class BandpassFilter(BaseProcessor):
         Doi: 10.1016/S1050-6411(18)30348-1.
     [2] Merletti, R, & di Torino, P. (1999).
         Standards for reporting EMG data.
-        Journal of Electromyography and Kinesiology.
+        Journal of Electromyography and Kinesiology, 9(1), III-IV.
     [3] Stegeman, D.F., & Hermens, H.J. (1996-1999).
         Standards for surface electromyography: the European project
         "Surface EMG for non invasive assessment of muscles (SENIAM)".
