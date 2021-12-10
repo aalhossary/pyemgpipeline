@@ -49,6 +49,12 @@ There are also [examples](https://github.com/aalhossary/pyemgpipeline/tree/maste
 pip install pyemgpipeline
 ```
 
+It can also be installed from this repository:
+
+```
+pip install git+https://github.com/aalhossary/pyemgpipeline.git#egg=pyemgpipeline-tlwu-et-al-testxx
+```
+
 The dependencies of this package include `numpy`, `scipy`, and `matplotlib`.
 
 ## Quick Start
