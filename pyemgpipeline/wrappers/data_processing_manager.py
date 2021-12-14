@@ -1,4 +1,5 @@
 from .. processors import *
+from .. plots import *
 from . emg_measurement_collection import EMGMeasurementCollection, iter_dict_or_list
 
 
@@ -291,35 +292,49 @@ class DataProcessingManager:
                     k_for_plot = list(self.c.all_data.keys())[0]
                 else:
                     k_for_plot = 0
-            self.c.plot(k_for_plot, main_title=f'Original ({self.c.all_main_titles[k_for_plot]})')
+
+            plot_emg(self.c.all_data[k_for_plot], self.c.all_timestamp[k_for_plot], channel_names=self.c.channel_names,
+                     main_title=f'Original ({self.c.all_main_titles[k_for_plot]})', emg_plot_params=self.c.emg_plot_params)
 
         if self.dc_offset_remover is not None:
             for k in iter_dict_or_list(self.c.all_data):
                 self.c.all_data[k] = self.dc_offset_remover.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self.c.plot(k_for_plot, main_title=f'After DC offset remover ({self.c.all_main_titles[k_for_plot]})')
+                plot_emg(self.c.all_data[k_for_plot], self.c.all_timestamp[k_for_plot],
+                         channel_names=self.c.channel_names,
+                         main_title=f'After DC offset remover ({self.c.all_main_titles[k_for_plot]})',
+                         emg_plot_params=self.c.emg_plot_params)
 
         if self.bandpass_filter is not None:
             for k in iter_dict_or_list(self.c.all_data):
                 self.c.all_data[k] = self.bandpass_filter.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self.c.plot(k_for_plot, main_title=f'After bandpass filter ({self.c.all_main_titles[k_for_plot]})')
+                plot_emg(self.c.all_data[k_for_plot], self.c.all_timestamp[k_for_plot],
+                         channel_names=self.c.channel_names,
+                         main_title=f'After bandpass filter ({self.c.all_main_titles[k_for_plot]})',
+                         emg_plot_params=self.c.emg_plot_params)
 
         if self.full_wave_rectifier is not None:
             for k in iter_dict_or_list(self.c.all_data):
                 self.c.all_data[k] = self.full_wave_rectifier.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self.c.plot(k_for_plot, main_title=f'After full wave rectifier ({self.c.all_main_titles[k_for_plot]})')
+                plot_emg(self.c.all_data[k_for_plot], self.c.all_timestamp[k_for_plot],
+                         channel_names=self.c.channel_names,
+                         main_title=f'After full wave rectifier ({self.c.all_main_titles[k_for_plot]})',
+                         emg_plot_params=self.c.emg_plot_params)
 
         if self.linear_envelope is not None:
             for k in iter_dict_or_list(self.c.all_data):
                 self.c.all_data[k] = self.linear_envelope.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self.c.plot(k_for_plot, main_title=f'After linear envelope ({self.c.all_main_titles[k_for_plot]})')
+                plot_emg(self.c.all_data[k_for_plot], self.c.all_timestamp[k_for_plot],
+                         channel_names=self.c.channel_names,
+                         main_title=f'After linear envelope ({self.c.all_main_titles[k_for_plot]})',
+                         emg_plot_params=self.c.emg_plot_params)
 
         if self.end_frame_cutter is not None:
             for k in iter_dict_or_list(self.c.all_data):
@@ -327,7 +342,10 @@ class DataProcessingManager:
                 self.c.all_timestamp[k] = self.end_frame_cutter.apply(self.c.all_timestamp[k])
 
             if is_plot_processing_chain:
-                self.c.plot(k_for_plot, main_title=f'After end frame cutter ({self.c.all_main_titles[k_for_plot]})')
+                plot_emg(self.c.all_data[k_for_plot], self.c.all_timestamp[k_for_plot],
+                         channel_names=self.c.channel_names,
+                         main_title=f'After end frame cutter ({self.c.all_main_titles[k_for_plot]})',
+                         emg_plot_params=self.c.emg_plot_params)
 
         if self.amplitude_normalizer is not None:
             max_amplitude = self.c.find_max_amplitude_of_each_channel_across_trials()
@@ -335,7 +353,10 @@ class DataProcessingManager:
                 self.c.all_data[k] = self.amplitude_normalizer.apply(self.c.all_data[k], divisor=max_amplitude)
 
             if is_plot_processing_chain:
-                self.c.plot(k_for_plot, main_title=f'After amplitude normalizer ({self.c.all_main_titles[k_for_plot]})')
+                plot_emg(self.c.all_data[k_for_plot], self.c.all_timestamp[k_for_plot],
+                         channel_names=self.c.channel_names,
+                         main_title=f'After amplitude normalizer ({self.c.all_main_titles[k_for_plot]})',
+                         emg_plot_params=self.c.emg_plot_params)
 
         if self.segmenter is not None and self.segmenter_all_beg_ts is not None and self.segmenter_all_end_ts is not None:
             for k in iter_dict_or_list(self.c.all_data):
@@ -345,6 +366,9 @@ class DataProcessingManager:
                 self.c.all_timestamp[k] = Segmenter().apply(self.c.all_timestamp[k], beg_idx=beg_idx, end_idx=end_idx)
 
             if is_plot_processing_chain:
-                self.c.plot(k_for_plot, main_title=f'After segmenter ({self.c.all_main_titles[k_for_plot]})')
+                plot_emg(self.c.all_data[k_for_plot], self.c.all_timestamp[k_for_plot],
+                         channel_names=self.c.channel_names,
+                         main_title=f'After segmenter ({self.c.all_main_titles[k_for_plot]})',
+                         emg_plot_params=self.c.emg_plot_params)
 
         return self.c

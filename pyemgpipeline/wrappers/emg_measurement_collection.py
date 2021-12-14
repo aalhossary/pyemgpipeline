@@ -1,5 +1,6 @@
 from .. processors import *
 from .. plots import *
+from . emg_measurement import EMGMeasurement
 import numpy as np
 import copy
 
@@ -308,17 +309,8 @@ class EMGMeasurementCollection:
             self.all_data[k] = Segmenter().apply(self.all_data[k], beg_idx=beg_idx, end_idx=end_idx)
             self.all_timestamp[k] = Segmenter().apply(self.all_timestamp[k], beg_idx=beg_idx, end_idx=end_idx)
 
-    def _assert_k(self, k):
-        """Assert k is valid as the key of dict or index of list for the data
-        """
-
-        if isinstance(self.all_data, dict):
-            assert k in self.all_data.keys(), 'k must be a key of all_data (a dict)'
-        else:
-            assert k in range(len(self.all_data)), 'k must be an index of all_data (a list)'
-
-    def plot(self, k, main_title=None):
-        """Plot one trial
+    def __getitem__(self, k):
+        """Extract data of trial k
 
         Parameters
         ----------
@@ -327,24 +319,23 @@ class EMGMeasurementCollection:
             If all_data is a list, k is an integer between 0 and
             len(all_data) - 1.
 
-        main_title : str or None
-            The main title of the plot.
-            If None, all_main_titles[k] will be used as the main title.
-
         Returns
         -------
-        None
+        m : EMGMeasurement
+            An EMGMeasurement instance which possesses the data of
+            trial k.
         """
 
-        self._assert_k(k)
+        if isinstance(self.all_data, dict):
+            assert k in self.all_data.keys(), 'k must be a key of all_data (a dict)'
+        else:
+            assert k in range(len(self.all_data)), 'k must be an index of all_data (a list)'
 
-        if main_title is None:
-            main_title = self.all_main_titles[k]
+        m = EMGMeasurement(self.all_data[k], self.hz, self.all_timestamp[k],
+                           self.channel_names, self.all_main_titles[k], self.emg_plot_params)
+        return m
 
-        plot_emg(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,
-                 main_title=main_title, emg_plot_params=self.emg_plot_params)
-
-    def plot_all(self):
+    def plot(self):
         """Plot all trials
 
         Returns
@@ -356,30 +347,7 @@ class EMGMeasurementCollection:
             plot_emg(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,
                      main_title=self.all_main_titles[k], emg_plot_params=self.emg_plot_params)
 
-    def export_csv(self, k, csv_path):
-        """Export the processing result of one trial to csv
-
-        Parameters
-        ----------
-        k : key of dict or index of list.
-            If all_data is a dict, k is one of its key.
-            If all_data is a list, k is an integer between 0 and
-            len(all_data) - 1.
-
-        csv_path : str
-            The destination path to export data of trial k.
-
-        Returns
-        -------
-        None
-        """
-
-        self._assert_k(k)
-
-        BaseProcessor.export_csv(csv_path, self.all_data[k],
-                                 timestamp=self.all_timestamp[k], channel_names=self.channel_names)
-
-    def export_csv_all(self, all_csv_path):
+    def export_csv(self, all_csv_path):
         """Export the processing results of all trials to csv
 
         Parameters

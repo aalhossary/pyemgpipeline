@@ -71,5 +71,5 @@ c.apply_segmenter(all_beg_ts, all_end_ts)  # can put tighter ranges to extract t
 
 
 # plot the processed data
-c.plot('Stand')  # plot the trial 'Stand'
-c.plot_all()  # plot all trials
+c['Stand'].plot()  # plot the trial 'Stand'
+c.plot()  # plot all trials
