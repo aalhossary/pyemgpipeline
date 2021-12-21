@@ -1,4 +1,4 @@
-# This example uses dataset2 to show the usage of class DataProcessingManager
+# This example uses uci_gestures to show the usage of class DataProcessingManager
 # to process EMG data of multiple trials under a fixed sequence of standard
 # steps. Data of multiple trials are stored in a list for demonstration purpose.
 
@@ -13,7 +13,7 @@ from pyemgpipeline.plots import EMGPlotParams
 
 # Setup example data
 repo_folder = pathlib.Path(__file__).parent.parent
-data_folder = os.path.join(repo_folder, 'data', 'dataset2')
+data_folder = os.path.join(repo_folder, 'data', 'uci_gestures')
 data_filenames = ['1_raw_data_11-08_21.03.16.txt', '2_raw_data_11-10_21.03.16.txt']
 all_trial_names = ['trial 1', 'trial 2']
 channel_names = ['channel1', 'channel2', 'channel3', 'channel4', 'channel5', 'channel6', 'channel7', 'channel8']
@@ -50,9 +50,10 @@ mgr.set_data_and_params(all_data, hz=frequency,
 mgr.set_bandpass_filter(BandpassFilter(hz=frequency, bf_cutoff_fq_hi=495))  # can change processor's parameter
 mgr.set_amplitude_normalizer(AmplitudeNormalizer())  # add non-default processor
 mgr.show_current_processes_and_related_params()  # display current setting
-c = mgr.process_all(is_plot_processing_chain=True, k_for_plot=0)  # execute processing steps in the standard order,
-                                                    # plot the processing chain of trial k=0,
-                                                    # and return an instance of the EMGMeasurementCollection class
+c = mgr.process_all(is_plot_processing_chain=True)
+# c = mgr.process_all(is_plot_processing_chain=True, k_for_plot=0)  # execute processing steps in the standard order,
+#                                                     # plot the processing chain of trial k=0,
+#                                                     # and return an instance of the EMGMeasurementCollection class
 
 
 # # save processed data as csv files

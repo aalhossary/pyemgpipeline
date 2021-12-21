@@ -1,4 +1,4 @@
-# This example uses dataset1 to show the usage of class EMGMeasurementCollection
+# This example uses uci_lower_limb to show the usage of class EMGMeasurementCollection
 # to process EMG data of multiple trials. Data of multiple trials are stored in
 # a dict for demonstration purpose.
 
@@ -10,7 +10,7 @@ import pyemgpipeline as pep
 
 # Setup example data
 repo_folder = pathlib.Path(__file__).parent.parent
-data_folder = os.path.join(repo_folder, 'data', 'dataset1')
+data_folder = os.path.join(repo_folder, 'data', 'uci_lower_limb')
 data_filenames = ['5Nsen.txt', '5Npie.txt', '5Nmar.txt']
 all_trial_names = ['Sit', 'Stand', 'Gait']
 channel_names = ['rectus femoris', 'biceps femoris', 'vastus internus', 'semitendinosus']

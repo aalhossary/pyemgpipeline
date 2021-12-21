@@ -1,4 +1,4 @@
-# This example uses dataset1 to show the usage of class EMGMeasurement to
+# This example uses uci_lower_limb to show the usage of class EMGMeasurement to
 # process EMG data of one trial.
 
 import os
@@ -9,7 +9,7 @@ import pyemgpipeline as pep
 
 # Setup example data
 repo_folder = pathlib.Path(__file__).parent.parent
-data_folder = os.path.join(repo_folder, 'data', 'dataset1')
+data_folder = os.path.join(repo_folder, 'data', 'uci_lower_limb')
 data_filename = '3Asen.txt'
 trial_name = 'Sit'
 channel_names = ['rectus femoris', 'biceps femoris', 'vastus internus', 'semitendinosus']
