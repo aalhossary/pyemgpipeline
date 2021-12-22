@@ -1,6 +1,7 @@
 from .. processors import *
 from .. plots import *
 from . emg_measurement_collection import EMGMeasurementCollection, iter_dict_or_list
+import copy
 
 
 class DataProcessingManager:
@@ -9,9 +10,18 @@ class DataProcessingManager:
 
     Parameters
     ----------
+    c_raw : EMGMeasurementCollection or None
+        Containing data (signal, timestamp, hz, channel names, etc.)
+        and plot parameters. See class EMGMeasurementCollection.
+        c_raw accepts data from method set_data_and_params and its
+        value won't change when running method process_all.
+
     c : EMGMeasurementCollection or None
         Containing data (signal, timestamp, hz, channel names, etc.)
         and plot parameters. See class EMGMeasurementCollection.
+        When running method process_all, c gets a fresh copy of raw
+        data from c_raw. In this way method process_all can be
+        repeatedly executed.
 
     dc_offset_remover : DCOffsetRemover or None
         A DCOffsetRemover processor.
@@ -44,6 +54,7 @@ class DataProcessingManager:
     """
 
     def __init__(self):
+        self.c_raw = None
         self.c = None
 
         self.dc_offset_remover = None
@@ -107,7 +118,7 @@ class DataProcessingManager:
         See class EMGMeasurementCollection.
         """
 
-        self.c = EMGMeasurementCollection(
+        self.c_raw = EMGMeasurementCollection(
             all_data, hz, all_timestamp=all_timestamp, channel_names=channel_names,
             all_main_titles=all_main_titles, emg_plot_params=emg_plot_params)
 
@@ -115,11 +126,11 @@ class DataProcessingManager:
         if self.dc_offset_remover is None:
             self.dc_offset_remover = DCOffsetRemover()
         if self.bandpass_filter is None:
-            self.bandpass_filter = BandpassFilter(self.c.hz)
+            self.bandpass_filter = BandpassFilter(self.c_raw.hz)
         if self.full_wave_rectifier is None:
             self.full_wave_rectifier = FullWaveRectifier()
         if self.linear_envelope is None:
-            self.linear_envelope = LinearEnvelope(self.c.hz)
+            self.linear_envelope = LinearEnvelope(self.c_raw.hz)
         if self.end_frame_cutter is None:
             self.end_frame_cutter = EndFrameCutter()
 
@@ -286,13 +297,15 @@ class DataProcessingManager:
             processed data.
         """
 
-        assert self.c is not None, 'Data and parameters must be set by using function set_data_and_params'
+        assert self.c_raw is not None, 'Data and parameters must be set by using function set_data_and_params'
+
+        self.c = copy.deepcopy(self.c_raw)
 
         if k_for_plot is not None:
-            if isinstance(self.all_data, dict):
-                assert k_for_plot in self.all_data.keys(), 'k_for_plot must be a key of all_data (a dict)'
+            if isinstance(self.c.all_data, dict):
+                assert k_for_plot in self.c.all_data.keys(), 'k_for_plot must be a key of all_data (a dict)'
             else:
-                assert k_for_plot in range(len(self.all_data)), 'k_for_plot must be an index of all_data (a list)'
+                assert k_for_plot in range(len(self.c.all_data)), 'k_for_plot must be an index of all_data (a list)'
 
         if is_plot_processing_chain:
             for k in iter_dict_or_list(self.c.all_data):
