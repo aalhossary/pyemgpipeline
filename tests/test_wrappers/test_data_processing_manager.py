@@ -37,4 +37,3 @@ class TestDataProcessingManager(TestCase):
         self.assertEqual(len(actual), len(desired))
         for i in range(len(actual)):
             np.testing.assert_allclose(actual[i], desired[i])
-

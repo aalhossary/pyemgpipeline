@@ -14,7 +14,7 @@ data_folder = os.path.join(repo_folder, 'data', 'uci_lower_limb')
 data_filenames = ['5Nsen.txt', '5Npie.txt', '5Nmar.txt']
 all_trial_names = ['Sit', 'Stand', 'Gait']
 channel_names = ['rectus femoris', 'biceps femoris', 'vastus internus', 'semitendinosus']
-frequency = 1000
+sample_rate = 1000
 
 
 # Example data parsing function
@@ -52,7 +52,7 @@ emg_plot_params = pep.plots.EMGPlotParams(
 
 
 # Process EMG by using class EMGMeasurementCollection
-c = pep.wrappers.EMGMeasurementCollection(all_data, hz=frequency, channel_names=channel_names,
+c = pep.wrappers.EMGMeasurementCollection(all_data, hz=sample_rate, channel_names=channel_names,
                                           emg_plot_params=emg_plot_params)
 c.apply_dc_offset_remover()
 c.apply_bandpass_filter()

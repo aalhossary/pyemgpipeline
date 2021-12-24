@@ -28,7 +28,8 @@ class TestEMGMeasurement(TestCase):
         bf_order = 2
         bf_cutoff_fq_lo = 10
         bf_cutoff_fq_hi = 450
-        self.m.apply_bandpass_filter(bf_order=bf_order, bf_cutoff_fq_lo=bf_cutoff_fq_lo, bf_cutoff_fq_hi=bf_cutoff_fq_hi)
+        self.m.apply_bandpass_filter(bf_order=bf_order,
+                                     bf_cutoff_fq_lo=bf_cutoff_fq_lo, bf_cutoff_fq_hi=bf_cutoff_fq_hi)
         actual = self.m.data
         desired = np.array([[-12.9626930, 3.0392905], [9.3485823, 4.1989569], [23.9736743, 2.5539775],
                             [35.1195602, -0.3272597], [12.6483173, 4.8784131], [0.4948079, 5.5820306],

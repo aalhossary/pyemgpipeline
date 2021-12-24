@@ -166,7 +166,7 @@ class BaseProcessor(metaclass=ABCMeta):
         n_channels = x.shape[1]
 
         if timestamp is not None:
-            out_data = np.hstack((timestamp.reshape(-1,1), x))
+            out_data = np.hstack((timestamp.reshape(-1, 1), x))
         else:
             out_data = x
 

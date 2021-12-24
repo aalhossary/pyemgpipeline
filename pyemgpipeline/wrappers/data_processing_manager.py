@@ -5,20 +5,20 @@ import copy
 
 
 class DataProcessingManager:
-    """Data processing manager which fixes the correct sequence of
-    processing steps
+    """High-level, guided processing tool which fixes the correct
+    sequence of processing steps
 
     Parameters
     ----------
     c_raw : EMGMeasurementCollection or None
         Containing data (signal, timestamp, hz, channel names, etc.)
-        and plot parameters. See class EMGMeasurementCollection.
+        and plot parameters.
         c_raw accepts data from method set_data_and_params and its
         value won't change when running method process_all.
 
     c : EMGMeasurementCollection or None
         Containing data (signal, timestamp, hz, channel names, etc.)
-        and plot parameters. See class EMGMeasurementCollection.
+        and plot parameters.
         When running method process_all, c gets a fresh copy of raw
         data from c_raw. In this way method process_all can be
         repeatedly executed.
@@ -112,17 +112,13 @@ class DataProcessingManager:
 
         emg_plot_params : EMGPlotParams or None, default None
             See class EMGPlotParams and function emg_plot.
-
-        Notes
-        -----
-        See class EMGMeasurementCollection.
         """
 
         self.c_raw = EMGMeasurementCollection(
             all_data, hz, all_timestamp=all_timestamp, channel_names=channel_names,
             all_main_titles=all_main_titles, emg_plot_params=emg_plot_params)
 
-        # set the default 5 processors
+        # set the default 5 processors in case they are None
         if self.dc_offset_remover is None:
             self.dc_offset_remover = DCOffsetRemover()
         if self.bandpass_filter is None:
@@ -396,7 +392,8 @@ class DataProcessingManager:
                              main_title=f'After amplitude normalizer ({self.c.all_main_titles[k]})',
                              emg_plot_params=self.c.emg_plot_params)
 
-        if self.segmenter is not None and self.segmenter_all_beg_ts is not None and self.segmenter_all_end_ts is not None:
+        if self.segmenter is not None and self.segmenter_all_beg_ts is not None \
+                and self.segmenter_all_end_ts is not None:
             for k in iter_dict_or_list(self.c.all_data):
                 beg_idx, end_idx = BaseProcessor.get_indices_from_timestamp(
                     self.c.all_timestamp[k], self.segmenter_all_beg_ts[k], self.segmenter_all_end_ts[k])

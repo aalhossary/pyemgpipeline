@@ -17,8 +17,8 @@ sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 # -- Project information -----------------------------------------------------
 
 project = 'pyemgpipeline'
-copyright = '2021, tlwu et al.'
-author = 'tlwu et al.'
+copyright = '2021, tlwu et al'
+author = 'tlwu et al'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1.0'
@@ -33,7 +33,9 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.autosummary',
-    #'sphinx.ext.githubpages'
+    'nbsphinx',
+    'matplotlib.sphinxext.plot_directive',
+    'sphinx.ext.githubpages'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

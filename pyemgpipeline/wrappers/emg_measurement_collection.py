@@ -93,7 +93,8 @@ class EMGMeasurementCollection:
         action.
     """
 
-    def __init__(self, all_data, hz, all_timestamp=None, channel_names=None, all_main_titles=None, emg_plot_params=None):
+    def __init__(self, all_data, hz, all_timestamp=None, channel_names=None,
+                 all_main_titles=None, emg_plot_params=None):
         assert isinstance(all_data, dict) or isinstance(all_data, list), 'all_data must be dict or list'
         for k in iter_dict_or_list(all_data):
             BaseProcessor.assert_input(all_data[k])
@@ -238,7 +239,7 @@ class EMGMeasurementCollection:
 
         collect_trial_max = ()
         for k in iter_dict_or_list(self.all_data):
-            collect_trial_max += tuple(np.max(self.all_data[k], axis=0).reshape(1, -1))
+            collect_trial_max += tuple(np.max(np.abs(self.all_data[k]), axis=0).reshape(1, -1))
         max_amplitude = np.max(np.vstack(collect_trial_max), axis=0)
         return max_amplitude
 
@@ -314,7 +315,7 @@ class EMGMeasurementCollection:
 
         Parameters
         ----------
-        k : key of dict or index of list.
+        k : key of dict or index of list
             If all_data is a dict, k is one of its key.
             If all_data is a list, k is an integer between 0 and
             len(all_data) - 1.

@@ -62,7 +62,6 @@ def plot_emg(x, timestamp, channel_names=None, main_title=None, emg_plot_params=
         The main title of the plot.
 
     emg_plot_params : EMGPlotParams or None, default None
-        See class EMGPlotParams.
         If this is not None, then for its n_rows and n_cols,
         (1) If n_rows and n_cols both have values, n_rows times n_cols
         should be no less than n_channels.
@@ -113,4 +112,3 @@ def plot_emg(x, timestamp, channel_names=None, main_title=None, emg_plot_params=
             axs[i].set_title(channel_names[i])
 
     plt.show()
-

@@ -6,7 +6,7 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 setup(
     name='pyemgpipeline-tlwu-et-al-testxx',
     version="0.1.0",
-    author='tlwu et al.',
+    author='tlwu et al',
     author_email='tlwu2008@gmail.com',
     description='An EMG signal processing pipeline package',
     long_description=long_description,
@@ -22,6 +22,6 @@ setup(
         'Operating System :: OS Independent',
     ],
     packages=find_packages(),
-    install_requires = ['numpy', 'scipy', 'matplotlib'],
+    install_requires=['numpy', 'scipy', 'matplotlib'],
     python_requires='>=3.6',
 )

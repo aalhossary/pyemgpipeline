@@ -42,8 +42,9 @@ class Segmenter(BaseProcessor):
         assert 'end_idx' in kwargs.keys(), 'Need to provide parameter "end_idx" in Segmenter.apply'
         beg_idx = kwargs['beg_idx']
         end_idx = kwargs['end_idx']
-        assert isinstance(beg_idx, (int, np.integer)) and isinstance(end_idx, (int, np.integer)) and 0 <= beg_idx <= end_idx < x.shape[0],\
-            'beg_idx and end_idx must be integers and 0 <= beg_idx <= end_idx < x.shape[0]'
+        assert isinstance(beg_idx, (int, np.integer)) and isinstance(end_idx, (int, np.integer))\
+               and 0 <= beg_idx <= end_idx < x.shape[0],\
+               'beg_idx and end_idx must be integers and 0 <= beg_idx <= end_idx < x.shape[0]'
 
         x_processed = x[beg_idx:(end_idx + 1), ]
         return x_processed

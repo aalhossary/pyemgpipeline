@@ -96,7 +96,8 @@ class BandpassFilter(BaseProcessor):
         """
 
         super().assert_input(x)
-        assert x.shape[0] > (2 * self.bf_order + 1) * 3, 'first dimension of x must have length > (2 * bf_order + 1) * 3'
+        assert x.shape[0] > (2 * self.bf_order + 1) * 3,\
+            'first dimension of x must have length > (2 * bf_order + 1) * 3'
 
         b, a = signal.butter(N=self.bf_order, Wn=[self.bf_cutoff_fq_lo, self.bf_cutoff_fq_hi],
                              btype='bandpass', analog=False, output='ba', fs=self.hz)
