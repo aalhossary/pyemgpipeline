@@ -1,5 +1,0 @@
-setuptools
-numpy
-docpie
-scipy
-matplotlib
