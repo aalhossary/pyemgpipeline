@@ -45,7 +45,7 @@ and the class `EMGPlotParams` to manage the plot-related parameters.
 
 ## Documentation
 
-The [documentation](https://github.com/aalhossary/pyemgpipeline/blob/master/doc/build/html/index.html)
+The [documentation](https://aalhossary.github.io/pyemgpipeline/)
 describes how to use this package, including
 package installation, quick start, examples explaining the breadth of the package’s functionality,
 and API reference.
