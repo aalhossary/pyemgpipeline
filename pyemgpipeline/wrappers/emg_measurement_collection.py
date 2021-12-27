@@ -153,13 +153,15 @@ class EMGMeasurementCollection:
         for k in iter_dict_or_list(self.all_data):
             self.all_data[k] = DCOffsetRemover().apply(self.all_data[k])
 
-    def apply_bandpass_filter(self, bf_order=2, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450):
+    def apply_bandpass_filter(self, bf_order=4, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450):
         """Apply bandpass filter to the data
 
         Parameters
         ----------
-        bf_order : int, default=2
-            Order of the butterworth filter.
+        bf_order : int, default=4
+            Effective order (i.e., order after two-directional
+            filtering) of the butterworth filter. bf_order should be
+            a multiple of 2.
 
         bf_cutoff_fq_lo : float, default=10
             Low cutoff frequency of the bandpass filter.
@@ -189,13 +191,15 @@ class EMGMeasurementCollection:
         for k in iter_dict_or_list(self.all_data):
             self.all_data[k] = FullWaveRectifier().apply(self.all_data[k])
 
-    def apply_linear_envelope(self, le_order=2, le_cutoff_fq=6):
+    def apply_linear_envelope(self, le_order=4, le_cutoff_fq=6):
         """Apply linear envelope to the data
 
         Parameters
         ----------
-        le_order : int, default=2
-            Order of the butterworth filter for linear envelope.
+        le_order : int, default=4
+            Effective order (i.e., order after two-directional
+            filtering) of the butterworth filter for linear envelope.
+            le_order should be a multiple of 2.
 
         le_cutoff_fq : float, default=6
             Cutoff frequency of the lowpass filter.

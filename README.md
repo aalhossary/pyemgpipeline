@@ -2,9 +2,9 @@
 
 **pyemgpipeline** is an electromyography (EMG) signal processing pipeline package.
 
-The main purpose of this package is to ensure that users adhere to accepted EMG processing conventions.
-In particular, this package arranges the EMG processing steps together and into a standard order,
-providing users with a convenient tool to work on EMG processing without doing it wrong.
+This package implements internationally accepted EMG processing conventions
+and provides a high-level interface for ensuring user adherence to those conventions,
+in terms of (1) processing parameter values, (2) processing steps, and (3) processing step order.
 
 The processing steps included in the package are
 DC offset removal, bandpass filtering, full wave rectification, linear envelope,
@@ -21,7 +21,7 @@ highest cutoff frequency of the bandpass filter based on the Nyquist theorem.
 
 In **pyemgpipeline**, class `DataProcessingManager` in module `wrappers` is
 designed as the main wrapper for high-level, guided processing,
-and users are encouraged to use it to adhere to accepted EMG processing steps.
+and users are encouraged to use it to adhere to accepted EMG processing conventions.
 The other classes, methods, and functions are considered as lower level processing
 options.
 
@@ -37,7 +37,7 @@ processing by integrating data and individual processors.
 Class `EMGMeasurement` works for data of a single trial,
 class `EMGMeasurementCollection` works for data of multiple trials,
 and class `DataProcessingManager` is the high-level, guided processing wrapper
-which fixes the correct sequence of processing steps.
+with EMG processing conventions.
 
 Module `plots` includes
 the function `plot_emg` to plot EMG signals on `matplotlib` figures

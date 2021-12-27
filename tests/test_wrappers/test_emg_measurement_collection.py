@@ -64,7 +64,7 @@ class TestEMGMeasurementCollection(TestCase):
             np.testing.assert_allclose(actual[i], desired[i])
 
     def test_apply_bandpass_filter(self):
-        bf_order = 2
+        bf_order = 4
         bf_cutoff_fq_lo = 10
         bf_cutoff_fq_hi = 450
 
@@ -132,7 +132,7 @@ class TestEMGMeasurementCollection(TestCase):
             np.testing.assert_allclose(actual[i], desired[i])
 
     def test_apply_linear_envelope(self):
-        le_order = 2
+        le_order = 4
         le_cutoff_fq = 5
 
         # case: dict

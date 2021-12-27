@@ -260,7 +260,7 @@
     }
    ],
    "source": [
-    "m.apply_bandpass_filter(bf_order=2, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450)\n",
+    "m.apply_bandpass_filter(bf_order=4, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450)\n",
     "m.plot()"
    ]
   },
@@ -316,7 +316,7 @@
     }
    ],
    "source": [
-    "m.apply_linear_envelope(le_order=2, le_cutoff_fq=6)\n",
+    "m.apply_linear_envelope(le_order=4, le_cutoff_fq=6)\n",
     "m.plot()"
    ]
   },

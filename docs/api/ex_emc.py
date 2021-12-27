@@ -19,9 +19,9 @@ c = pep.wrappers.EMGMeasurementCollection(all_data, hz=hz, all_main_titles=['Tri
 
 # apply seven processing steps
 c.apply_dc_offset_remover()
-c.apply_bandpass_filter(bf_order=2, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450)
+c.apply_bandpass_filter(bf_order=4, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450)
 c.apply_full_wave_rectifier()
-c.apply_linear_envelope(le_order=2, le_cutoff_fq=6)
+c.apply_linear_envelope(le_order=4, le_cutoff_fq=6)
 c.apply_end_frame_cutter(n_end_frames=2)
 c.apply_amplitude_normalizer(max_amplitude=38.3)
 c.apply_segmenter(all_beg_ts=[0, 0], all_end_ts=[999, 999])

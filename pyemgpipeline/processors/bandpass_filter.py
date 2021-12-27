@@ -11,8 +11,9 @@ class BandpassFilter(BaseProcessor):
         Sample rate in hertz.
         See class EMGMeasurementCollection for suggested values of hz.
 
-    bf_order : int, default=2
-        Order of the butterworth filter.
+    bf_order : int, default=4
+        Effective order (i.e., order after two-directional filtering)
+        of the butterworth filter. bf_order should be a multiple of 2.
 
     bf_cutoff_fq_lo : float, default=10
         Low cutoff frequency of the bandpass filter (i.e., frequency
@@ -64,8 +65,9 @@ class BandpassFilter(BaseProcessor):
         Journal of Electromyography and Kinesiology, 16, 175–187.
     """
 
-    def __init__(self, hz, bf_order=2, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450):
+    def __init__(self, hz, bf_order=4, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450):
         assert hz > 2 * bf_cutoff_fq_hi, 'hz must be greater than 2 * bf_cutoff_fq_hi'
+        assert bf_order % 2 == 0, 'bf_order must be a multiple of 2'
 
         self.hz = hz
         self.bf_order = bf_order
@@ -79,7 +81,7 @@ class BandpassFilter(BaseProcessor):
         ----------
         x : ndarray
             Shape (n_samples,) or (n_samples, n_channels),
-            where n_samples > (2 * bf_order + 1) * 3 (See Notes).
+            where n_samples > (bf_order + 1) * 3 (See Notes).
             Signal data to be processed.
 
         Returns
@@ -92,16 +94,16 @@ class BandpassFilter(BaseProcessor):
         -----
         Using scipy.signal.filtfilt requires the length of the input
         vector x greater than the padding length, padlen, which is
-        (2 * bf_order + 1) * 3 for a bandpass Butterworth filter.
+        (bf_order + 1) * 3 for a 'bandpass' Butterworth filter.
         """
 
         super().assert_input(x)
-        assert x.shape[0] > (2 * self.bf_order + 1) * 3,\
-            'first dimension of x must have length > (2 * bf_order + 1) * 3'
+        assert x.shape[0] > (self.bf_order + 1) * 3,\
+            'first dimension of x must have length > (bf_order + 1) * 3'
 
-        b, a = signal.butter(N=self.bf_order, Wn=[self.bf_cutoff_fq_lo, self.bf_cutoff_fq_hi],
+        b, a = signal.butter(N=int(self.bf_order/2), Wn=[self.bf_cutoff_fq_lo, self.bf_cutoff_fq_hi],
                              btype='bandpass', analog=False, output='ba', fs=self.hz)
-        x_processed = signal.filtfilt(b, a, x, axis=0)
+        x_processed = signal.filtfilt(b, a, x, axis=0)  # two-directional filtering, double the order, zero phase
         return x_processed
 
     def get_param_values_in_str(self):

@@ -16,8 +16,8 @@ class TestDataProcessingManager(TestCase):
         hz = 1000
         self.mgr = DataProcessingManager()
         self.mgr.set_data_and_params(all_data, hz=hz)
-        self.mgr.set_bandpass_filter(BandpassFilter(hz, bf_order=2, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450))
-        self.mgr.set_linear_envelope(LinearEnvelope(hz, le_order=2, le_cutoff_fq=5))
+        self.mgr.set_bandpass_filter(BandpassFilter(hz, bf_order=4, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450))
+        self.mgr.set_linear_envelope(LinearEnvelope(hz, le_order=4, le_cutoff_fq=5))
         self.mgr.set_end_frame_cutter(EndFrameCutter(n_end_frames=3))
         self.mgr.set_amplitude_normalizer(AmplitudeNormalizer())
         all_beg_ts = [0.006, 0.0055]

@@ -13,7 +13,7 @@
    "source": [
     "This example shows the usage of class\n",
     "[DataProcessingManager](../api/pyemgpipeline.wrappers.html#dataprocessingmanager),\n",
-    "a high-level, guided processing wrapper to process EMG data of multiple trials under a fixed sequence of standard steps.\n",
+    "a high-level, guided processing interface with accepted EMG processing conventions.\n",
     "This is the recommended way of EMG processing using this package.\n",
     "\n",
     "The data used in this example contains two files of subject #10 in [\"EMG data for gestures\"](https://archive-beta.ics.uci.edu/ml/datasets/emg+data+for+gestures) from the UC Irvine Machine Learning Repository.\n",
@@ -247,9 +247,9 @@
      "text": [
       "---- Current processes and related parameters ----\n",
       "DC offset remover    : No parameters\n",
-      "Bandpass filter      : hz = 1000, bf_order = 2, bf_cutoff_fq_lo = 10, bf_cutoff_fq_hi = 450\n",
+      "Bandpass filter      : hz = 1000, bf_order = 4, bf_cutoff_fq_lo = 10, bf_cutoff_fq_hi = 450\n",
       "Full wave rectifier  : No parameters\n",
-      "Linear envelope      : hz = 1000, le_order = 2, le_cutoff_fq = 6\n",
+      "Linear envelope      : hz = 1000, le_order = 4, le_cutoff_fq = 6\n",
       "End frame cutter     : n_end_frames = 30\n"
      ]
     }
@@ -289,15 +289,15 @@
      "text": [
       "---- Current processes and related parameters ----\n",
       "DC offset remover    : No parameters\n",
-      "Bandpass filter      : hz = 1000, bf_order = 2, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470\n",
+      "Bandpass filter      : hz = 1000, bf_order = 4, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470\n",
       "Full wave rectifier  : No parameters\n",
-      "Linear envelope      : hz = 1000, le_order = 2, le_cutoff_fq = 6\n",
+      "Linear envelope      : hz = 1000, le_order = 4, le_cutoff_fq = 6\n",
       "End frame cutter     : n_end_frames = 30\n"
      ]
     }
    ],
    "source": [
-    "mgr.set_bandpass_filter(pep.processors.BandpassFilter(hz=sample_rate, bf_order=2, bf_cutoff_fq_lo=5, bf_cutoff_fq_hi=470))\n",
+    "mgr.set_bandpass_filter(pep.processors.BandpassFilter(hz=sample_rate, bf_order=4, bf_cutoff_fq_lo=5, bf_cutoff_fq_hi=470))\n",
     "mgr.show_current_processes_and_related_params()"
    ]
   },
@@ -321,9 +321,9 @@
      "text": [
       "---- Current processes and related parameters ----\n",
       "DC offset remover    : No parameters\n",
-      "Bandpass filter      : hz = 1000, bf_order = 2, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470\n",
+      "Bandpass filter      : hz = 1000, bf_order = 4, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470\n",
       "Full wave rectifier  : No parameters\n",
-      "Linear envelope      : hz = 1000, le_order = 2, le_cutoff_fq = 6\n",
+      "Linear envelope      : hz = 1000, le_order = 4, le_cutoff_fq = 6\n",
       "End frame cutter     : n_end_frames = 30\n",
       "Amplitude normalizer : No parameters\n"
      ]
@@ -511,9 +511,9 @@
      "text": [
       "---- Current processes and related parameters ----\n",
       "DC offset remover    : No parameters\n",
-      "Bandpass filter      : hz = 1000, bf_order = 2, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470\n",
+      "Bandpass filter      : hz = 1000, bf_order = 4, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470\n",
       "Full wave rectifier  : No parameters\n",
-      "Linear envelope      : hz = 1000, le_order = 2, le_cutoff_fq = 6\n",
+      "Linear envelope      : hz = 1000, le_order = 4, le_cutoff_fq = 6\n",
       "End frame cutter     : n_end_frames = 30\n",
       "Amplitude normalizer : No parameters\n",
       "Segmenter            : No parameters\n"

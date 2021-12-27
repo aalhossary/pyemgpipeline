@@ -128,7 +128,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyemgpipeline.wrappers.DataProcessingManager" title="pyemgpipeline.wrappers.DataProcessingManager"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataProcessingManager</span></code></a></p></td>
-<td><p>High-level, guided processing tool which fixes the correct sequence of processing steps</p></td>
+<td><p>High-level, guided processing interface with accepted EMG processing conventions</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pyemgpipeline.wrappers.EMGMeasurement" title="pyemgpipeline.wrappers.EMGMeasurement"><code class="xref py py-obj docutils literal notranslate"><span class="pre">EMGMeasurement</span></code></a></p></td>
 <td><p>Wrapper of single-trial EMG processing</p></td>
@@ -145,8 +145,8 @@
 <dl class="py class">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.DataProcessingManager">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.wrappers.</span></span><span class="sig-name descname"><span class="pre">DataProcessingManager</span></span><a class="headerlink" href="#pyemgpipeline.wrappers.DataProcessingManager" title="Permalink to this definition"></a></dt>
-<dd><p>High-level, guided processing tool which fixes the correct
-sequence of processing steps</p>
+<dd><p>High-level, guided processing interface with accepted EMG
+processing conventions</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -543,12 +543,14 @@ normalization.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.EMGMeasurement.apply_bandpass_filter">
-<span class="sig-name descname"><span class="pre">apply_bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">450</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurement.apply_bandpass_filter" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">450</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurement.apply_bandpass_filter" title="Permalink to this definition"></a></dt>
 <dd><p>Apply bandpass filter to the data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bf_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter.</p></li>
+<li><p><strong>bf_order</strong> (<em>int</em><em>, </em><em>default=4</em>) – Effective order (i.e., order after two-directional
+filtering) of the butterworth filter. bf_order should be
+a multiple of 2.</p></li>
 <li><p><strong>bf_cutoff_fq_lo</strong> (<em>float</em><em>, </em><em>default=10</em>) – Low cutoff frequency of the bandpass filter.
 See class BandpassFilter.</p></li>
 <li><p><strong>bf_cutoff_fq_hi</strong> (<em>float</em><em>, </em><em>default=450</em>) – High cutoff frequency of the bandpass filter.
@@ -612,12 +614,14 @@ n_end_frames &gt;= 0.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.EMGMeasurement.apply_linear_envelope">
-<span class="sig-name descname"><span class="pre">apply_linear_envelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">le_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">le_cutoff_fq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurement.apply_linear_envelope" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_linear_envelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">le_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">le_cutoff_fq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurement.apply_linear_envelope" title="Permalink to this definition"></a></dt>
 <dd><p>Apply linear envelope to the data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>le_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter for linear envelope.</p></li>
+<li><p><strong>le_order</strong> (<em>int</em><em>, </em><em>default=4</em>) – Effective order (i.e., order after two-directional
+filtering) of the butterworth filter for linear envelope.
+le_order should be a multiple of 2.</p></li>
 <li><p><strong>le_cutoff_fq</strong> (<em>float</em><em>, </em><em>default=6</em>) – Cutoff frequency of the lowpass filter.
 See class LinearEnvelope.</p></li>
 </ul>
@@ -702,9 +706,9 @@ Also beg_ts &lt; end_ts.</p></li>
 
 <span class="c1"># apply seven processing steps</span>
 <span class="n">m</span><span class="o">.</span><span class="n">apply_dc_offset_remover</span><span class="p">()</span>
-<span class="n">m</span><span class="o">.</span><span class="n">apply_bandpass_filter</span><span class="p">(</span><span class="n">bf_order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">bf_cutoff_fq_lo</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">bf_cutoff_fq_hi</span><span class="o">=</span><span class="mi">420</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">apply_bandpass_filter</span><span class="p">(</span><span class="n">bf_order</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bf_cutoff_fq_lo</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">bf_cutoff_fq_hi</span><span class="o">=</span><span class="mi">420</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">apply_full_wave_rectifier</span><span class="p">()</span>
-<span class="n">m</span><span class="o">.</span><span class="n">apply_linear_envelope</span><span class="p">(</span><span class="n">le_order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">le_cutoff_fq</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">m</span><span class="o">.</span><span class="n">apply_linear_envelope</span><span class="p">(</span><span class="n">le_order</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">le_cutoff_fq</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">apply_end_frame_cutter</span><span class="p">(</span><span class="n">n_end_frames</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">apply_amplitude_normalizer</span><span class="p">(</span><span class="n">max_amplitude</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
 <span class="n">m</span><span class="o">.</span><span class="n">apply_segmenter</span><span class="p">(</span><span class="n">beg_ts</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">end_ts</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
@@ -826,12 +830,14 @@ normalization for all trials.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.EMGMeasurementCollection.apply_bandpass_filter">
-<span class="sig-name descname"><span class="pre">apply_bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">450</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection.apply_bandpass_filter" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_bandpass_filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">450</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection.apply_bandpass_filter" title="Permalink to this definition"></a></dt>
 <dd><p>Apply bandpass filter to the data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>bf_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter.</p></li>
+<li><p><strong>bf_order</strong> (<em>int</em><em>, </em><em>default=4</em>) – Effective order (i.e., order after two-directional
+filtering) of the butterworth filter. bf_order should be
+a multiple of 2.</p></li>
 <li><p><strong>bf_cutoff_fq_lo</strong> (<em>float</em><em>, </em><em>default=10</em>) – Low cutoff frequency of the bandpass filter.
 See class BandpassFilter.</p></li>
 <li><p><strong>bf_cutoff_fq_hi</strong> (<em>float</em><em>, </em><em>default=450</em>) – High cutoff frequency of the bandpass filter.
@@ -895,12 +901,14 @@ n_end_frames &gt;= 0.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.EMGMeasurementCollection.apply_linear_envelope">
-<span class="sig-name descname"><span class="pre">apply_linear_envelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">le_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">le_cutoff_fq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection.apply_linear_envelope" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">apply_linear_envelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">le_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">le_cutoff_fq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection.apply_linear_envelope" title="Permalink to this definition"></a></dt>
 <dd><p>Apply linear envelope to the data</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>le_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter for linear envelope.</p></li>
+<li><p><strong>le_order</strong> (<em>int</em><em>, </em><em>default=4</em>) – Effective order (i.e., order after two-directional
+filtering) of the butterworth filter for linear envelope.
+le_order should be a multiple of 2.</p></li>
 <li><p><strong>le_cutoff_fq</strong> (<em>float</em><em>, </em><em>default=6</em>) – Cutoff frequency of the lowpass filter.
 See class LinearEnvelope.</p></li>
 </ul>
@@ -1022,9 +1030,9 @@ Max amplitude of each channel which is found across all trials.</p>
 
 <span class="c1"># apply seven processing steps</span>
 <span class="n">c</span><span class="o">.</span><span class="n">apply_dc_offset_remover</span><span class="p">()</span>
-<span class="n">c</span><span class="o">.</span><span class="n">apply_bandpass_filter</span><span class="p">(</span><span class="n">bf_order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">bf_cutoff_fq_lo</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">bf_cutoff_fq_hi</span><span class="o">=</span><span class="mi">450</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">apply_bandpass_filter</span><span class="p">(</span><span class="n">bf_order</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bf_cutoff_fq_lo</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">bf_cutoff_fq_hi</span><span class="o">=</span><span class="mi">450</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">apply_full_wave_rectifier</span><span class="p">()</span>
-<span class="n">c</span><span class="o">.</span><span class="n">apply_linear_envelope</span><span class="p">(</span><span class="n">le_order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">le_cutoff_fq</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">c</span><span class="o">.</span><span class="n">apply_linear_envelope</span><span class="p">(</span><span class="n">le_order</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">le_cutoff_fq</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">apply_end_frame_cutter</span><span class="p">(</span><span class="n">n_end_frames</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">apply_amplitude_normalizer</span><span class="p">(</span><span class="n">max_amplitude</span><span class="o">=</span><span class="mf">38.3</span><span class="p">)</span>
 <span class="n">c</span><span class="o">.</span><span class="n">apply_segmenter</span><span class="p">(</span><span class="n">all_beg_ts</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">all_end_ts</span><span class="o">=</span><span class="p">[</span><span class="mi">999</span><span class="p">,</span> <span class="mi">999</span><span class="p">])</span>

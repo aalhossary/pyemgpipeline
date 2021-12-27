@@ -6,7 +6,7 @@ from pyemgpipeline.processors import LinearEnvelope
 class TestLinearEnvelope(TestCase):
     def setUp(self):
         hz = 1000
-        le_order = 2
+        le_order = 4
         le_cutoff_fq = 5
         self.linear_envelope = LinearEnvelope(hz=hz, le_order=le_order, le_cutoff_fq=le_cutoff_fq)
 
@@ -49,12 +49,12 @@ class TestLinearEnvelope(TestCase):
         np.testing.assert_allclose(actual, desired)
 
     def test_apply__assertion_raise(self):
-        # require: n_samples > (le_order + 1) * 3
+        # require: n_samples > (le_order / 2 + 1) * 3
         with self.assertRaises(AssertionError):
             x = np.array([20.3, 41.0, 53.9, 63.3, 39.5, 24.9, 26.1, 24.0, 44.1])  # n_samples = 9
-            self.linear_envelope.apply(x)  # (le_order + 1) * 3 = 9
+            self.linear_envelope.apply(x)  # (le_order / 2 + 1) * 3 = 9
 
     def test_get_parameter_str(self):
         actual = self.linear_envelope.get_param_values_in_str()
-        desired = 'hz = 1000, le_order = 2, le_cutoff_fq = 5'
+        desired = 'hz = 1000, le_order = 4, le_cutoff_fq = 5'
         self.assertEqual(actual, desired)

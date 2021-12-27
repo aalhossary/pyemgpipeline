@@ -1,6 +1,6 @@
 # This example uses uci_gestures to show the usage of class DataProcessingManager
-# to process EMG data of multiple trials under a fixed sequence of standard
-# steps. Data of multiple trials are stored in a list for demonstration purpose.
+# to process EMG data of multiple trials with accepted EMG processing conventions.
+# Data of multiple trials are stored in a list for demonstration purpose.
 
 import os
 import pathlib
@@ -50,13 +50,12 @@ mgr.set_data_and_params(all_data, hz=sample_rate,
 mgr.set_bandpass_filter(BandpassFilter(hz=sample_rate, bf_cutoff_fq_hi=495))  # can change processor's parameter
 mgr.set_amplitude_normalizer(AmplitudeNormalizer())  # add non-default processor
 mgr.show_current_processes_and_related_params()  # display current setting
-c = mgr.process_all(is_plot_processing_chain=True)
-# c = mgr.process_all(is_plot_processing_chain=True, k_for_plot=0)  # execute processing steps in the standard order,
-#                                                     # plot the processing chain of trial k=0,
-#                                                     # and return an instance of the EMGMeasurementCollection class
+c = mgr.process_all(is_plot_processing_chain=True)  # process with accepted EMG processing conventions,
+                                                    # plot the processing chain,
+                                                    # and return an instance of the EMGMeasurementCollection class
 
 
 # # save processed data as csv files
 # dest_dir = r'my_dest_dir'
 # all_csv_path = [os.path.join(dest_dir, e + '.csv') for e in all_trial_names]
-# c.export_csv_all(all_csv_path)
+# c.export_csv(all_csv_path)

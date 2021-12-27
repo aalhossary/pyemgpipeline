@@ -6,7 +6,7 @@ from pyemgpipeline.processors import BandpassFilter
 class TestBandpassFilter(TestCase):
     def setUp(self):
         hz = 1000
-        bf_order = 2
+        bf_order = 4
         bf_cutoff_fq_lo = 10
         bf_cutoff_fq_hi = 450
         self.bandpass_filter = BandpassFilter(
@@ -51,13 +51,13 @@ class TestBandpassFilter(TestCase):
         np.testing.assert_allclose(actual, desired)
 
     def test_apply__assertion_raise(self):
-        # require: n_samples > (2 * bf_order + 1) * 3
+        # require: n_samples > (bf_order + 1) * 3
         with self.assertRaises(AssertionError):
             x = np.array([20.3, 41.0, 53.9, 63.3, 39.5, 24.9, 26.1, 24.0, 44.1, 42.0,
                           37.4, 24.6, -21.8, -56.3, -48.1])  # n_samples = 15
-            self.bandpass_filter.apply(x)  # (2 * bf_order + 1) * 3 = 15
+            self.bandpass_filter.apply(x)  # (bf_order + 1) * 3 = 15
 
     def test_get_parameter_str(self):
         actual = self.bandpass_filter.get_param_values_in_str()
-        desired = 'hz = 1000, bf_order = 2, bf_cutoff_fq_lo = 10, bf_cutoff_fq_hi = 450'
+        desired = 'hz = 1000, bf_order = 4, bf_cutoff_fq_lo = 10, bf_cutoff_fq_hi = 450'
         self.assertEqual(actual, desired)

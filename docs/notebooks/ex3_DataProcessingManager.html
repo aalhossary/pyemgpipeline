@@ -352,7 +352,7 @@ div.rendered_html tbody tr:hover {
 </style>
 <div class="section" id="High-level,-guided-processing">
 <h1>High-level, guided processing<a class="headerlink" href="#High-level,-guided-processing" title="Permalink to this headline"></a></h1>
-<p>This example shows the usage of class <a class="reference external" href="../api/pyemgpipeline.wrappers.html#dataprocessingmanager">DataProcessingManager</a>, a high-level, guided processing wrapper to process EMG data of multiple trials under a fixed sequence of standard steps. This is the recommended way of EMG processing using this package.</p>
+<p>This example shows the usage of class <a class="reference external" href="../api/pyemgpipeline.wrappers.html#dataprocessingmanager">DataProcessingManager</a>, a high-level, guided processing interface with accepted EMG processing conventions. This is the recommended way of EMG processing using this package.</p>
 <p>The data used in this example contains two files of subject #10 in <a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/emg+data+for+gestures">“EMG data for gestures”</a> from the UC Irvine Machine Learning Repository. In particular, the data was collected in eight channels from the forearm of the subject while performing series of static hand gestures.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
@@ -532,9 +532,9 @@ shapes of all_data: (61641, 8) (61448, 8)
 <div class="highlight"><pre>
 ---- Current processes and related parameters ----
 DC offset remover    : No parameters
-Bandpass filter      : hz = 1000, bf_order = 2, bf_cutoff_fq_lo = 10, bf_cutoff_fq_hi = 450
+Bandpass filter      : hz = 1000, bf_order = 4, bf_cutoff_fq_lo = 10, bf_cutoff_fq_hi = 450
 Full wave rectifier  : No parameters
-Linear envelope      : hz = 1000, le_order = 2, le_cutoff_fq = 6
+Linear envelope      : hz = 1000, le_order = 4, le_cutoff_fq = 6
 End frame cutter     : n_end_frames = 30
 </pre></div></div>
 </div>
@@ -546,7 +546,7 @@ End frame cutter     : n_end_frames = 30
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">mgr</span><span class="o">.</span><span class="n">set_bandpass_filter</span><span class="p">(</span><span class="n">pep</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">BandpassFilter</span><span class="p">(</span><span class="n">hz</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span> <span class="n">bf_order</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">bf_cutoff_fq_lo</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">bf_cutoff_fq_hi</span><span class="o">=</span><span class="mi">470</span><span class="p">))</span>
+<span></span><span class="n">mgr</span><span class="o">.</span><span class="n">set_bandpass_filter</span><span class="p">(</span><span class="n">pep</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">BandpassFilter</span><span class="p">(</span><span class="n">hz</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span> <span class="n">bf_order</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">bf_cutoff_fq_lo</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">bf_cutoff_fq_hi</span><span class="o">=</span><span class="mi">470</span><span class="p">))</span>
 <span class="n">mgr</span><span class="o">.</span><span class="n">show_current_processes_and_related_params</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -558,9 +558,9 @@ End frame cutter     : n_end_frames = 30
 <div class="highlight"><pre>
 ---- Current processes and related parameters ----
 DC offset remover    : No parameters
-Bandpass filter      : hz = 1000, bf_order = 2, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470
+Bandpass filter      : hz = 1000, bf_order = 4, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470
 Full wave rectifier  : No parameters
-Linear envelope      : hz = 1000, le_order = 2, le_cutoff_fq = 6
+Linear envelope      : hz = 1000, le_order = 4, le_cutoff_fq = 6
 End frame cutter     : n_end_frames = 30
 </pre></div></div>
 </div>
@@ -582,9 +582,9 @@ End frame cutter     : n_end_frames = 30
 <div class="highlight"><pre>
 ---- Current processes and related parameters ----
 DC offset remover    : No parameters
-Bandpass filter      : hz = 1000, bf_order = 2, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470
+Bandpass filter      : hz = 1000, bf_order = 4, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470
 Full wave rectifier  : No parameters
-Linear envelope      : hz = 1000, le_order = 2, le_cutoff_fq = 6
+Linear envelope      : hz = 1000, le_order = 4, le_cutoff_fq = 6
 End frame cutter     : n_end_frames = 30
 Amplitude normalizer : No parameters
 </pre></div></div>
@@ -717,9 +717,9 @@ Amplitude normalizer : No parameters
 <div class="highlight"><pre>
 ---- Current processes and related parameters ----
 DC offset remover    : No parameters
-Bandpass filter      : hz = 1000, bf_order = 2, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470
+Bandpass filter      : hz = 1000, bf_order = 4, bf_cutoff_fq_lo = 5, bf_cutoff_fq_hi = 470
 Full wave rectifier  : No parameters
-Linear envelope      : hz = 1000, le_order = 2, le_cutoff_fq = 6
+Linear envelope      : hz = 1000, le_order = 4, le_cutoff_fq = 6
 End frame cutter     : n_end_frames = 30
 Amplitude normalizer : No parameters
 Segmenter            : No parameters

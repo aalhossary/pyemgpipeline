@@ -5,8 +5,8 @@ import copy
 
 
 class DataProcessingManager:
-    """High-level, guided processing tool which fixes the correct
-    sequence of processing steps
+    """High-level, guided processing interface with accepted EMG
+    processing conventions
 
     Parameters
     ----------

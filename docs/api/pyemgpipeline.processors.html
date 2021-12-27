@@ -217,7 +217,7 @@ purpose</p>
 <h2>BandpassFilter<a class="headerlink" href="#bandpassfilter" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyemgpipeline.processors.BandpassFilter">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">BandpassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">450</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BandpassFilter" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">BandpassFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bf_cutoff_fq_hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">450</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.BandpassFilter" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.base.BaseProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyemgpipeline.processors.base.BaseProcessor</span></code></a></p>
 <p>Bandpass filter for EMG signals</p>
 <dl class="field-list simple">
@@ -225,7 +225,8 @@ purpose</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>hz</strong> (<em>float</em>) – Sample rate in hertz.
 See class EMGMeasurementCollection for suggested values of hz.</p></li>
-<li><p><strong>bf_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter.</p></li>
+<li><p><strong>bf_order</strong> (<em>int</em><em>, </em><em>default=4</em>) – Effective order (i.e., order after two-directional filtering)
+of the butterworth filter. bf_order should be a multiple of 2.</p></li>
 <li><p><strong>bf_cutoff_fq_lo</strong> (<em>float</em><em>, </em><em>default=10</em>) – Low cutoff frequency of the bandpass filter (i.e., frequency
 higher than bf_cutoff_fq_lo will pass).
 See Notes and References for some suggestions in different
@@ -276,7 +277,7 @@ Journal of Electromyography and Kinesiology, 16, 175–187.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>x</strong> (<em>ndarray</em>) – Shape (n_samples,) or (n_samples, n_channels),
-where n_samples &gt; (2 * bf_order + 1) * 3 (See Notes).
+where n_samples &gt; (bf_order + 1) * 3 (See Notes).
 Signal data to be processed.</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -290,7 +291,7 @@ The result of applying bandpass filter to x.</p>
 <p class="rubric">Notes</p>
 <p>Using scipy.signal.filtfilt requires the length of the input
 vector x greater than the padding length, padlen, which is
-(2 * bf_order + 1) * 3 for a bandpass Butterworth filter.</p>
+(bf_order + 1) * 3 for a ‘bandpass’ Butterworth filter.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -597,7 +598,7 @@ purpose</p>
 <h2>LinearEnvelope<a class="headerlink" href="#linearenvelope" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyemgpipeline.processors.LinearEnvelope">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">LinearEnvelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">le_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">le_cutoff_fq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.LinearEnvelope" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.processors.</span></span><span class="sig-name descname"><span class="pre">LinearEnvelope</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">le_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">le_cutoff_fq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.processors.LinearEnvelope" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#pyemgpipeline.processors.BaseProcessor" title="pyemgpipeline.processors.base.BaseProcessor"><code class="xref py py-class docutils literal notranslate"><span class="pre">pyemgpipeline.processors.base.BaseProcessor</span></code></a></p>
 <p>Linear envelope for EMG signals</p>
 <dl class="field-list simple">
@@ -605,7 +606,9 @@ purpose</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>hz</strong> (<em>float</em>) – Sample rate in hertz.
 See class EMGMeasurementCollection for suggested values of hz.</p></li>
-<li><p><strong>le_order</strong> (<em>int</em><em>, </em><em>default=2</em>) – Order of the butterworth filter for linear envelope.</p></li>
+<li><p><strong>le_order</strong> (<em>int</em><em>, </em><em>default=4</em>) – Effective order (i.e., order after two-directional filtering)
+of the butterworth filter for linear envelope. le_order should
+be a multiple of 2.</p></li>
 <li><p><strong>le_cutoff_fq</strong> (<em>float</em><em>, </em><em>default=6</em>) – Cutoff frequency of the lowpass filter.
 Suggested value is 1~10. For standing scenario, use 1~2.
 For running scenario, use 10.</p></li>
@@ -633,7 +636,7 @@ The result of applying linear envelope to x.</p>
 <p class="rubric">Notes</p>
 <p>Using scipy.signal.filtfilt requires the length of the input
 vector x greater than the padding length, padlen, which is
-(le_order + 1) * 3 for a lowpass Butterworth filter.</p>
+(le_order / 2 + 1) * 3 for a ‘lowpass’ Butterworth filter.</p>
 </dd></dl>
 
 <dl class="py method">
