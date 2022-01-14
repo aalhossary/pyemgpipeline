@@ -86,11 +86,11 @@ class EMGMeasurementCollection:
         Standards for reporting EMG data.
         Journal of Electromyography and Kinesiology, 42, I-II.
         Doi: 10.1016/S1050-6411(18)30348-1.
-    [2] Stegeman, D.F., & Hermens, H.J. (1996-1999).
+    [2] Stegeman, D.F., & Hermens, H.J. (1999).
         Standards for surface electromyography: the European project
         "Surface EMG for non invasive assessment of muscles (SENIAM)".
         Biomed 2 program of the European Community. European concerted
-        action.
+        action. 108-112.
     """
 
     def __init__(self, all_data, hz, all_timestamp=None, channel_names=None,

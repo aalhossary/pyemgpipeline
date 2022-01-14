@@ -53,11 +53,11 @@ class BandpassFilter(BaseProcessor):
     [2] Merletti, R, & di Torino, P. (1999).
         Standards for reporting EMG data.
         Journal of Electromyography and Kinesiology, 9(1), III-IV.
-    [3] Stegeman, D.F., & Hermens, H.J. (1996-1999).
+    [3] Stegeman, D.F., & Hermens, H.J. (1999).
         Standards for surface electromyography: the European project
         "Surface EMG for non invasive assessment of muscles (SENIAM)".
         Biomed 2 program of the European Community. European concerted
-        action.
+        action. 108-112.
     [4] Drake, J.D.M., & Callaghan, J.P. (2006).
         Elimination of electrocardiogram contamination from
         electromyogram signals: An evaluation of currently used removal
