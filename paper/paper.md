@@ -8,7 +8,7 @@ authors:
   - name: Tsung-Lin Wu
     orcid: 0000-0002-1823-6818
     affiliation: 1
-  - name: Amr Ali Mokhtar Alhossary
+  - name: Amr A. Alhossary
     orcid: 0000-0002-4470-5817
     affiliation: 2
   - name: Todd C. Pataky
