@@ -8,7 +8,7 @@ authors:
   - name: Tsung-Lin Wu
     orcid: 0000-0002-1823-6818
     affiliation: 1
-  - name: Amr Ali Mokhtar Alhossary
+  - name: Amr A. Alhossary
     orcid: 0000-0002-4470-5817
     affiliation: 2
   - name: Todd C. Pataky
@@ -27,7 +27,7 @@ affiliations:
     index: 2
   - name: Kyoto University, Department of Human Health Sciences
     index: 3
-date: 14 January 2022
+date: 17 January 2022
 bibliography: paper.bib
 ---
 
@@ -41,7 +41,7 @@ After the aforementioned seven processing steps, sometimes it is necessary to pe
 
 Within this package, class [DataProcessingManager](https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.wrappers.html#dataprocessingmanager) is designed for high-level, guided processing, and users are encouraged to use it to adhere to accepted EMG processing conventions.
 
-\autoref{fig:example} shows an example result of using `pyemgpipeline`. Please also refer to the [full documentation](https://aalhossary.github.io/pyemgpipeline/) and the [source code](https://github.com/aalhossary/pyemgpipeline) for detailed information.
+An example of using `pyemgpipeline` is shown in \autoref{fig:example}, where the original signals and the processed ones are displayed in subfigure (a) and (b) respectively.  Please refer to the [full documentation](https://aalhossary.github.io/pyemgpipeline/) and the [source code](https://github.com/aalhossary/pyemgpipeline) for detailed information.
 
 # Statement of need
 
@@ -53,6 +53,10 @@ Within this package, class [DataProcessingManager](https://aalhossary.github.io/
 
 # Figures
 
-![Example result of using `pyemgpipeline`\label{fig:example}](example_fig_in_paper.png)
+![An example of applying `pyemgpipeline` to EMG signals of a gait trial, which consists of four channels and lasts 6.6 seconds.
+(x-axis: seconds, y-axis: amplitude.)
+(a) The original signals.
+(b) The processed signals through steps until amplitude normalization. Note that the maximum amplitudes used in amplitude normalization are obtained from all trials (not shown here) including the gait trial. 
+\label{fig:example}](example_fig_in_paper.png)
 
 # References
