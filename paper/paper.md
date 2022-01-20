@@ -54,6 +54,6 @@ The depiction of `pyemgpipeline` data processing flow is shown in \autoref{fig:e
 # Figures
 
 ![Depiction of `pyemgpipeline` data processing flow. (x-axis: seconds, y-axis: amplitude.)
-\label{fig:example}](example_fig_in_paper.png)
+\label{fig:example}](example_fig_in_paper.png){ height=80% }
 
 # References
