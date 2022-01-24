@@ -4,17 +4,17 @@ with open('README.md', 'r', encoding='utf-8') as fh:
     long_description = fh.read()
 
 setup(
-    name='pyemgpipeline-tlwu-et-al-testxx',
-    version="0.1.0",
+    name='pyemgpipeline',
+    version='0.1.0',
     author='tlwu et al',
     author_email='tlwu2008@gmail.com',
-    description='An EMG signal processing pipeline package',
+    description='EMG signal processing pipeline',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/aalhossary/pyemgpipeline',
     project_urls={
-        # 'API reference': '',
-        # 'Bug Tracker': 'https://github.com/aalhossary/pyemgpipeline/issues',
+        'API reference': 'https://aalhossary.github.io/pyemgpipeline/api.html',
+        'Bug Tracker': 'https://github.com/aalhossary/pyemgpipeline/issues',
     },
     classifiers=[
         'Programming Language :: Python :: 3',
