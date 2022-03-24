@@ -55,7 +55,7 @@ class BandpassFilter(BaseProcessor):
         Journal of Electromyography and Kinesiology, 9(1), III-IV.
     [3] Stegeman, D.F., & Hermens, H.J. (1999).
         Standards for surface electromyography: the European project
-        "Surface EMG for non invasive assessment of muscles (SENIAM)".
+        "Surface EMG for non-invasive assessment of muscles (SENIAM)".
         Biomed 2 program of the European Community. European concerted
         action. 108-112.
     [4] Drake, J.D.M., & Callaghan, J.P. (2006).

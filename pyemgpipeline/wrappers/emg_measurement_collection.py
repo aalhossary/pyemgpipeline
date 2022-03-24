@@ -88,7 +88,7 @@ class EMGMeasurementCollection:
         Doi: 10.1016/S1050-6411(18)30348-1.
     [2] Stegeman, D.F., & Hermens, H.J. (1999).
         Standards for surface electromyography: the European project
-        "Surface EMG for non invasive assessment of muscles (SENIAM)".
+        "Surface EMG for non-invasive assessment of muscles (SENIAM)".
         Biomed 2 program of the European Community. European concerted
         action. 108-112.
     """
