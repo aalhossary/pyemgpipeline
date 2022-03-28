@@ -1,0 +1,13 @@
+Steps to run all unit tests together:
+
+(1) Activate the Python virtual environment which has the necessary
+packages, i.e., numpy, scipy, matplotlib, and pyemgpipeline.
+
+(2) Go to the directory where all the test scripts locate.
+In general, it is the "tests" directory, which has subdirectories
+"test_processors" and "test_wrappers".
+
+(3) Execute the following command:
+python -m unittest discover -v
+
+If all succeed, 108 tests will be reported ok.
