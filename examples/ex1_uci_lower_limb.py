@@ -40,7 +40,12 @@ emg_plot_params = pep.plots.EMGPlotParams(
     n_rows=4,
     fig_kwargs={
         'figsize': (5, 4),
+        'dpi': 125,
         'subplotpars': SubplotParams(wspace=0, hspace=0.9),
+    },
+    line2d_kwargs={
+        'color': 'red',
+        'linestyle': ':'
     }
 )
 

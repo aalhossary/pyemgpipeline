@@ -1,25 +1,9 @@
 from .. processors import *
 from .. plots import *
+from .. utilities import iter_dict_or_list
 from . emg_measurement import EMGMeasurement
 import numpy as np
 import copy
-
-
-def iter_dict_or_list(data_structure):
-    """
-    Parameters
-    ----------
-    data_structure : dict or list
-
-    Returns
-    -------
-    keys_or_indices :
-        If data_structure is a dict, keys_or_indices are the keys.
-        If data_structure is a list, keys_or_indices are the indices.
-    """
-
-    keys_or_indices = data_structure if isinstance(data_structure, dict) else range(len(data_structure))
-    return keys_or_indices
 
 
 class EMGMeasurementCollection:
@@ -340,17 +324,37 @@ class EMGMeasurementCollection:
                            self.channel_names, self.all_main_titles[k], self.emg_plot_params)
         return m
 
-    def plot(self):
+    def plot(self, is_overlapping_trials=False, cycled_colors=None):
         """Plot all trials
+
+        Parameters
+        ----------
+        is_overlapping_trials : bool, default False
+            Whether overlapping trials of the same channel.
+
+        cycled_colors : list or None, default None
+            The colors for plotting overlapped trials data.
 
         Returns
         -------
         None
         """
 
-        for k in iter_dict_or_list(self.all_data):
-            plot_emg(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,
-                     main_title=self.all_main_titles[k], emg_plot_params=self.emg_plot_params)
+        if is_overlapping_trials:
+            # when overlapping trials, the color in line2d_kwargs will become invalid.
+            # Colors for all trials can be set by users via cycled_colors.
+            emg_plot_params = copy.deepcopy(self.emg_plot_params)
+            if emg_plot_params.line2d_kwargs is not None:
+                emg_plot_params.line2d_kwargs.pop('color', None)
+
+            plot_emg_overlapping_trials(self.all_data, self.all_timestamp, self.all_main_titles,
+                                        cycled_colors=cycled_colors,
+                                        channel_names=self.channel_names, main_title=None,
+                                        emg_plot_params=emg_plot_params)
+        else:
+            for k in iter_dict_or_list(self.all_data):
+                plot_emg(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,
+                         main_title=self.all_main_titles[k], emg_plot_params=self.emg_plot_params)
 
     def export_csv(self, all_csv_path):
         """Export the processing results of all trials to csv

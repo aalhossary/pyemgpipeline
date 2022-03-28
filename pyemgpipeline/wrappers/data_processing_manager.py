@@ -1,6 +1,7 @@
 from .. processors import *
 from .. plots import *
-from . emg_measurement_collection import EMGMeasurementCollection, iter_dict_or_list
+from .. utilities import iter_dict_or_list
+from . emg_measurement_collection import EMGMeasurementCollection
 import copy
 
 
@@ -269,7 +270,53 @@ class DataProcessingManager:
         if self.segmenter is not None:
             print(f'Segmenter            : {self.segmenter.get_param_values_in_str()}')
 
-    def process_all(self, is_plot_processing_chain=False, k_for_plot=None):
+    def _plot_processing_chain(self, current_step,
+                               k_for_plot=None, is_overlapping_trials=False, cycled_colors=None,
+                               emg_plot_params=None):
+        """Plot current step of the processing chain
+
+        Parameters
+        ----------
+        current_step : str
+            Current step in the processing chain.
+
+        k_for_plot : key of dict, index of list, or None
+            If k_for_plot is None, all trials will be plotted.
+            If k_for_plot is not None, its value is the trial to be
+            plotted and should satisfy:
+            (1) If all_data is a dict, k_for_plot is one of its key.
+            (2) If all_data is a list, k_for_plot is an integer between 0
+            and len(all_data) - 1.
+
+        is_overlapping_trials : bool, default False
+            Whether overlapping trials of the same channel.
+
+        cycled_colors : list or None, default None
+            The colors for plotting overlapped trials data.
+
+        emg_plot_params : EMGPlotParams or None, default None
+            See class EMGPlotParams and function emg_plot.
+
+        Returns
+        -------
+        None
+        """
+        if is_overlapping_trials:
+            plot_emg_overlapping_trials(self.c.all_data, self.c.all_timestamp, self.c.all_main_titles,
+                                        cycled_colors=cycled_colors,
+                                        channel_names=self.c.channel_names, main_title=current_step,
+                                        emg_plot_params=emg_plot_params)
+        else:
+            for k in iter_dict_or_list(self.c.all_data):
+                if k_for_plot is not None and k != k_for_plot:
+                    continue
+                plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
+                         channel_names=self.c.channel_names,
+                         main_title=f'{current_step} ({self.c.all_main_titles[k]})',
+                         emg_plot_params=emg_plot_params)
+
+    def process_all(self, is_plot_processing_chain=False, k_for_plot=None,
+                    is_overlapping_trials=False, cycled_colors=None):
         """Apply current processors to data and plot intermediate results
 
         Parameters
@@ -285,6 +332,12 @@ class DataProcessingManager:
             (1) If all_data is a dict, k_for_plot is one of its key.
             (2) If all_data is a list, k_for_plot is an integer between 0
             and len(all_data) - 1.
+
+        is_overlapping_trials : bool, default False
+            Whether overlapping trials of the same channel.
+
+        cycled_colors : list or None, default None
+            The colors for plotting overlapped trials data.
 
         Returns
         -------
@@ -303,66 +356,48 @@ class DataProcessingManager:
             else:
                 assert k_for_plot in range(len(self.c.all_data)), 'k_for_plot must be an index of all_data (a list)'
 
+        emg_plot_params = copy.deepcopy(self.c.emg_plot_params)
+        if is_overlapping_trials:
+            # when overlapping trials, the color in line2d_kwargs will become invalid.
+            # Colors for all trials can be set by users via cycled_colors.
+            if emg_plot_params.line2d_kwargs is not None:
+                emg_plot_params.line2d_kwargs.pop('color', None)
+
         if is_plot_processing_chain:
-            for k in iter_dict_or_list(self.c.all_data):
-                if k_for_plot is not None and k != k_for_plot:
-                    continue
-                plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
-                         channel_names=self.c.channel_names,
-                         main_title=f'Original ({self.c.all_main_titles[k]})',
-                         emg_plot_params=self.c.emg_plot_params)
+            self._plot_processing_chain('Original', k_for_plot,
+                                        is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.dc_offset_remover is not None:
             for k in iter_dict_or_list(self.c.all_data):
                 self.c.all_data[k] = self.dc_offset_remover.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                for k in iter_dict_or_list(self.c.all_data):
-                    if k_for_plot is not None and k != k_for_plot:
-                        continue
-                    plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
-                             channel_names=self.c.channel_names,
-                             main_title=f'After DC offset remover ({self.c.all_main_titles[k]})',
-                             emg_plot_params=self.c.emg_plot_params)
+                self._plot_processing_chain('After DC offset remover', k_for_plot,
+                                            is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.bandpass_filter is not None:
             for k in iter_dict_or_list(self.c.all_data):
                 self.c.all_data[k] = self.bandpass_filter.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                for k in iter_dict_or_list(self.c.all_data):
-                    if k_for_plot is not None and k != k_for_plot:
-                        continue
-                    plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
-                             channel_names=self.c.channel_names,
-                             main_title=f'After bandpass filter ({self.c.all_main_titles[k]})',
-                             emg_plot_params=self.c.emg_plot_params)
+                self._plot_processing_chain('After bandpass filter', k_for_plot,
+                                            is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.full_wave_rectifier is not None:
             for k in iter_dict_or_list(self.c.all_data):
                 self.c.all_data[k] = self.full_wave_rectifier.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                for k in iter_dict_or_list(self.c.all_data):
-                    if k_for_plot is not None and k != k_for_plot:
-                        continue
-                    plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
-                             channel_names=self.c.channel_names,
-                             main_title=f'After full wave rectifier ({self.c.all_main_titles[k]})',
-                             emg_plot_params=self.c.emg_plot_params)
+                self._plot_processing_chain('After full wave rectifier', k_for_plot,
+                                            is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.linear_envelope is not None:
             for k in iter_dict_or_list(self.c.all_data):
                 self.c.all_data[k] = self.linear_envelope.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                for k in iter_dict_or_list(self.c.all_data):
-                    if k_for_plot is not None and k != k_for_plot:
-                        continue
-                    plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
-                             channel_names=self.c.channel_names,
-                             main_title=f'After linear envelope ({self.c.all_main_titles[k]})',
-                             emg_plot_params=self.c.emg_plot_params)
+                self._plot_processing_chain('After linear envelope', k_for_plot,
+                                            is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.end_frame_cutter is not None:
             for k in iter_dict_or_list(self.c.all_data):
@@ -370,13 +405,8 @@ class DataProcessingManager:
                 self.c.all_timestamp[k] = self.end_frame_cutter.apply(self.c.all_timestamp[k])
 
             if is_plot_processing_chain:
-                for k in iter_dict_or_list(self.c.all_data):
-                    if k_for_plot is not None and k != k_for_plot:
-                        continue
-                    plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
-                             channel_names=self.c.channel_names,
-                             main_title=f'After end frame cutter ({self.c.all_main_titles[k]})',
-                             emg_plot_params=self.c.emg_plot_params)
+                self._plot_processing_chain('After end frame cutter', k_for_plot,
+                                            is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.amplitude_normalizer is not None:
             max_amplitude = self.c.find_max_amplitude_of_each_channel_across_trials()
@@ -384,13 +414,8 @@ class DataProcessingManager:
                 self.c.all_data[k] = self.amplitude_normalizer.apply(self.c.all_data[k], divisor=max_amplitude)
 
             if is_plot_processing_chain:
-                for k in iter_dict_or_list(self.c.all_data):
-                    if k_for_plot is not None and k != k_for_plot:
-                        continue
-                    plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
-                             channel_names=self.c.channel_names,
-                             main_title=f'After amplitude normalizer ({self.c.all_main_titles[k]})',
-                             emg_plot_params=self.c.emg_plot_params)
+                self._plot_processing_chain('After amplitude normalizer', k_for_plot,
+                                            is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.segmenter is not None and self.segmenter_all_beg_ts is not None \
                 and self.segmenter_all_end_ts is not None:
@@ -400,13 +425,7 @@ class DataProcessingManager:
                 self.c.all_data[k] = Segmenter().apply(self.c.all_data[k], beg_idx=beg_idx, end_idx=end_idx)
                 self.c.all_timestamp[k] = Segmenter().apply(self.c.all_timestamp[k], beg_idx=beg_idx, end_idx=end_idx)
 
-            if is_plot_processing_chain:
-                for k in iter_dict_or_list(self.c.all_data):
-                    if k_for_plot is not None and k != k_for_plot:
-                        continue
-                    plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
-                             channel_names=self.c.channel_names,
-                             main_title=f'After segmenter ({self.c.all_main_titles[k]})',
-                             emg_plot_params=self.c.emg_plot_params)
+            self._plot_processing_chain('After segmenter', k_for_plot,
+                                        is_overlapping_trials, cycled_colors, emg_plot_params)
 
         return self.c

@@ -45,8 +45,11 @@ print(f'Load {len(all_data)} data files')
 emg_plot_params = pep.plots.EMGPlotParams(
     n_rows=4,
     fig_kwargs={
-        'figsize': (5, 4),
+        'figsize': (8, 5),
         'subplotpars': SubplotParams(wspace=0, hspace=0.9),
+    },
+    line2d_kwargs={
+        'color': 'green'
     }
 )
 
@@ -72,4 +75,4 @@ c.apply_segmenter(all_beg_ts, all_end_ts)  # can put tighter ranges to extract t
 
 # plot the processed data
 c['Stand'].plot()  # plot the trial 'Stand'
-c.plot()  # plot all trials
+c.plot(is_overlapping_trials=True, cycled_colors=['r','b','k'])  # plot all trials
