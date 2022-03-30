@@ -51,8 +51,8 @@ emg_plot_params = pep.plots.EMGPlotParams(
 
 
 # Process EMG by using class EMGMeasurement
-m = pep.wrappers.EMGMeasurement(data, hz=sample_rate, channel_names=channel_names,
-                                main_title=trial_name, emg_plot_params=emg_plot_params)
+m = pep.wrappers.EMGMeasurement(data, hz=sample_rate, trial_name=trial_name,
+                                channel_names=channel_names, emg_plot_params=emg_plot_params)
 m.apply_dc_offset_remover()
 m.apply_bandpass_filter()
 m.apply_full_wave_rectifier()

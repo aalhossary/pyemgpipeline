@@ -21,12 +21,12 @@ class EMGMeasurement:
         ndarray, it should be in 1-dim and have the same length as the
         first dimension of x.
 
+    trial_name : str or None, default None
+        Trial name.
+
     channel_names : list of str, or None, default None
         If list, its length should be equal to n_channels.
         Channel names to be shown in the plot.
-
-    main_title : str or None, default None
-        The main title in the plot.
 
     emg_plot_params : EMGPlotParams, default None
         Parameters to control the plot. See class EMGPlotParams and
@@ -39,15 +39,15 @@ class EMGMeasurement:
     must exceed 15. (See class BandpassFilter, function apply)
     """
 
-    def __init__(self, data, hz, timestamp=None, channel_names=None, main_title=None, emg_plot_params=None):
+    def __init__(self, data, hz, timestamp=None, trial_name=None, channel_names=None, emg_plot_params=None):
         BaseProcessor.assert_input(data)
         assert data.shape[0] > 15, 'first dimension of x must have length > 15'
         self.data = copy.deepcopy(data)
         self.hz = hz
         self.timestamp = copy.deepcopy(timestamp)
         self.timestamp = BaseProcessor.get_timestamp(self.data.shape, self.timestamp, self.hz)
+        self.trial_name = trial_name
         self.channel_names = channel_names
-        self.main_title = main_title
         self.emg_plot_params = emg_plot_params
 
     def apply_dc_offset_remover(self):
@@ -182,7 +182,7 @@ class EMGMeasurement:
         None
         """
         plot_emg(self.data, self.timestamp, channel_names=self.channel_names,
-                 main_title=self.main_title, emg_plot_params=self.emg_plot_params)
+                 main_title=self.trial_name, emg_plot_params=self.emg_plot_params)
 
     def export_csv(self, csv_path):
         """Export the processing result to csv

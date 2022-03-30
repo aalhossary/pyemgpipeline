@@ -15,7 +15,7 @@ all_data = [np.array([-5.646, 12.665, 16.937, 1.678, -27.008, -15.411, -3.51, 11
 hz = 1000
 
 # initialize EMGMeasurementCollection
-c = pep.wrappers.EMGMeasurementCollection(all_data, hz=hz, all_main_titles=['Trial 1', 'Trial 2'])
+c = pep.wrappers.EMGMeasurementCollection(all_data, hz=hz, trial_names=['Trial 1', 'Trial 2'])
 
 # apply seven processing steps
 c.apply_dc_offset_remover()

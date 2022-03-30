@@ -1,6 +1,5 @@
 # This example uses uci_lower_limb to show the usage of class EMGMeasurementCollection
-# to process EMG data of multiple trials. Data of multiple trials are stored in
-# a dict for demonstration purpose.
+# to process EMG data of multiple trials. Data of multiple trials are stored in a list.
 
 import os
 import pathlib
@@ -12,7 +11,7 @@ import pyemgpipeline as pep
 repo_folder = pathlib.Path(__file__).parent.parent
 data_folder = os.path.join(repo_folder, 'data', 'uci_lower_limb')
 data_filenames = ['5Nsen.txt', '5Npie.txt', '5Nmar.txt']
-all_trial_names = ['Sit', 'Stand', 'Gait']
+trial_names = ['Sit', 'Stand', 'Gait']
 channel_names = ['rectus femoris', 'biceps femoris', 'vastus internus', 'semitendinosus']
 sample_rate = 1000
 
@@ -32,12 +31,12 @@ def load_uci_lower_limb_txt(_filepath):
 
 
 # Load example data
-all_data = {}
+all_data = []
 for i in range(len(data_filenames)):
     filepath = os.path.join(data_folder, data_filenames[i])
     data = load_uci_lower_limb_txt(filepath)
     print('data shape:', data.shape)
-    all_data[all_trial_names[i]] = data
+    all_data.append(data)
 print(f'Load {len(all_data)} data files')
 
 
@@ -55,8 +54,8 @@ emg_plot_params = pep.plots.EMGPlotParams(
 
 
 # Process EMG by using class EMGMeasurementCollection
-c = pep.wrappers.EMGMeasurementCollection(all_data, hz=sample_rate, channel_names=channel_names,
-                                          emg_plot_params=emg_plot_params)
+c = pep.wrappers.EMGMeasurementCollection(all_data, hz=sample_rate, trial_names=trial_names,
+                                          channel_names=channel_names, emg_plot_params=emg_plot_params)
 c.apply_dc_offset_remover()
 c.apply_bandpass_filter()
 c.apply_full_wave_rectifier()
@@ -65,14 +64,14 @@ c.apply_end_frame_cutter()
 max_amplitude = c.find_max_amplitude_of_each_channel_across_trials()
 print('max_amplitude:', max_amplitude)
 c.apply_amplitude_normalizer(max_amplitude)
-all_beg_ts = {}
-all_end_ts = {}
-for k in all_data:
-    all_beg_ts[k] = 0
-    all_end_ts[k] = 999
+all_beg_ts = []
+all_end_ts = []
+for k in range(len(all_data)):
+    all_beg_ts.append(0)
+    all_end_ts.append(999)
 c.apply_segmenter(all_beg_ts, all_end_ts)  # can put tighter ranges to extract the segments of interest
 
 
 # plot the processed data
-c['Stand'].plot()  # plot the trial 'Stand'
+c[1].plot()  # plot the trial 'Stand'
 c.plot(is_overlapping_trials=True, cycled_colors=['r','b','k'])  # plot all trials

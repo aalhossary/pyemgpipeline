@@ -1,6 +1,5 @@
 from .. processors import *
 from .. plots import *
-from .. utilities import iter_dict_or_list
 from . emg_measurement import EMGMeasurement
 import numpy as np
 import copy
@@ -11,10 +10,8 @@ class EMGMeasurementCollection:
 
     Parameters
     ----------
-    all_data : dict or list
-        If dict, keys can be trial names and values are signal data of
-        the trials.
-        If list, elements are signal data of the trials.
+    all_data : list
+        Elements of all_data are signal data of the trials.
         Signal data of each trial should be ndarray of shape
         (n_samples,) or (n_samples, n_channels), where n_samples > 15
         (See Notes).
@@ -31,11 +28,7 @@ class EMGMeasurementCollection:
         For fine wire EMG, the authors suggest a minimum sample rate of
         2000 Hz.
 
-    all_timestamp : dict, list, or None, default None
-        If dict or list, all_timestamp should be of the same type as
-        all_data.
-        If dict, keys should be identical to those of all_data and
-        values are ndarray or None.
+    all_timestamp : list or None, default None
         If list, its length should be the same as the length of all_data
         and elements are ndarray or None.
         The ndarray in all_timestamp is the actual timestamp of the
@@ -43,17 +36,15 @@ class EMGMeasurementCollection:
         length as the first dimension of its corresponding element in
         all_data.
 
+    trial_names : list or None, default None
+        Trial names.
+        If not None, trial_names and all_data should have the same
+        length.
+
     channel_names : list or None, default None
         If list, elements are str and its length should be equal to
         n_channels.
         Channel names of all trials to be shown in plots.
-
-    all_main_titles : list or None, default None
-        The main title in the plot, which is valid only when all_data
-        is a list. (If all_data is a dict, its keys will be used as
-        main titles.)
-        If not None, all_main_titles and all_data should have the same
-        length.
 
     emg_plot_params : EMGPlotParams or None, default None
         See class EMGPlotParams and function emg_plot.
@@ -77,16 +68,16 @@ class EMGMeasurementCollection:
         action. 108-112.
     """
 
-    def __init__(self, all_data, hz, all_timestamp=None, channel_names=None,
-                 all_main_titles=None, emg_plot_params=None):
-        assert isinstance(all_data, dict) or isinstance(all_data, list), 'all_data must be dict or list'
-        for k in iter_dict_or_list(all_data):
+    def __init__(self, all_data, hz, all_timestamp=None,
+                 trial_names=None, channel_names=None, emg_plot_params=None):
+        assert isinstance(all_data, list), 'all_data must be list'
+        for k in range(len(all_data)):
             BaseProcessor.assert_input(all_data[k])
             assert all_data[k].shape[0] > 15, 'first dimension of ndarray in all_data[k] must have length > 15'
-        ndims = [all_data[k].ndim for k in iter_dict_or_list(all_data)]
+        ndims = [all_data[k].ndim for k in range(len(all_data))]
         assert all([e == ndims[0] for e in ndims]), 'Dimensions of all trials should be identical'
         if ndims[0] == 2:
-            nchs = [all_data[k].shape[1] for k in iter_dict_or_list(all_data)]
+            nchs = [all_data[k].shape[1] for k in range(len(all_data))]
             assert all([e == nchs[0] for e in nchs]), 'n_channels of all trials should be identical'
         self.all_data = copy.deepcopy(all_data)
 
@@ -94,35 +85,22 @@ class EMGMeasurementCollection:
 
         self.all_timestamp = copy.deepcopy(all_timestamp)
         if self.all_timestamp is not None:
-            if isinstance(self.all_data, dict):
-                assert isinstance(self.all_timestamp, dict), 'all_timestamp must be dict since all_data is a dict'
-                assert set(self.all_timestamp.keys()) == set(self.all_data.keys()), \
-                    'all_timestamp and all_data must have identical keys'
-            else:
-                assert isinstance(self.all_timestamp, list), 'all_timestamp must be list since all_data is a list'
-                assert len(self.all_timestamp) == len(self.all_data), \
-                    'The length of all_timestamp and all_data must be identical'
+            assert isinstance(self.all_timestamp, list), 'all_timestamp must be list if not None'
+            assert len(self.all_timestamp) == len(self.all_data), \
+                'The length of all_timestamp and all_data must be identical'
         else:
-            if isinstance(self.all_data, dict):
-                self.all_timestamp = dict.fromkeys(self.all_data.keys(), None)
-            else:
-                self.all_timestamp = [None] * len(self.all_data)
-        for k in iter_dict_or_list(self.all_data):
+            self.all_timestamp = [None] * len(self.all_data)
+        for k in range(len(all_data)):
             self.all_timestamp[k] = BaseProcessor.get_timestamp(self.all_data[k].shape, self.all_timestamp[k], self.hz)
 
-        self.channel_names = channel_names
-
-        if isinstance(self.all_data, dict):
-            self.all_main_titles = {}
-            for k in self.all_data:
-                self.all_main_titles[k] = k
+        if trial_names is None:
+            self.trial_names = [None] * len(self.all_data)
         else:
-            if all_main_titles is None:
-                self.all_main_titles = [None] * len(self.all_data)
-            else:
-                assert isinstance(all_main_titles, list) and len(all_main_titles) == len(self.all_data),\
-                    'all_main_titles should be a list with length len(all_data)'
-                self.all_main_titles = all_main_titles
+            assert isinstance(trial_names, list) and len(trial_names) == len(self.all_data), \
+                'trial_names should be a list with length len(all_data)'
+            self.trial_names = trial_names
+
+        self.channel_names = channel_names
 
         self.emg_plot_params = emg_plot_params
 
@@ -134,7 +112,7 @@ class EMGMeasurementCollection:
         None
         """
 
-        for k in iter_dict_or_list(self.all_data):
+        for k in range(len(self.all_data)):
             self.all_data[k] = DCOffsetRemover().apply(self.all_data[k])
 
     def apply_bandpass_filter(self, bf_order=4, bf_cutoff_fq_lo=10, bf_cutoff_fq_hi=450):
@@ -160,7 +138,7 @@ class EMGMeasurementCollection:
         None
         """
 
-        for k in iter_dict_or_list(self.all_data):
+        for k in range(len(self.all_data)):
             self.all_data[k] = BandpassFilter(self.hz, bf_order, bf_cutoff_fq_lo, bf_cutoff_fq_hi).apply(
                 self.all_data[k])
 
@@ -172,7 +150,7 @@ class EMGMeasurementCollection:
         None
         """
 
-        for k in iter_dict_or_list(self.all_data):
+        for k in range(len(self.all_data)):
             self.all_data[k] = FullWaveRectifier().apply(self.all_data[k])
 
     def apply_linear_envelope(self, le_order=4, le_cutoff_fq=6):
@@ -194,7 +172,7 @@ class EMGMeasurementCollection:
         None
         """
 
-        for k in iter_dict_or_list(self.all_data):
+        for k in range(len(self.all_data)):
             self.all_data[k] = LinearEnvelope(self.hz, le_order, le_cutoff_fq).apply(self.all_data[k])
 
     def apply_end_frame_cutter(self, n_end_frames=30):
@@ -211,7 +189,7 @@ class EMGMeasurementCollection:
         None
         """
 
-        for k in iter_dict_or_list(self.all_data):
+        for k in range(len(self.all_data)):
             self.all_data[k] = EndFrameCutter(n_end_frames).apply(self.all_data[k])
             self.all_timestamp[k] = EndFrameCutter(n_end_frames).apply(self.all_timestamp[k])
 
@@ -226,7 +204,7 @@ class EMGMeasurementCollection:
         """
 
         collect_trial_max = ()
-        for k in iter_dict_or_list(self.all_data):
+        for k in range(len(self.all_data)):
             collect_trial_max += tuple(np.max(np.abs(self.all_data[k]), axis=0).reshape(1, -1))
         max_amplitude = np.max(np.vstack(collect_trial_max), axis=0)
         return max_amplitude
@@ -249,7 +227,7 @@ class EMGMeasurementCollection:
         None
         """
 
-        for k in iter_dict_or_list(self.all_data):
+        for k in range(len(self.all_data)):
             self.all_data[k] = AmplitudeNormalizer().apply(self.all_data[k], divisor=max_amplitude)
 
     def apply_segmenter(self, all_beg_ts, all_end_ts):
@@ -257,20 +235,14 @@ class EMGMeasurementCollection:
 
         Parameters
         ----------
-        all_beg_ts : dict or list
-            all_beg_ts should be of the same type as all_data.
-            If dict, keys should be identical to those of all_data
-            and values are float.
-            If list, elements are float and the length should be
+        all_beg_ts : list
+            Elements of all_beg_ts are float and the length should be
             equal to the length of all_data.
             Beginning time of interest for each trial. For trial k,
             all_beg_ts[k] <= all_timestamp[k][-1].
 
-        all_end_ts : dict or list
-            all_end_ts should be of the same type as all_data.
-            If dict, keys should be identical to those of all_data
-            and values are float.
-            If list, elements are float and the length should be
+        all_end_ts : list
+            Elements of all_end_ts are float and the length should be
             equal to the length of all_data.
             End time of interest for each trial. For trial k,
             all_end_ts[k] >= all_timestamp[k][0] and
@@ -281,18 +253,12 @@ class EMGMeasurementCollection:
         None
         """
 
-        if isinstance(self.all_data, dict):
-            assert isinstance(all_beg_ts, dict) and isinstance(all_end_ts, dict),\
-                'all_beg_ts and all_end_ts must be dict since all_data is a dict'
-            assert set(all_beg_ts.keys()) == set(all_end_ts.keys()) == set(self.all_data.keys()), \
-                'all_beg_ts, all_end_ts, and all_data must have identical keys'
-        else:
-            assert isinstance(all_beg_ts, list) and isinstance(all_end_ts, list), \
-                'all_beg_ts and all_end_ts must be list since all_data is a list'
-            assert len(all_beg_ts) == len(all_end_ts) == len(self.all_data), \
-                'The length of all_beg_ts, all_end_ts, and all_data must be identical'
+        assert isinstance(all_beg_ts, list) and isinstance(all_end_ts, list), \
+            'all_beg_ts and all_end_ts must be list since all_data is a list'
+        assert len(all_beg_ts) == len(all_end_ts) == len(self.all_data), \
+            'The length of all_beg_ts, all_end_ts, and all_data must be identical'
 
-        for k in iter_dict_or_list(self.all_data):
+        for k in range(len(self.all_data)):
             beg_idx, end_idx = BaseProcessor.get_indices_from_timestamp(
                 self.all_timestamp[k], all_beg_ts[k], all_end_ts[k])
             self.all_data[k] = Segmenter().apply(self.all_data[k], beg_idx=beg_idx, end_idx=end_idx)
@@ -303,10 +269,8 @@ class EMGMeasurementCollection:
 
         Parameters
         ----------
-        k : key of dict or index of list
-            If all_data is a dict, k is one of its key.
-            If all_data is a list, k is an integer between 0 and
-            len(all_data) - 1.
+        k : index of list
+            k is an integer between 0 and len(all_data) - 1.
 
         Returns
         -------
@@ -315,13 +279,10 @@ class EMGMeasurementCollection:
             trial k.
         """
 
-        if isinstance(self.all_data, dict):
-            assert k in self.all_data.keys(), 'k must be a key of all_data (a dict)'
-        else:
-            assert k in range(len(self.all_data)), 'k must be an index of all_data (a list)'
+        assert k in range(len(self.all_data)), 'k must be an index of all_data (a list)'
 
         m = EMGMeasurement(self.all_data[k], self.hz, self.all_timestamp[k],
-                           self.channel_names, self.all_main_titles[k], self.emg_plot_params)
+                           self.trial_names[k], self.channel_names, self.emg_plot_params)
         return m
 
     def plot(self, is_overlapping_trials=False, cycled_colors=None):
@@ -347,25 +308,23 @@ class EMGMeasurementCollection:
             if emg_plot_params.line2d_kwargs is not None:
                 emg_plot_params.line2d_kwargs.pop('color', None)
 
-            plot_emg_overlapping_trials(self.all_data, self.all_timestamp, self.all_main_titles,
+            plot_emg_overlapping_trials(self.all_data, self.all_timestamp, self.trial_names,
                                         cycled_colors=cycled_colors,
                                         channel_names=self.channel_names, main_title=None,
                                         emg_plot_params=emg_plot_params)
         else:
-            for k in iter_dict_or_list(self.all_data):
+            for k in range(len(self.all_data)):
                 plot_emg(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,
-                         main_title=self.all_main_titles[k], emg_plot_params=self.emg_plot_params)
+                         main_title=self.trial_names[k], emg_plot_params=self.emg_plot_params)
 
     def export_csv(self, all_csv_path):
         """Export the processing results of all trials to csv
 
         Parameters
         ----------
-        all_csv_path : dict or list
-            all_csv_path should be of the same type as all_data.
-            If dict, keys should be identical to those of all_data.
-            If list, its length should be the same as the length of
-            all_data.
+        all_csv_path : list
+            The length of all_csv_path should be the same as the length
+            of all_data.
             The destination paths to export data of all trials.
 
         Returns
@@ -373,6 +332,6 @@ class EMGMeasurementCollection:
         None
         """
 
-        for k in iter_dict_or_list(self.all_data):
+        for k in range(len(self.all_data)):
             BaseProcessor.export_csv(all_csv_path[k], self.all_data[k],
                                      timestamp=self.all_timestamp[k], channel_names=self.channel_names)

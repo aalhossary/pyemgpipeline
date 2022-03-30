@@ -1,6 +1,5 @@
 from .. processors import *
 from .. plots import *
-from .. utilities import iter_dict_or_list
 from . emg_measurement_collection import EMGMeasurementCollection
 import copy
 
@@ -45,11 +44,11 @@ class DataProcessingManager:
     segmenter : Segmenter or None
         A Segmenter processor.
 
-    segmenter_all_beg_ts : dict, list, or None
+    segmenter_all_beg_ts : list or None
         Beginning time of interest for each trial to segment. See
         function apply_segmenter of class EMGMeasurementCollection.
 
-    segmenter_all_end_ts : dict, list, or None
+    segmenter_all_end_ts : list or None
         End time of interest for each trial to segment. See
         function apply_segmenter of class EMGMeasurementCollection.
     """
@@ -69,16 +68,14 @@ class DataProcessingManager:
         self.segmenter_all_beg_ts = None
         self.segmenter_all_end_ts = None
 
-    def set_data_and_params(self, all_data, hz, all_timestamp=None, channel_names=None,
-                            all_main_titles=None, emg_plot_params=None):
+    def set_data_and_params(self, all_data, hz, all_timestamp=None,
+                            trial_names=None, channel_names=None, emg_plot_params=None):
         """Set the data and plot parameters and initialize default processors
 
         Parameters
         ----------
-        all_data : dict or list
-            If dict, keys can be trial names and values are signal data of
-            the trials.
-            If list, elements are signal data of the trials.
+        all_data : list
+            Elements of all_data are signal data of the trials.
             Signal data of each trial should be ndarray of shape
             (n_samples,) or (n_samples, n_channels), where n_samples > 15.
             Dimensions and n_channels (if 2-dim) of all trials should be
@@ -87,11 +84,7 @@ class DataProcessingManager:
         hz : float
             Sample rate in hertz.
 
-        all_timestamp : dict, list, or None, default None
-            If dict or list, all_timestamp should be of the same type as
-            all_data.
-            If dict, keys should be identical to those of all_data and
-            values are ndarray or None.
+        all_timestamp : list or None, default None
             If list, its length should be the same as the length of all_data
             and elements are ndarray or None.
             The ndarray in all_timestamp is the actual timestamp of the
@@ -99,25 +92,23 @@ class DataProcessingManager:
             length as the first dimension of its corresponding element in
             all_data.
 
+        trial_names : list or None, default None
+            Trial names.
+            If not None, trial_names and all_data should have the same
+            length.
+
         channel_names : list or None, default None
             If list, elements are str and its length should be equal to
             n_channels.
             Channel names of all trials to be shown in plots.
-
-        all_main_titles : list or None, default None
-            The main title in the plot, which is valid only when all_data
-            is a list. (If all_data is a dict, its keys will be used as
-            main titles.)
-            If not None, all_main_titles and all_data should have the same
-            length.
 
         emg_plot_params : EMGPlotParams or None, default None
             See class EMGPlotParams and function emg_plot.
         """
 
         self.c_raw = EMGMeasurementCollection(
-            all_data, hz, all_timestamp=all_timestamp, channel_names=channel_names,
-            all_main_titles=all_main_titles, emg_plot_params=emg_plot_params)
+            all_data, hz, all_timestamp=all_timestamp, trial_names=trial_names,
+            channel_names=channel_names, emg_plot_params=emg_plot_params)
 
         # set the default 5 processors in case they are None
         if self.dc_offset_remover is None:
@@ -229,11 +220,11 @@ class DataProcessingManager:
         segmenter : Segmenter
             A segmenter.
 
-        all_beg_ts : dict or list
+        all_beg_ts : list
             Beginning time of interest for each trial.
             See function apply_segmenter of class EMGMeasurementCollection.
 
-        all_end_ts : dict or list
+        all_end_ts : list
             End time of interest for each trial.
             See function apply_segmenter of class EMGMeasurementCollection.
 
@@ -280,16 +271,16 @@ class DataProcessingManager:
         current_step : str
             Current step in the processing chain.
 
-        k_for_plot : key of dict, index of list, or None
+        k_for_plot : index of list, or None
             If k_for_plot is None, all trials will be plotted.
-            If k_for_plot is not None, its value is the trial to be
-            plotted and should satisfy:
-            (1) If all_data is a dict, k_for_plot is one of its key.
-            (2) If all_data is a list, k_for_plot is an integer between 0
-            and len(all_data) - 1.
+            If k_for_plot is not None, it should be an integer between
+            0 and len(all_data) - 1. In this case, if
+            is_overlapping_trials is False, only trial k_for_plot will
+            be plotted.
 
         is_overlapping_trials : bool, default False
             Whether overlapping trials of the same channel.
+            If True, all trials will be plotted and overlapped.
 
         cycled_colors : list or None, default None
             The colors for plotting overlapped trials data.
@@ -302,17 +293,17 @@ class DataProcessingManager:
         None
         """
         if is_overlapping_trials:
-            plot_emg_overlapping_trials(self.c.all_data, self.c.all_timestamp, self.c.all_main_titles,
+            plot_emg_overlapping_trials(self.c.all_data, self.c.all_timestamp, self.c.trial_names,
                                         cycled_colors=cycled_colors,
                                         channel_names=self.c.channel_names, main_title=current_step,
                                         emg_plot_params=emg_plot_params)
         else:
-            for k in iter_dict_or_list(self.c.all_data):
+            for k in range(len(self.c.all_data)):
                 if k_for_plot is not None and k != k_for_plot:
                     continue
                 plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
                          channel_names=self.c.channel_names,
-                         main_title=f'{current_step} ({self.c.all_main_titles[k]})',
+                         main_title=f'{current_step} ({self.c.trial_names[k]})',
                          emg_plot_params=emg_plot_params)
 
     def process_all(self, is_plot_processing_chain=False, k_for_plot=None,
@@ -325,16 +316,16 @@ class DataProcessingManager:
             Whether to plot the intermediate results after each
             processing step.
 
-        k_for_plot : key of dict, index of list, or None
+        k_for_plot : index of list, or None
             If k_for_plot is None, all trials will be plotted.
-            If k_for_plot is not None, its value is the trial to be
-            plotted and should satisfy:
-            (1) If all_data is a dict, k_for_plot is one of its key.
-            (2) If all_data is a list, k_for_plot is an integer between 0
-            and len(all_data) - 1.
+            If k_for_plot is not None, it should be an integer between
+            0 and len(all_data) - 1. In this case, if
+            is_overlapping_trials is False, only trial k_for_plot will
+            be plotted.
 
         is_overlapping_trials : bool, default False
             Whether overlapping trials of the same channel.
+            If True, all trials will be plotted and overlapped.
 
         cycled_colors : list or None, default None
             The colors for plotting overlapped trials data.
@@ -351,10 +342,7 @@ class DataProcessingManager:
         self.c = copy.deepcopy(self.c_raw)
 
         if k_for_plot is not None:
-            if isinstance(self.c.all_data, dict):
-                assert k_for_plot in self.c.all_data.keys(), 'k_for_plot must be a key of all_data (a dict)'
-            else:
-                assert k_for_plot in range(len(self.c.all_data)), 'k_for_plot must be an index of all_data (a list)'
+            assert k_for_plot in range(len(self.c.all_data)), 'k_for_plot must be an index of all_data (a list)'
 
         emg_plot_params = copy.deepcopy(self.c.emg_plot_params)
         if is_overlapping_trials:
@@ -368,7 +356,7 @@ class DataProcessingManager:
                                         is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.dc_offset_remover is not None:
-            for k in iter_dict_or_list(self.c.all_data):
+            for k in range(len(self.c.all_data)):
                 self.c.all_data[k] = self.dc_offset_remover.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
@@ -376,7 +364,7 @@ class DataProcessingManager:
                                             is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.bandpass_filter is not None:
-            for k in iter_dict_or_list(self.c.all_data):
+            for k in range(len(self.c.all_data)):
                 self.c.all_data[k] = self.bandpass_filter.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
@@ -384,7 +372,7 @@ class DataProcessingManager:
                                             is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.full_wave_rectifier is not None:
-            for k in iter_dict_or_list(self.c.all_data):
+            for k in range(len(self.c.all_data)):
                 self.c.all_data[k] = self.full_wave_rectifier.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
@@ -392,7 +380,7 @@ class DataProcessingManager:
                                             is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.linear_envelope is not None:
-            for k in iter_dict_or_list(self.c.all_data):
+            for k in range(len(self.c.all_data)):
                 self.c.all_data[k] = self.linear_envelope.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
@@ -400,7 +388,7 @@ class DataProcessingManager:
                                             is_overlapping_trials, cycled_colors, emg_plot_params)
 
         if self.end_frame_cutter is not None:
-            for k in iter_dict_or_list(self.c.all_data):
+            for k in range(len(self.c.all_data)):
                 self.c.all_data[k] = self.end_frame_cutter.apply(self.c.all_data[k])
                 self.c.all_timestamp[k] = self.end_frame_cutter.apply(self.c.all_timestamp[k])
 
@@ -410,7 +398,7 @@ class DataProcessingManager:
 
         if self.amplitude_normalizer is not None:
             max_amplitude = self.c.find_max_amplitude_of_each_channel_across_trials()
-            for k in iter_dict_or_list(self.c.all_data):
+            for k in range(len(self.c.all_data)):
                 self.c.all_data[k] = self.amplitude_normalizer.apply(self.c.all_data[k], divisor=max_amplitude)
 
             if is_plot_processing_chain:
@@ -419,13 +407,14 @@ class DataProcessingManager:
 
         if self.segmenter is not None and self.segmenter_all_beg_ts is not None \
                 and self.segmenter_all_end_ts is not None:
-            for k in iter_dict_or_list(self.c.all_data):
+            for k in range(len(self.c.all_data)):
                 beg_idx, end_idx = BaseProcessor.get_indices_from_timestamp(
                     self.c.all_timestamp[k], self.segmenter_all_beg_ts[k], self.segmenter_all_end_ts[k])
                 self.c.all_data[k] = Segmenter().apply(self.c.all_data[k], beg_idx=beg_idx, end_idx=end_idx)
                 self.c.all_timestamp[k] = Segmenter().apply(self.c.all_timestamp[k], beg_idx=beg_idx, end_idx=end_idx)
 
-            self._plot_processing_chain('After segmenter', k_for_plot,
-                                        is_overlapping_trials, cycled_colors, emg_plot_params)
+            if is_plot_processing_chain:
+                self._plot_processing_chain('After segmenter', k_for_plot,
+                                            is_overlapping_trials, cycled_colors, emg_plot_params)
 
         return self.c

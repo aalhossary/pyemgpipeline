@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from .. utilities import iter_dict_or_list
 
 
 class EMGPlotParams:
@@ -134,25 +133,21 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels, cycled_c
 
     Parameters
     ----------
-    all_data : dict or list
-        If dict, keys can be trial names and values are signal data of
-        the trials.
-        If list, elements are signal data of the trials.
+    all_data : list
+        Elements of all_data are signal data of the trials.
         Signal data of each trial should be ndarray of shape
         (n_samples,) or (n_samples, n_channels).
         Dimensions and n_channels (if 2-dim) of all trials should be
         the same.
 
-    all_timestamp : dict or list
-        all_timestamp should be of the same type as all_data.
-        If dict, keys should be identical to those of all_data and
-        values are ndarray of shape (n_samples,).
-        If list, its length should be the same as the length of all_data
-        and elements are ndarray of shape (n_samples,).
+    all_timestamp : list
+        The length of all_timestamp should be the same as the length
+        of all_data.
+        Elements of all_timestamp are ndarray of shape (n_samples,).
 
-    legend_labels : dict or list
+    legend_labels : list
         The legend labels identify the trials which are overlapped in
-        the plots. legend_labels should be of the same type as all_data.
+        the plots.
 
     cycled_colors : list or None, default None
         The colors for plotting overlapped trials data
@@ -187,7 +182,7 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels, cycled_c
         n_rows, n_cols, fig_kwargs, line2d_kwargs = None, None, None, None
 
     n_channels = 0
-    for k in iter_dict_or_list(all_data):
+    for k in range(len(all_data)):
         if all_data[k].ndim == 1:
             all_data[k] = all_data[k].reshape(-1, 1)
         n_channels = all_data[k].shape[1]
@@ -221,7 +216,7 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels, cycled_c
         if cycled_colors is not None:
             axs[i].set_prop_cycle(color=cycled_colors)
 
-        for k in iter_dict_or_list(all_data):
+        for k in range(len(all_data)):
             axs[i].plot(all_timestamp[k], all_data[k][:, i], label=legend_labels[k], **line2d_kwargs)
             axs[i].legend()
 
