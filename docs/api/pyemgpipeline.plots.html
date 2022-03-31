@@ -144,7 +144,7 @@
 <h2>EMGPlotParams<a class="headerlink" href="#emgplotparams" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyemgpipeline.plots.EMGPlotParams">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.plots.</span></span><span class="sig-name descname"><span class="pre">EMGPlotParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.plots.EMGPlotParams" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.plots.</span></span><span class="sig-name descname"><span class="pre">EMGPlotParams</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_rows</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_cols</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line2d_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.plots.EMGPlotParams" title="Permalink to this definition"></a></dt>
 <dd><p>Parameters of EMG plots</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -158,6 +158,11 @@ class matplotlib.figure.Figure, including figsize, dpi,
 facecolor, edgecolor, linewidth, frameon, subplotpars,
 tight_layout, constrained_layout, etc.
 (See <a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html">https://matplotlib.org/stable/api/figure_api.html</a>).</p></li>
+<li><p><strong>line2d_kwargs</strong> (<em>dict</em><em>, </em><em>default None</em>) – Parameters to control the plot. They are certain parameters
+of class matplotlib.lines.Line2D, including linewidth,
+linestyle, color, marker, markersize, fillstyle, and more.
+(See
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html">https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html</a>).</p></li>
 </ul>
 </dd>
 </dl>

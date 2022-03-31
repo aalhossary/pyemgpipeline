@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>High-level, guided processing &mdash; pyemgpipeline 0.1.0 documentation</title>
+  <title>Example 3 - High-level, guided processing (using gesture data) &mdash; pyemgpipeline 0.1.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="API" href="../api.html" />
-    <link rel="prev" title="Multiple EMG measurement definition and processing" href="ex2_EMGMeasurementCollection.html" /> 
+    <link rel="next" title="Example 4 - High-level, guided processing (using knee osteoarthritis therapy data)" href="ex4_DataProcessingManager.html" />
+    <link rel="prev" title="Example 2 - Multiple EMG measurement definition and processing (using lower limb data)" href="ex2_EMGMeasurementCollection.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,13 +43,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="ex1_EMGMeasurement.html">Single EMG measurement definition and processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ex2_EMGMeasurementCollection.html">Multiple EMG measurement definition and processing</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">High-level, guided processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ex0_input_data_description.html">Example 0 - Input data description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ex1_EMGMeasurement.html">Example 1 - Single EMG measurement definition and processing (using lower limb data)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ex2_EMGMeasurementCollection.html">Example 2 - Multiple EMG measurement definition and processing (using lower limb data)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 3 - High-level, guided processing (using gesture data)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Package-preparation">Package preparation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Data-preparation">Data preparation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Data-processing">Data processing</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="ex4_DataProcessingManager.html">Example 4 - High-level, guided processing (using knee osteoarthritis therapy data)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
@@ -70,7 +73,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../examples.html">Examples</a> &raquo;</li>
-      <li>High-level, guided processing</li>
+      <li>Example 3 - High-level, guided processing (using gesture data)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/notebooks/ex3_DataProcessingManager.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -350,36 +353,78 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="High-level,-guided-processing">
-<h1>High-level, guided processing<a class="headerlink" href="#High-level,-guided-processing" title="Permalink to this headline"></a></h1>
-<p>This example shows the usage of class <a class="reference external" href="../api/pyemgpipeline.wrappers.html#dataprocessingmanager">DataProcessingManager</a>, a high-level, guided processing interface with accepted EMG processing conventions. This is the recommended way of EMG processing using this package.</p>
+<p><a class="reference external" href="https://colab.research.google.com/github/aalhossary/pyemgpipeline/blob/master/docs/notebooks/ex3_DataProcessingManager.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
+<div class="section" id="Example-3---High-level,-guided-processing-(using-gesture-data)">
+<h1>Example 3 - High-level, guided processing (using gesture data)<a class="headerlink" href="#Example-3---High-level,-guided-processing-(using-gesture-data)" title="Permalink to this headline"></a></h1>
+<p>This example shows the usage of class <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.wrappers.html#dataprocessingmanager">DataProcessingManager</a>, a high-level, guided processing interface with accepted EMG processing conventions. This is the recommended way of EMG processing using this package.</p>
 <p>The data used in this example contains two files of subject #10 in <a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/emg+data+for+gestures">“EMG data for gestures”</a> from the UC Irvine Machine Learning Repository. In particular, the data was collected in eight channels from the forearm of the subject while performing series of static hand gestures.</p>
-<div class="nbinput nblast docutils container">
+<div class="section" id="Package-preparation">
+<h2>Package preparation<a class="headerlink" href="#Package-preparation" title="Permalink to this headline"></a></h2>
+<p>We install and import needed packages.</p>
+<div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pathlib</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">matplotlib.figure</span> <span class="kn">import</span> <span class="n">SubplotParams</span>
-<span class="o">%</span><span class="k">matplotlib</span> inline
-<span class="kn">import</span> <span class="nn">pyemgpipeline</span> <span class="k">as</span> <span class="nn">pep</span>
+<span></span><span class="o">!</span>pip install pyemgpipeline -q
 </pre></div>
 </div>
 </div>
-<div class="section" id="Data-preparation">
-<h2>Data preparation<a class="headerlink" href="#Data-preparation" title="Permalink to this headline"></a></h2>
-<p>Signal data of each trial should be stored in a 2d ndarray with shape <em>(n_samples, n_channels)</em>, where each column represents data of one channel. Data of multiple trials are organized in a <em>dict</em> or a <em>list</em>.</p>
-<p>First we set up basic information of the data, including data path, channel names, sample rate, etc.</p>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+     |████████████████████████████████| 51 kB 5.9 MB/s
+
+</pre></div></div>
+</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
-<span class="n">repo_folder</span> <span class="o">=</span> <span class="n">pathlib</span><span class="o">.</span><span class="n">Path</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">parent</span>
-<span class="n">data_folder</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">repo_folder</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;uci_gestures&#39;</span><span class="p">)</span>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib.figure</span> <span class="kn">import</span> <span class="n">SubplotParams</span>
+<span class="kn">import</span> <span class="nn">pyemgpipeline</span> <span class="k">as</span> <span class="nn">pep</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="Data-preparation">
+<h2>Data preparation<a class="headerlink" href="#Data-preparation" title="Permalink to this headline"></a></h2>
+<p>First download the raw data from the UC Irvine Machine Learning Repository.</p>
+<p>When finished, the compressed file “EMG_data_for_gestures-master.zip” (~17MB) is saved in the “uci_gestures” subfolder.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="o">!</span>rm -rf uci_gestures
+<span class="o">!</span>wget -q https://archive.ics.uci.edu/ml/machine-learning-databases/00481/EMG_data_for_gestures-master.zip -P ./uci_gestures
+</pre></div>
+</div>
+</div>
+<p>Uncompress the downloaded file. This example will only use two files of subject 10, which are in the archived folder “EMG_data_for_gestures-master/10”.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># !unzip -q uci_gestures/EMG_data_for_gestures-master.zip -d ./uci_gestures  #This command extracts all files.</span>
+<span class="o">!</span>unzip -q uci_gestures/EMG_data_for_gestures-master.zip EMG_data_for_gestures-master/10/* -d ./uci_gestures  #This <span class="nb">command</span> extracts only the file needed <span class="k">in</span> this example.
+</pre></div>
+</div>
+</div>
+<p>Signal data of each trial should be stored in a 2d ndarray with shape <em>(n_samples, n_channels)</em>, where each column represents data of one channel. Data of multiple trials are organized in a <em>list</em>.</p>
+<p>First we set up basic information of the data, including data path, channel names, sample rate, etc.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">data_folder</span> <span class="o">=</span> <span class="s1">&#39;uci_gestures/EMG_data_for_gestures-master/10&#39;</span>
 <span class="n">data_filenames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1_raw_data_11-08_21.03.16.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;2_raw_data_11-10_21.03.16.txt&#39;</span><span class="p">]</span>
 <span class="n">all_trial_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;trial 1&#39;</span><span class="p">,</span> <span class="s1">&#39;trial 2&#39;</span><span class="p">]</span>
 <span class="n">channel_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;channel1&#39;</span><span class="p">,</span> <span class="s1">&#39;channel2&#39;</span><span class="p">,</span> <span class="s1">&#39;channel3&#39;</span><span class="p">,</span> <span class="s1">&#39;channel4&#39;</span><span class="p">,</span> <span class="s1">&#39;channel5&#39;</span><span class="p">,</span> <span class="s1">&#39;channel6&#39;</span><span class="p">,</span> <span class="s1">&#39;channel7&#39;</span><span class="p">,</span> <span class="s1">&#39;channel8&#39;</span><span class="p">]</span>
@@ -387,9 +432,9 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Signal data of multiple trials are stored in <em>all_data</em> of type <em>list</em> in this example, where each element of the <em>list</em> is a 2d ndarray. Since the raw data provides the timestamp information, it is also extracted in <em>all_timestamp</em> of type <em>list</em>, where each element is a 1d ndarray.</p>
+<p>Signal data of multiple trials are stored in <em>all_data</em> of type <em>list</em>, where each element of the <em>list</em> is a 2d ndarray. Since the raw data provides the timestamp information, it is also extracted in <em>all_timestamp</em> of type <em>list</em>, where each element is a 1d ndarray.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -403,7 +448,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -412,7 +457,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -424,7 +469,7 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -433,7 +478,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -455,7 +500,7 @@ div.rendered_html tbody tr:hover {
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -473,9 +518,9 @@ shapes of all_timestamp: (61641,) (61448,)
 shapes of all_data: (61641, 8) (61448, 8)
 </pre></div></div>
 </div>
-<p>We also set up the parameters for plotting with an instance of class <a class="reference external" href="../api/pyemgpipeline.plots.html#emgplotparams">EMGPlotParams</a>. Note that the whole setting configures the plotting of a single trial. Plotting of all trials use the same setting.</p>
+<p>We also set up the parameters for plotting with an instance of class <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.plots.html#emgplotparams">EMGPlotParams</a>. Note that the whole setting configures the plotting of a single trial. Plotting of all trials use the same setting.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -493,9 +538,9 @@ shapes of all_data: (61641, 8) (61448, 8)
 </div>
 <div class="section" id="Data-processing">
 <h2>Data processing<a class="headerlink" href="#Data-processing" title="Permalink to this headline"></a></h2>
-<p>First we create an instance of class <a class="reference external" href="../api/pyemgpipeline.wrappers.html#dataprocessingmanager">DataProcessingManager</a>.</p>
+<p>First we create an instance of class <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.wrappers.html#dataprocessingmanager">DataProcessingManager</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -505,7 +550,7 @@ shapes of all_data: (61641, 8) (61448, 8)
 </div>
 <p>We use method <em>set_data_and_params</em> to set or reset signal data <em>all_data</em>, timestamp data <em>all_timestamp</em>, and other information, to the data processing manager instance.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -517,7 +562,7 @@ shapes of all_data: (61641, 8) (61448, 8)
 </div>
 <p>Note that the above method also initializes five processing steps as default in case they are not set yet. The steps can be examined as follows:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -538,11 +583,11 @@ Linear envelope      : hz = 1000, le_order = 4, le_cutoff_fq = 6
 End frame cutter     : n_end_frames = 30
 </pre></div></div>
 </div>
-<p>The data processing manager instance contains instances of all processors (which can be None), including <a class="reference external" href="../api/pyemgpipeline.processors.html#dcoffsetremover">DCOffsetRemover</a>, <a class="reference external" href="../api/pyemgpipeline.processors.html#bandpassfilter">BandpassFilter</a>, <a class="reference external" href="../api/pyemgpipeline.processors.html#fullwaverectifier">FullWaveRectifier</a>, <a class="reference external" href="../api/pyemgpipeline.processors.html#linearenvelope">LinearEnvelope</a>, <a class="reference external" href="../api/pyemgpipeline.processors.html#endframecutter">EndFrameCutter</a>,
-<a class="reference external" href="../api/pyemgpipeline.processors.html#amplitudenormalizer">AmplitudeNormalizer</a>, and <a class="reference external" href="../api/pyemgpipeline.processors.html#segmenter">Segmenter</a>. All of them can be set or reset.</p>
-<p>For example, we reset the <a class="reference external" href="../api/pyemgpipeline.processors.html#bandpassfilter">BandpassFilter</a> processor with different parameters and show current processes again.</p>
+<p>The data processing manager instance contains instances of all processors (which can be None), including <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.processors.html#dcoffsetremover">DCOffsetRemover</a>, <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.processors.html#bandpassfilter">BandpassFilter</a>, <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.processors.html#fullwaverectifier">FullWaveRectifier</a>,
+<a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.processors.html#linearenvelope">LinearEnvelope</a>, <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.processors.html#endframecutter">EndFrameCutter</a>, <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.processors.html#amplitudenormalizer">AmplitudeNormalizer</a>, and <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.processors.html#segmenter">Segmenter</a>. All of them can be set or reset.</p>
+<p>For example, we reset the <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.processors.html#bandpassfilter">BandpassFilter</a> processor with different parameters and show current processes again.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -564,9 +609,9 @@ Linear envelope      : hz = 1000, le_order = 4, le_cutoff_fq = 6
 End frame cutter     : n_end_frames = 30
 </pre></div></div>
 </div>
-<p>We then set the <a class="reference external" href="../api/pyemgpipeline.processors.html#amplitudenormalizer">AmplitudeNormalizer</a> processor, which will calculate the maximum amplitude of each channel across trials for normalization.</p>
+<p>We then set the <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.processors.html#amplitudenormalizer">AmplitudeNormalizer</a> processor, which will calculate the maximum amplitude of each channel across trials for normalization.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -591,7 +636,7 @@ Amplitude normalizer : No parameters
 </div>
 <p>The <em>process_all</em> method is responsible for applying all processors in the predefined sequence. With the parameter <em>is_plot_processing_chain</em> being True, the original data and intermediate data after each step will be displayed.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -603,103 +648,103 @@ Amplitude normalizer : No parameters
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_0.png" src="../_images/notebooks_ex3_DataProcessingManager_25_0.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_0.png" src="../_images/notebooks_ex3_DataProcessingManager_33_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_1.png" src="../_images/notebooks_ex3_DataProcessingManager_25_1.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_1.png" src="../_images/notebooks_ex3_DataProcessingManager_33_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_2.png" src="../_images/notebooks_ex3_DataProcessingManager_25_2.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_2.png" src="../_images/notebooks_ex3_DataProcessingManager_33_2.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_3.png" src="../_images/notebooks_ex3_DataProcessingManager_25_3.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_3.png" src="../_images/notebooks_ex3_DataProcessingManager_33_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_4.png" src="../_images/notebooks_ex3_DataProcessingManager_25_4.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_4.png" src="../_images/notebooks_ex3_DataProcessingManager_33_4.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_5.png" src="../_images/notebooks_ex3_DataProcessingManager_25_5.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_5.png" src="../_images/notebooks_ex3_DataProcessingManager_33_5.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_6.png" src="../_images/notebooks_ex3_DataProcessingManager_25_6.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_6.png" src="../_images/notebooks_ex3_DataProcessingManager_33_6.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_7.png" src="../_images/notebooks_ex3_DataProcessingManager_25_7.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_7.png" src="../_images/notebooks_ex3_DataProcessingManager_33_7.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_8.png" src="../_images/notebooks_ex3_DataProcessingManager_25_8.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_8.png" src="../_images/notebooks_ex3_DataProcessingManager_33_8.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_9.png" src="../_images/notebooks_ex3_DataProcessingManager_25_9.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_9.png" src="../_images/notebooks_ex3_DataProcessingManager_33_9.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_10.png" src="../_images/notebooks_ex3_DataProcessingManager_25_10.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_10.png" src="../_images/notebooks_ex3_DataProcessingManager_33_10.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_11.png" src="../_images/notebooks_ex3_DataProcessingManager_25_11.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_11.png" src="../_images/notebooks_ex3_DataProcessingManager_33_11.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_12.png" src="../_images/notebooks_ex3_DataProcessingManager_25_12.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_12.png" src="../_images/notebooks_ex3_DataProcessingManager_33_12.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_25_13.png" src="../_images/notebooks_ex3_DataProcessingManager_25_13.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_33_13.png" src="../_images/notebooks_ex3_DataProcessingManager_33_13.png" />
 </div>
 </div>
-<p>For demonstration purpose, assume the segment of interest of trial 2 is in the time range (15, 28). We can add the <a class="reference external" href="../api/pyemgpipeline.processors.html#segmenter">Segmenter</a> processor and the time range to the data processing manager as the following.</p>
+<p>For demonstration purpose, assume the segment of interest of trial 2 is in the time range (15, 28). We can add the <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.processors.html#segmenter">Segmenter</a> processor and the time range to the data processing manager as the following.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -727,7 +772,7 @@ Segmenter            : No parameters
 </div>
 <p>We now run the <em>process_all</em> method again with the updated processing steps. When <em>is_plot_processing_chain</em> is True, <em>k_for_plot=1</em> indicates that only trial index 1 (i.e., trial 2) will be plotted. The segmentation result is shown in the last part of the figures.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -739,61 +784,61 @@ Segmenter            : No parameters
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_29_0.png" src="../_images/notebooks_ex3_DataProcessingManager_29_0.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_37_0.png" src="../_images/notebooks_ex3_DataProcessingManager_37_0.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_29_1.png" src="../_images/notebooks_ex3_DataProcessingManager_29_1.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_37_1.png" src="../_images/notebooks_ex3_DataProcessingManager_37_1.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_29_2.png" src="../_images/notebooks_ex3_DataProcessingManager_29_2.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_37_2.png" src="../_images/notebooks_ex3_DataProcessingManager_37_2.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_29_3.png" src="../_images/notebooks_ex3_DataProcessingManager_29_3.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_37_3.png" src="../_images/notebooks_ex3_DataProcessingManager_37_3.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_29_4.png" src="../_images/notebooks_ex3_DataProcessingManager_29_4.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_37_4.png" src="../_images/notebooks_ex3_DataProcessingManager_37_4.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_29_5.png" src="../_images/notebooks_ex3_DataProcessingManager_29_5.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_37_5.png" src="../_images/notebooks_ex3_DataProcessingManager_37_5.png" />
 </div>
 </div>
 <div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_29_6.png" src="../_images/notebooks_ex3_DataProcessingManager_29_6.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_37_6.png" src="../_images/notebooks_ex3_DataProcessingManager_37_6.png" />
 </div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_ex3_DataProcessingManager_29_7.png" src="../_images/notebooks_ex3_DataProcessingManager_29_7.png" />
+<img alt="../_images/notebooks_ex3_DataProcessingManager_37_7.png" src="../_images/notebooks_ex3_DataProcessingManager_37_7.png" />
 </div>
 </div>
-<p>The processed results from method <em>process_all</em> is saved in <em>c</em> of type <a class="reference external" href="../api/pyemgpipeline.wrappers.html#emgmeasurementcollection">EMGMeasurementCollection</a>, which possesses methods <em>plot</em>, <em>export_csv</em>, and the indexing operator <em>[]</em> for furtuer use.</p>
+<p>The processed results from method <em>process_all</em> is saved in <em>c</em> of type <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.wrappers.html#emgmeasurementcollection">EMGMeasurementCollection</a>, which possesses methods <em>plot</em>, <em>export_csv</em>, and the indexing operator <em>[]</em> for furtuer use.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -802,7 +847,7 @@ Segmenter            : No parameters
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -817,8 +862,8 @@ True
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="ex2_EMGMeasurementCollection.html" class="btn btn-neutral float-left" title="Multiple EMG measurement definition and processing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../api.html" class="btn btn-neutral float-right" title="API" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ex2_EMGMeasurementCollection.html" class="btn btn-neutral float-left" title="Example 2 - Multiple EMG measurement definition and processing (using lower limb data)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ex4_DataProcessingManager.html" class="btn btn-neutral float-right" title="Example 4 - High-level, guided processing (using knee osteoarthritis therapy data)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

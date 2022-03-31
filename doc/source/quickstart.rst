@@ -16,7 +16,7 @@ If timestamp data is not provided, it will be generated automatically,
 starting from 0 and in increments of *1/hz*,
 where *hz* is the sample rate.
 
-Data of multiple trials should be organized in a *dict* or a *list*.
+Data of multiple trials should be organized in a *list*.
 
 Demo code
 ----------------------------------------

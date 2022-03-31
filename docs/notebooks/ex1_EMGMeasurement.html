@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Single EMG measurement definition and processing &mdash; pyemgpipeline 0.1.0 documentation</title>
+  <title>Example 1 - Single EMG measurement definition and processing (using lower limb data) &mdash; pyemgpipeline 0.1.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -20,8 +20,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Multiple EMG measurement definition and processing" href="ex2_EMGMeasurementCollection.html" />
-    <link rel="prev" title="Examples" href="../examples.html" /> 
+    <link rel="next" title="Example 2 - Multiple EMG measurement definition and processing (using lower limb data)" href="ex2_EMGMeasurementCollection.html" />
+    <link rel="prev" title="Example 0 - Input data description" href="ex0_input_data_description.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,14 +43,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick Start</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../examples.html">Examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Single EMG measurement definition and processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="ex0_input_data_description.html">Example 0 - Input data description</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Example 1 - Single EMG measurement definition and processing (using lower limb data)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Package-preparation">Package preparation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Data-preparation">Data preparation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Data-processing">Data processing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="ex2_EMGMeasurementCollection.html">Multiple EMG measurement definition and processing</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ex3_DataProcessingManager.html">High-level, guided processing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ex2_EMGMeasurementCollection.html">Example 2 - Multiple EMG measurement definition and processing (using lower limb data)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ex3_DataProcessingManager.html">Example 3 - High-level, guided processing (using gesture data)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ex4_DataProcessingManager.html">Example 4 - High-level, guided processing (using knee osteoarthritis therapy data)</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api.html">API</a></li>
@@ -71,7 +73,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../examples.html">Examples</a> &raquo;</li>
-      <li>Single EMG measurement definition and processing</li>
+      <li>Example 1 - Single EMG measurement definition and processing (using lower limb data)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/notebooks/ex1_EMGMeasurement.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
@@ -352,15 +354,15 @@ div.rendered_html tbody tr:hover {
 }
 </style>
 <p><a class="reference external" href="https://colab.research.google.com/github/aalhossary/pyemgpipeline/blob/master/docs/notebooks/ex1_EMGMeasurement.ipynb"><img alt="Open In Colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p>
-<div class="section" id="Single-EMG-measurement-definition-and-processing">
-<h1>Single EMG measurement definition and processing<a class="headerlink" href="#Single-EMG-measurement-definition-and-processing" title="Permalink to this headline"></a></h1>
-<p>This example shows the usage of class <a class="reference external" href="../api/pyemgpipeline.wrappers.html#emgmeasurement">EMGMeasurement</a> to process EMG data of one trial.</p>
+<div class="section" id="Example-1---Single-EMG-measurement-definition-and-processing-(using-lower-limb-data)">
+<h1>Example 1 - Single EMG measurement definition and processing (using lower limb data)<a class="headerlink" href="#Example-1---Single-EMG-measurement-definition-and-processing-(using-lower-limb-data)" title="Permalink to this headline"></a></h1>
+<p>This example shows the usage of class <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.wrappers.html#emgmeasurement">EMGMeasurement</a> to process EMG data of one trial.</p>
 <p>The data used in this example contains one file of subject #3 in <a class="reference external" href="https://archive-beta.ics.uci.edu/ml/datasets/emg+dataset+in+lower+limb">“EMG dataset in Lower Limb”</a> from the UC Irvine Machine Learning Repository. In particular, the data used here was collected from four lower limb muscles (rectus femoris, biceps femoris, vastus internus, and semitendinosus) when the subject was in a sitting posture.</p>
 <div class="section" id="Package-preparation">
 <h2>Package preparation<a class="headerlink" href="#Package-preparation" title="Permalink to this headline"></a></h2>
 <p>We install and import needed packages.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -368,8 +370,17 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+     |████████████████████████████████| 50 kB 3.6 MB/s
+
+</pre></div></div>
+</div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -384,19 +395,20 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Data-preparation">
 <h2>Data preparation<a class="headerlink" href="#Data-preparation" title="Permalink to this headline"></a></h2>
 <p>First download the raw data from the UC Irvine Machine Learning Repository.</p>
-<p>When finished, the compressed file “SEMG_DB1.rar” is saved in the “uci_lower_limb” subfolder.</p>
+<p>When finished, the compressed file “SEMG_DB1.rar” (~14MB) is saved in the “uci_lower_limb” subfolder.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="o">!</span>wget -q https://archive.ics.uci.edu/ml/machine-learning-databases/00278/SEMG_DB1.rar -P ./uci_lower_limb
+<span></span><span class="o">!</span>rm -rf uci_lower_limb
+<span class="o">!</span>wget -q https://archive.ics.uci.edu/ml/machine-learning-databases/00278/SEMG_DB1.rar -P ./uci_lower_limb
 </pre></div>
 </div>
 </div>
 <p>Uncompress the downloaded file. This example will only use the file “A_TXT/3Asen.txt”.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -408,7 +420,7 @@ div.rendered_html tbody tr:hover {
 <p>Signal data of each trial should be stored in a 2d ndarray with shape <em>(n_samples, n_channels)</em>, where each column represents data of one channel.</p>
 <p>First we set up basic information of the data, including data path, channel names, sample rate, etc.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -422,7 +434,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <p>The EMG signal data is then extracted from the raw data file of non-standard format and stored in the 2d ndarray <em>data</em>.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -445,8 +457,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
@@ -460,7 +471,7 @@ array([[-0.0008, -0.0008,  0.    , -0.0008],
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -476,9 +487,9 @@ array([[-0.0008, -0.0008,  0.    , -0.0008],
 data shape: (38971, 4)
 </pre></div></div>
 </div>
-<p>We also set up the parameters for plotting with an instance of class <a class="reference external" href="../api/pyemgpipeline.plots.html#emgplotparams">EMGPlotParams</a>.</p>
+<p>We also set up the parameters for plotting with an instance of class <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.plots.html#emgplotparams">EMGPlotParams</a>.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -486,7 +497,11 @@ data shape: (38971, 4)
     <span class="n">n_rows</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
     <span class="n">fig_kwargs</span><span class="o">=</span><span class="p">{</span>
         <span class="s1">&#39;figsize&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+        <span class="s1">&#39;dpi&#39;</span><span class="p">:</span> <span class="mi">120</span><span class="p">,</span>
         <span class="s1">&#39;subplotpars&#39;</span><span class="p">:</span> <span class="n">SubplotParams</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.6</span><span class="p">),</span>
+    <span class="p">},</span>
+    <span class="n">line2d_kwargs</span><span class="o">=</span><span class="p">{</span>
+        <span class="s1">&#39;color&#39;</span><span class="p">:</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span>
     <span class="p">}</span>
 <span class="p">)</span>
 </pre></div>
@@ -495,20 +510,20 @@ data shape: (38971, 4)
 </div>
 <div class="section" id="Data-processing">
 <h2>Data processing<a class="headerlink" href="#Data-processing" title="Permalink to this headline"></a></h2>
-<p>We initialize an instance of class <a class="reference external" href="../api/pyemgpipeline.wrappers.html#emgmeasurement">EMGMeasurement</a> with signal data <em>data</em> and other information, which is responsible for furtuer processing and plotting.</p>
+<p>We initialize an instance of class <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.wrappers.html#emgmeasurement">EMGMeasurement</a> with signal data <em>data</em> and other information, which is responsible for furtuer processing and plotting.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="n">m</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">wrappers</span><span class="o">.</span><span class="n">EMGMeasurement</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">hz</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span> <span class="n">channel_names</span><span class="o">=</span><span class="n">channel_names</span><span class="p">,</span>
-                                <span class="n">main_title</span><span class="o">=</span><span class="n">trial_name</span><span class="p">,</span> <span class="n">emg_plot_params</span><span class="o">=</span><span class="n">emg_plot_params</span><span class="p">)</span>
+<span></span><span class="n">m</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">wrappers</span><span class="o">.</span><span class="n">EMGMeasurement</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">hz</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span> <span class="n">trial_name</span><span class="o">=</span><span class="n">trial_name</span><span class="p">,</span>
+                                <span class="n">channel_names</span><span class="o">=</span><span class="n">channel_names</span><span class="p">,</span> <span class="n">emg_plot_params</span><span class="o">=</span><span class="n">emg_plot_params</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <p>We also visualize the data before processing:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -526,7 +541,7 @@ data shape: (38971, 4)
 <p>Now we start to apply seven processing steps one by one and visualize the data after each step.</p>
 <p>Step 1 is the DC offset removal.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -544,7 +559,7 @@ data shape: (38971, 4)
 </div>
 <p>Step 2 is the bandpass filtering.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -562,7 +577,7 @@ data shape: (38971, 4)
 </div>
 <p>Step 3 is the full wave rectification.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -580,7 +595,7 @@ data shape: (38971, 4)
 </div>
 <p>Step 4 is the linear envelope.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -598,7 +613,7 @@ data shape: (38971, 4)
 </div>
 <p>Step 5 is the end frame cutting.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -616,7 +631,7 @@ data shape: (38971, 4)
 </div>
 <p>Step 6 is the amplitude normalization. Here we assume the MVC (maximum voluntary contraction) of each muscle of this subject is already obtained from the whole experiments.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -635,7 +650,7 @@ data shape: (38971, 4)
 </div>
 <p>Step 7 is the segmentation. For demonstration purpose, assume the segment of interest is in the time range (20.5, 29.5).</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -653,7 +668,7 @@ data shape: (38971, 4)
 </div>
 <p>We have completed the processing steps. The processed signal data can be accessed via <em>m.data</em> while the timestamp (initially derived from <em>sample_rate</em>) can be accessed via <em>m.timestamp</em> whenever needed.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -662,8 +677,7 @@ data shape: (38971, 4)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
@@ -677,7 +691,7 @@ array([[0.02186312, 0.01239804, 0.00273551, 0.01773494],
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -686,8 +700,7 @@ array([[0.02186312, 0.01239804, 0.00273551, 0.01773494],
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
@@ -696,7 +709,7 @@ array([20.5  , 20.501, 20.502, ..., 29.498, 29.499, 29.5  ])
 </div>
 <p>The processed data can also be exported to a csv file. Note that besides signal data, timestamp is also included in the first column of the csv file.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -711,8 +724,8 @@ array([20.5  , 20.501, 20.502, ..., 29.498, 29.499, 29.5  ])
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../examples.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="ex2_EMGMeasurementCollection.html" class="btn btn-neutral float-right" title="Multiple EMG measurement definition and processing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="ex0_input_data_description.html" class="btn btn-neutral float-left" title="Example 0 - Input data description" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ex2_EMGMeasurementCollection.html" class="btn btn-neutral float-right" title="Example 2 - Multiple EMG measurement definition and processing (using lower limb data)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

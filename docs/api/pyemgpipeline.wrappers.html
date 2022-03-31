@@ -166,28 +166,45 @@ repeatedly executed.</p></li>
 <li><p><strong>end_frame_cutter</strong> (<a class="reference internal" href="pyemgpipeline.processors.html#pyemgpipeline.processors.EndFrameCutter" title="pyemgpipeline.processors.EndFrameCutter"><em>EndFrameCutter</em></a><em> or </em><em>None</em>) – An EndFrameCutter processor.</p></li>
 <li><p><strong>amplitude_normalizer</strong> (<a class="reference internal" href="pyemgpipeline.processors.html#pyemgpipeline.processors.AmplitudeNormalizer" title="pyemgpipeline.processors.AmplitudeNormalizer"><em>AmplitudeNormalizer</em></a><em> or </em><em>None</em>) – An AmplitudeNormalizer processor.</p></li>
 <li><p><strong>segmenter</strong> (<a class="reference internal" href="pyemgpipeline.processors.html#pyemgpipeline.processors.Segmenter" title="pyemgpipeline.processors.Segmenter"><em>Segmenter</em></a><em> or </em><em>None</em>) – A Segmenter processor.</p></li>
-<li><p><strong>segmenter_all_beg_ts</strong> (<em>dict</em><em>, </em><em>list</em><em>, or </em><em>None</em>) – Beginning time of interest for each trial to segment. See
+<li><p><strong>segmenter_all_beg_ts</strong> (<em>list</em><em> or </em><em>None</em>) – Beginning time of interest for each trial to segment. See
 function apply_segmenter of class EMGMeasurementCollection.</p></li>
-<li><p><strong>segmenter_all_end_ts</strong> (<em>dict</em><em>, </em><em>list</em><em>, or </em><em>None</em>) – End time of interest for each trial to segment. See
+<li><p><strong>segmenter_all_end_ts</strong> (<em>list</em><em> or </em><em>None</em>) – End time of interest for each trial to segment. See
 function apply_segmenter of class EMGMeasurementCollection.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.DataProcessingManager.process_all">
-<span class="sig-name descname"><span class="pre">process_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_plot_processing_chain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_for_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.DataProcessingManager.process_all" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">process_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_plot_processing_chain</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k_for_plot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_overlapping_trials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycled_colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes_pos_adjust</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.DataProcessingManager.process_all" title="Permalink to this definition"></a></dt>
 <dd><p>Apply current processors to data and plot intermediate results</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>is_plot_processing_chain</strong> (<em>bool</em>) – Whether to plot the intermediate results after each
 processing step.</p></li>
-<li><p><strong>k_for_plot</strong> (<em>key of dict</em><em>, </em><em>index of list</em><em>, or </em><em>None</em>) – If k_for_plot is None, all trials will be plotted.
-If k_for_plot is not None, its value is the trial to be
-plotted and should satisfy:
-(1) If all_data is a dict, k_for_plot is one of its key.
-(2) If all_data is a list, k_for_plot is an integer between 0
-and len(all_data) - 1.</p></li>
+<li><p><strong>k_for_plot</strong> (<em>index of list</em><em>, or </em><em>None</em>) – If k_for_plot is None, all trials will be plotted.
+If k_for_plot is not None, it should be an integer between
+0 and len(all_data) - 1. In this case, if
+is_overlapping_trials is False, only trial k_for_plot will
+be plotted.</p></li>
+<li><p><strong>is_overlapping_trials</strong> (<em>bool</em><em>, </em><em>default False</em>) – Whether overlapping trials of the same channel.
+If True, all trials will be plotted and overlapped.</p></li>
+<li><p><strong>cycled_colors</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – cycled_colors is used when is_overlapping_trials is True.
+The colors for plotting overlapped trials data.</p></li>
+<li><p><strong>legend_kwargs</strong> (<em>dict</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – legend_kwargs is used when is_overlapping_trials is True.
+Parameters to control the legend display. They are the
+“other parameters” of method matplotlib.axes.Axes.legend,
+including loc, bbox_to_anchor, ncol, prop, fontsize, etc.
+(See
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html">https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html</a>).</p></li>
+<li><p><strong>axes_pos_adjust</strong> (<em>4-tuple</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – axes_pos_adjust is used when is_overlapping_trials is True.
+Parameters to adjust the axes position (i.e., plot position)
+when legend is displayed to prevent legend overlaying the plot.
+The 4-tuple represents: [0] shift of left position relative to
+width, [1] shift of bottom position relative to height, [2]
+proportion of width, [3] proportion of height.
+If None, no adjustment is applied, i.e., the value (0, 0, 1, 1)
+is applied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -236,37 +253,29 @@ processed data.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.DataProcessingManager.set_data_and_params">
-<span class="sig-name descname"><span class="pre">set_data_and_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_main_titles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emg_plot_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.DataProcessingManager.set_data_and_params" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">set_data_and_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trial_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emg_plot_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.DataProcessingManager.set_data_and_params" title="Permalink to this definition"></a></dt>
 <dd><p>Set the data and plot parameters and initialize default processors</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>all_data</strong> (<em>dict</em><em> or </em><em>list</em>) – If dict, keys can be trial names and values are signal data of
-the trials.
-If list, elements are signal data of the trials.
+<li><p><strong>all_data</strong> (<em>list</em>) – Elements of all_data are signal data of the trials.
 Signal data of each trial should be ndarray of shape
 (n_samples,) or (n_samples, n_channels), where n_samples &gt; 15.
 Dimensions and n_channels (if 2-dim) of all trials should be
 the same.</p></li>
 <li><p><strong>hz</strong> (<em>float</em>) – Sample rate in hertz.</p></li>
-<li><p><strong>all_timestamp</strong> (<em>dict</em><em>, </em><em>list</em><em>, or </em><em>None</em><em>, </em><em>default None</em>) – If dict or list, all_timestamp should be of the same type as
-all_data.
-If dict, keys should be identical to those of all_data and
-values are ndarray or None.
-If list, its length should be the same as the length of all_data
+<li><p><strong>all_timestamp</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – If list, its length should be the same as the length of all_data
 and elements are ndarray or None.
 The ndarray in all_timestamp is the actual timestamp of the
 corresponding trial, and it should be in 1-dim and have the same
 length as the first dimension of its corresponding element in
 all_data.</p></li>
+<li><p><strong>trial_names</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – Trial names.
+If not None, trial_names and all_data should have the same
+length.</p></li>
 <li><p><strong>channel_names</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – If list, elements are str and its length should be equal to
 n_channels.
 Channel names of all trials to be shown in plots.</p></li>
-<li><p><strong>all_main_titles</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – The main title in the plot, which is valid only when all_data
-is a list. (If all_data is a dict, its keys will be used as
-main titles.)
-If not None, all_main_titles and all_data should have the same
-length.</p></li>
 <li><p><strong>emg_plot_params</strong> (<a class="reference internal" href="pyemgpipeline.plots.html#pyemgpipeline.plots.EMGPlotParams" title="pyemgpipeline.plots.EMGPlotParams"><em>EMGPlotParams</em></a><em> or </em><em>None</em><em>, </em><em>default None</em>) – See class EMGPlotParams and function emg_plot.</p></li>
 </ul>
 </dd>
@@ -349,9 +358,9 @@ length.</p></li>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>segmenter</strong> (<a class="reference internal" href="pyemgpipeline.processors.html#pyemgpipeline.processors.Segmenter" title="pyemgpipeline.processors.Segmenter"><em>Segmenter</em></a>) – A segmenter.</p></li>
-<li><p><strong>all_beg_ts</strong> (<em>dict</em><em> or </em><em>list</em>) – Beginning time of interest for each trial.
+<li><p><strong>all_beg_ts</strong> (<em>list</em>) – Beginning time of interest for each trial.
 See function apply_segmenter of class EMGMeasurementCollection.</p></li>
-<li><p><strong>all_end_ts</strong> (<em>dict</em><em> or </em><em>list</em>) – End time of interest for each trial.
+<li><p><strong>all_end_ts</strong> (<em>list</em>) – End time of interest for each trial.
 See function apply_segmenter of class EMGMeasurementCollection.</p></li>
 </ul>
 </dd>
@@ -387,37 +396,34 @@ See function apply_segmenter of class EMGMeasurementCollection.</p></li>
 <span class="kn">import</span> <span class="nn">pyemgpipeline</span> <span class="k">as</span> <span class="nn">pep</span>
 
 <span class="c1"># prepare data  # 2 trials  # 2 channel in each trial, shape = (30, 2)</span>
-<span class="n">all_data</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;Trial 1&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="p">[[</span><span class="mf">8.698</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.613</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.172</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.594</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.51</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.951</span><span class="p">],</span> <span class="p">[</span><span class="mf">8.087</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.899</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.035</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.289</span><span class="p">],</span>
-         <span class="p">[</span><span class="mf">10.529</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.763</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.289</span><span class="p">,</span> <span class="mf">4.73</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.12</span><span class="p">,</span> <span class="mf">1.068</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.153</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.12</span><span class="p">],</span> <span class="p">[</span><span class="mf">12.665</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.918</span><span class="p">],</span>
-         <span class="p">[</span><span class="mf">9.613</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.782</span><span class="p">],</span> <span class="p">[</span><span class="mf">15.106</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.918</span><span class="p">],</span> <span class="p">[</span><span class="mf">9.003</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.665</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.477</span><span class="p">,</span> <span class="o">-</span><span class="mf">22.43</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.899</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.223</span><span class="p">],</span>
-         <span class="p">[</span><span class="mf">5.646</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.749</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.646</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.698</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.373</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.918</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.204</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.951</span><span class="p">],</span> <span class="p">[</span><span class="mf">6.866</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.866</span><span class="p">],</span>
-         <span class="p">[</span><span class="mf">3.51</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.951</span><span class="p">],</span> <span class="p">[</span><span class="mf">10.529</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.172</span><span class="p">],</span> <span class="p">[</span><span class="mf">13.275</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.087</span><span class="p">],</span> <span class="p">[</span><span class="mf">11.444</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.275</span><span class="p">],</span> <span class="p">[</span><span class="mf">12.054</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.275</span><span class="p">],</span>
-         <span class="p">[</span><span class="mf">11.139</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.561</span><span class="p">],</span> <span class="p">[</span><span class="mf">9.308</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.782</span><span class="p">],</span> <span class="p">[</span><span class="mf">8.087</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.477</span><span class="p">],</span> <span class="p">[</span><span class="mf">18.463</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.068</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.984</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.12</span><span class="p">]]),</span>
-    <span class="s1">&#39;Trial 2&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
-        <span class="p">[[</span><span class="o">-</span><span class="mf">14.801</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.97</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">21.21</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.834</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">27.313</span><span class="p">,</span> <span class="mf">7.477</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">42.878</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.646</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">42.573</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.646</span><span class="p">],</span>
-         <span class="p">[</span><span class="o">-</span><span class="mf">35.859</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.613</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">42.268</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.834</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">23.041</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.529</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">16.022</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.613</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">12.97</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.749</span><span class="p">],</span>
-         <span class="p">[</span><span class="o">-</span><span class="mf">9.613</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.665</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">22.125</span><span class="p">,</span> <span class="o">-</span><span class="mf">16.937</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">23.346</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.749</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">42.268</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.087</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">53.864</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.613</span><span class="p">],</span>
-         <span class="p">[</span><span class="o">-</span><span class="mf">41.047</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.477</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">27.924</span><span class="p">,</span> <span class="o">-</span><span class="mf">16.632</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">28.839</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.698</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">19.684</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.392</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">17.242</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.73</span><span class="p">],</span>
-         <span class="p">[</span><span class="mf">6.866</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.698</span><span class="p">],</span> <span class="p">[</span><span class="mf">37.995</span><span class="p">,</span> <span class="mf">3.204</span><span class="p">],</span> <span class="p">[</span><span class="mf">78.279</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.815</span><span class="p">],</span> <span class="p">[</span><span class="mf">102.694</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.204</span><span class="p">],</span> <span class="p">[</span><span class="mf">132.296</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.003</span><span class="p">],</span>
-         <span class="p">[</span><span class="mf">141.756</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.308</span><span class="p">],</span> <span class="p">[</span><span class="mf">113.375</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.12</span><span class="p">],</span> <span class="p">[</span><span class="mf">102.388</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.97</span><span class="p">],</span> <span class="p">[</span><span class="mf">86.823</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.866</span><span class="p">],</span> <span class="p">[</span><span class="mf">78.584</span><span class="p">,</span> <span class="o">-</span><span class="mf">15.717</span><span class="p">]])</span>
-<span class="p">}</span>
+<span class="n">all_data</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">8.698</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.613</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.172</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.594</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.51</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.951</span><span class="p">],</span> <span class="p">[</span><span class="mf">8.087</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.899</span><span class="p">],</span> <span class="p">[</span><span class="mf">5.035</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.289</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">10.529</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.763</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">2.289</span><span class="p">,</span> <span class="mf">4.73</span><span class="p">],</span> <span class="p">[</span><span class="mf">4.12</span><span class="p">,</span> <span class="mf">1.068</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.153</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.12</span><span class="p">],</span> <span class="p">[</span><span class="mf">12.665</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.918</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">9.613</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.782</span><span class="p">],</span> <span class="p">[</span><span class="mf">15.106</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.918</span><span class="p">],</span> <span class="p">[</span><span class="mf">9.003</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.665</span><span class="p">],</span> <span class="p">[</span><span class="mf">7.477</span><span class="p">,</span> <span class="o">-</span><span class="mf">22.43</span><span class="p">],</span> <span class="p">[</span><span class="mf">2.899</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.223</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">5.646</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.749</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.646</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.698</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.373</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.918</span><span class="p">],</span> <span class="p">[</span><span class="mf">3.204</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.951</span><span class="p">],</span> <span class="p">[</span><span class="mf">6.866</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.866</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">3.51</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.951</span><span class="p">],</span> <span class="p">[</span><span class="mf">10.529</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.172</span><span class="p">],</span> <span class="p">[</span><span class="mf">13.275</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.087</span><span class="p">],</span> <span class="p">[</span><span class="mf">11.444</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.275</span><span class="p">],</span> <span class="p">[</span><span class="mf">12.054</span><span class="p">,</span> <span class="o">-</span><span class="mf">13.275</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">11.139</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.561</span><span class="p">],</span> <span class="p">[</span><span class="mf">9.308</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.782</span><span class="p">],</span> <span class="p">[</span><span class="mf">8.087</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.477</span><span class="p">],</span> <span class="p">[</span><span class="mf">18.463</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.068</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.984</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.12</span><span class="p">]]),</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mf">14.801</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.97</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">21.21</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.834</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">27.313</span><span class="p">,</span> <span class="mf">7.477</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">42.878</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.646</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">42.573</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.646</span><span class="p">],</span>
+              <span class="p">[</span><span class="o">-</span><span class="mf">35.859</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.613</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">42.268</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.834</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">23.041</span><span class="p">,</span> <span class="o">-</span><span class="mf">10.529</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">16.022</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.613</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">12.97</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.749</span><span class="p">],</span>
+              <span class="p">[</span><span class="o">-</span><span class="mf">9.613</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.665</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">22.125</span><span class="p">,</span> <span class="o">-</span><span class="mf">16.937</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">23.346</span><span class="p">,</span> <span class="o">-</span><span class="mf">11.749</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">42.268</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.087</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">53.864</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.613</span><span class="p">],</span>
+              <span class="p">[</span><span class="o">-</span><span class="mf">41.047</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.477</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">27.924</span><span class="p">,</span> <span class="o">-</span><span class="mf">16.632</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">28.839</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.698</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">19.684</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.392</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">17.242</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.73</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">6.866</span><span class="p">,</span> <span class="o">-</span><span class="mf">8.698</span><span class="p">],</span> <span class="p">[</span><span class="mf">37.995</span><span class="p">,</span> <span class="mf">3.204</span><span class="p">],</span> <span class="p">[</span><span class="mf">78.279</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.815</span><span class="p">],</span> <span class="p">[</span><span class="mf">102.694</span><span class="p">,</span> <span class="o">-</span><span class="mf">3.204</span><span class="p">],</span> <span class="p">[</span><span class="mf">132.296</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.003</span><span class="p">],</span>
+              <span class="p">[</span><span class="mf">141.756</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.308</span><span class="p">],</span> <span class="p">[</span><span class="mf">113.375</span><span class="p">,</span> <span class="o">-</span><span class="mf">4.12</span><span class="p">],</span> <span class="p">[</span><span class="mf">102.388</span><span class="p">,</span> <span class="o">-</span><span class="mf">12.97</span><span class="p">],</span> <span class="p">[</span><span class="mf">86.823</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.866</span><span class="p">],</span> <span class="p">[</span><span class="mf">78.584</span><span class="p">,</span> <span class="o">-</span><span class="mf">15.717</span><span class="p">]])]</span>
 <span class="n">hz</span> <span class="o">=</span> <span class="mi">1000</span>
 
 <span class="c1"># initialize DataProcessingManager</span>
 <span class="n">mgr</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">wrappers</span><span class="o">.</span><span class="n">DataProcessingManager</span><span class="p">()</span>
 
 <span class="c1"># set data, parameters, and processors</span>
-<span class="n">mgr</span><span class="o">.</span><span class="n">set_data_and_params</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">hz</span><span class="o">=</span><span class="n">hz</span><span class="p">,</span> <span class="n">channel_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ch1&#39;</span><span class="p">,</span> <span class="s1">&#39;ch2&#39;</span><span class="p">],</span>
+<span class="n">mgr</span><span class="o">.</span><span class="n">set_data_and_params</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">hz</span><span class="o">=</span><span class="n">hz</span><span class="p">,</span> <span class="n">trial_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Trial 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Trial 2&#39;</span><span class="p">],</span> <span class="n">channel_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;ch1&#39;</span><span class="p">,</span> <span class="s1">&#39;ch2&#39;</span><span class="p">],</span>
                         <span class="n">emg_plot_params</span><span class="o">=</span><span class="n">pep</span><span class="o">.</span><span class="n">plots</span><span class="o">.</span><span class="n">EMGPlotParams</span><span class="p">(</span>
                             <span class="n">n_cols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                             <span class="n">fig_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;figsize&#39;</span><span class="p">:</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;subplotpars&#39;</span><span class="p">:</span> <span class="n">SubplotParams</span><span class="p">(</span><span class="n">top</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)}))</span>
 <span class="n">mgr</span><span class="o">.</span><span class="n">set_end_frame_cutter</span><span class="p">(</span><span class="n">pep</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">EndFrameCutter</span><span class="p">(</span><span class="n">n_end_frames</span><span class="o">=</span><span class="mi">3</span><span class="p">))</span>
 <span class="n">mgr</span><span class="o">.</span><span class="n">set_amplitude_normalizer</span><span class="p">(</span><span class="n">pep</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">AmplitudeNormalizer</span><span class="p">())</span>
 <span class="n">mgr</span><span class="o">.</span><span class="n">set_segmenter</span><span class="p">(</span><span class="n">pep</span><span class="o">.</span><span class="n">processors</span><span class="o">.</span><span class="n">Segmenter</span><span class="p">(),</span>
-                  <span class="n">all_beg_ts</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Trial 1&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Trial 2&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>
-                  <span class="n">all_end_ts</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Trial 1&#39;</span><span class="p">:</span> <span class="mf">0.018</span><span class="p">,</span> <span class="s1">&#39;Trial 2&#39;</span><span class="p">:</span> <span class="mi">999</span><span class="p">})</span>
+                  <span class="n">all_beg_ts</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+                  <span class="n">all_end_ts</span><span class="o">=</span><span class="p">[</span><span class="mf">0.018</span><span class="p">,</span> <span class="mi">999</span><span class="p">])</span>
 <span class="n">mgr</span><span class="o">.</span><span class="n">show_current_processes_and_related_params</span><span class="p">()</span>
 
 <span class="c1"># apply processing steps</span>
@@ -495,7 +501,7 @@ See function apply_segmenter of class EMGMeasurementCollection.</p></li>
 <span id="id2"></span><h2>EMGMeasurement<a class="headerlink" href="#emgmeasurement" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.EMGMeasurement">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.wrappers.</span></span><span class="sig-name descname"><span class="pre">EMGMeasurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">main_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emg_plot_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurement" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.wrappers.</span></span><span class="sig-name descname"><span class="pre">EMGMeasurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trial_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emg_plot_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurement" title="Permalink to this definition"></a></dt>
 <dd><p>Wrapper of single-trial EMG processing</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -507,9 +513,9 @@ See class EMGMeasurementCollection for suggested values of hz.</p></li>
 <li><p><strong>timestamp</strong> (<em>ndarray</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – The actual timestamp corresponds to the signal. If it is an
 ndarray, it should be in 1-dim and have the same length as the
 first dimension of x.</p></li>
+<li><p><strong>trial_name</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – Trial name.</p></li>
 <li><p><strong>channel_names</strong> (<em>list of str</em><em>, or </em><em>None</em><em>, </em><em>default None</em>) – If list, its length should be equal to n_channels.
 Channel names to be shown in the plot.</p></li>
-<li><p><strong>main_title</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – The main title in the plot.</p></li>
 <li><p><strong>emg_plot_params</strong> (<a class="reference internal" href="pyemgpipeline.plots.html#pyemgpipeline.plots.EMGPlotParams" title="pyemgpipeline.plots.EMGPlotParams"><em>EMGPlotParams</em></a><em>, </em><em>default None</em>) – Parameters to control the plot. See class EMGPlotParams and
 function emg_plot.</p></li>
 </ul>
@@ -727,14 +733,12 @@ Also beg_ts &lt; end_ts.</p></li>
 <span id="id4"></span><h2>EMGMeasurementCollection<a class="headerlink" href="#emgmeasurementcollection" title="Permalink to this headline"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.EMGMeasurementCollection">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.wrappers.</span></span><span class="sig-name descname"><span class="pre">EMGMeasurementCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_main_titles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emg_plot_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pyemgpipeline.wrappers.</span></span><span class="sig-name descname"><span class="pre">EMGMeasurementCollection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hz</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trial_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emg_plot_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection" title="Permalink to this definition"></a></dt>
 <dd><p>Wrapper of multiple-trial EMG processing</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>all_data</strong> (<em>dict</em><em> or </em><em>list</em>) – If dict, keys can be trial names and values are signal data of
-the trials.
-If list, elements are signal data of the trials.
+<li><p><strong>all_data</strong> (<em>list</em>) – Elements of all_data are signal data of the trials.
 Signal data of each trial should be ndarray of shape
 (n_samples,) or (n_samples, n_channels), where n_samples &gt; 15
 (See Notes).
@@ -748,24 +752,18 @@ Ref [2] suggests a minimum sample rate of 1000 Hz for surface
 EMG.
 For fine wire EMG, the authors suggest a minimum sample rate of
 2000 Hz.</p></li>
-<li><p><strong>all_timestamp</strong> (<em>dict</em><em>, </em><em>list</em><em>, or </em><em>None</em><em>, </em><em>default None</em>) – If dict or list, all_timestamp should be of the same type as
-all_data.
-If dict, keys should be identical to those of all_data and
-values are ndarray or None.
-If list, its length should be the same as the length of all_data
+<li><p><strong>all_timestamp</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – If list, its length should be the same as the length of all_data
 and elements are ndarray or None.
 The ndarray in all_timestamp is the actual timestamp of the
 corresponding trial, and it should be in 1-dim and have the same
 length as the first dimension of its corresponding element in
 all_data.</p></li>
+<li><p><strong>trial_names</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – Trial names.
+If not None, trial_names and all_data should have the same
+length.</p></li>
 <li><p><strong>channel_names</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – If list, elements are str and its length should be equal to
 n_channels.
 Channel names of all trials to be shown in plots.</p></li>
-<li><p><strong>all_main_titles</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – The main title in the plot, which is valid only when all_data
-is a list. (If all_data is a dict, its keys will be used as
-main titles.)
-If not None, all_main_titles and all_data should have the same
-length.</p></li>
 <li><p><strong>emg_plot_params</strong> (<a class="reference internal" href="pyemgpipeline.plots.html#pyemgpipeline.plots.EMGPlotParams" title="pyemgpipeline.plots.EMGPlotParams"><em>EMGPlotParams</em></a><em> or </em><em>None</em><em>, </em><em>default None</em>) – See class EMGPlotParams and function emg_plot.</p></li>
 </ul>
 </dd>
@@ -792,9 +790,7 @@ action. 108-112.</p>
 <dd><p>Extract data of trial k</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>k</strong> (<em>key of dict</em><em> or </em><em>index of list</em>) – If all_data is a dict, k is one of its key.
-If all_data is a list, k is an integer between 0 and
-len(all_data) - 1.</p>
+<dd class="field-odd"><p><strong>k</strong> (<em>index of list</em>) – k is an integer between 0 and len(all_data) - 1.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><strong>m</strong> – An EMGMeasurement instance which possesses the data of
@@ -929,17 +925,11 @@ See class LinearEnvelope.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>all_beg_ts</strong> (<em>dict</em><em> or </em><em>list</em>) – all_beg_ts should be of the same type as all_data.
-If dict, keys should be identical to those of all_data
-and values are float.
-If list, elements are float and the length should be
+<li><p><strong>all_beg_ts</strong> (<em>list</em>) – Elements of all_beg_ts are float and the length should be
 equal to the length of all_data.
 Beginning time of interest for each trial. For trial k,
 all_beg_ts[k] &lt;= all_timestamp[k][-1].</p></li>
-<li><p><strong>all_end_ts</strong> (<em>dict</em><em> or </em><em>list</em>) – all_end_ts should be of the same type as all_data.
-If dict, keys should be identical to those of all_data
-and values are float.
-If list, elements are float and the length should be
+<li><p><strong>all_end_ts</strong> (<em>list</em>) – Elements of all_end_ts are float and the length should be
 equal to the length of all_data.
 End time of interest for each trial. For trial k,
 all_end_ts[k] &gt;= all_timestamp[k][0] and
@@ -961,10 +951,8 @@ all_beg_ts[k] &lt; all_end_ts[k].</p></li>
 <dd><p>Export the processing results of all trials to csv</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>all_csv_path</strong> (<em>dict</em><em> or </em><em>list</em>) – all_csv_path should be of the same type as all_data.
-If dict, keys should be identical to those of all_data.
-If list, its length should be the same as the length of
-all_data.
+<dd class="field-odd"><p><strong>all_csv_path</strong> (<em>list</em>) – The length of all_csv_path should be the same as the length
+of all_data.
 The destination paths to export data of all trials.</p>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -993,14 +981,37 @@ Max amplitude of each channel which is found across all trials.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pyemgpipeline.wrappers.EMGMeasurementCollection.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection.plot" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">is_overlapping_trials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">main_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycled_colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes_pos_adjust</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.wrappers.EMGMeasurementCollection.plot" title="Permalink to this definition"></a></dt>
 <dd><p>Plot all trials</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p></p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>is_overlapping_trials</strong> (<em>bool</em><em>, </em><em>default False</em>) – Whether overlapping trials of the same channel.</p></li>
+<li><p><strong>main_title</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – main_title is used when is_overlapping_trials is True.
+The main title of the plot.</p></li>
+<li><p><strong>cycled_colors</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – cycled_colors is used when is_overlapping_trials is True.
+The colors for plotting overlapped trials data.</p></li>
+<li><p><strong>legend_kwargs</strong> (<em>dict</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – legend_kwargs is used when is_overlapping_trials is True.
+Parameters to control the legend display. They are the
+“other parameters” of method matplotlib.axes.Axes.legend,
+including loc, bbox_to_anchor, ncol, prop, fontsize, etc.
+(See
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html">https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html</a>).</p></li>
+<li><p><strong>axes_pos_adjust</strong> (<em>4-tuple</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – axes_pos_adjust is used when is_overlapping_trials is True.
+Parameters to adjust the axes position (i.e., plot position)
+when legend is displayed to prevent legend overlaying the plot.
+The 4-tuple represents: [0] shift of left position relative to
+width, [1] shift of bottom position relative to height, [2]
+proportion of width, [3] proportion of height.
+If None, no adjustment is applied, i.e., the value (0, 0, 1, 1)
+is applied.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>None</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1026,7 +1037,7 @@ Max amplitude of each channel which is found across all trials.</p>
 <span class="n">hz</span> <span class="o">=</span> <span class="mi">1000</span>
 
 <span class="c1"># initialize EMGMeasurementCollection</span>
-<span class="n">c</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">wrappers</span><span class="o">.</span><span class="n">EMGMeasurementCollection</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">hz</span><span class="o">=</span><span class="n">hz</span><span class="p">,</span> <span class="n">all_main_titles</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Trial 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Trial 2&#39;</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">pep</span><span class="o">.</span><span class="n">wrappers</span><span class="o">.</span><span class="n">EMGMeasurementCollection</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">hz</span><span class="o">=</span><span class="n">hz</span><span class="p">,</span> <span class="n">trial_names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Trial 1&#39;</span><span class="p">,</span> <span class="s1">&#39;Trial 2&#39;</span><span class="p">])</span>
 
 <span class="c1"># apply seven processing steps</span>
 <span class="n">c</span><span class="o">.</span><span class="n">apply_dc_offset_remover</span><span class="p">()</span>
