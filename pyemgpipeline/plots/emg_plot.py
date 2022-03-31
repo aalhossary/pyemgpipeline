@@ -126,8 +126,9 @@ def plot_emg(x, timestamp, channel_names=None, main_title=None, emg_plot_params=
     plt.show()
 
 
-def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels, cycled_colors=None,
-                                channel_names=None, main_title=None, emg_plot_params=None):
+def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels,
+                                channel_names=None, main_title=None, emg_plot_params=None,
+                                cycled_colors=None, legend_kwargs=None, axes_pos_adjust=None):
     """Plot EMG signals on a created matplotlib figure,
     overlapping trials of the same channel
 
@@ -149,9 +150,6 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels, cycled_c
         The legend labels identify the trials which are overlapped in
         the plots.
 
-    cycled_colors : list or None, default None
-        The colors for plotting overlapped trials data
-
     channel_names : list or None, default None
         If list, elements are str and its length should be equal to
         n_channels.
@@ -169,6 +167,25 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels, cycled_c
         (3) If both n_rows and n_cols are None, default setting will be
         used: use one column when n_channels <= 3; use two columns
         when n_channels <= 10; otherwise use three columns.
+
+    cycled_colors : list or None, default None
+        The colors for plotting overlapped trials data.
+
+    legend_kwargs : dict or None, default None
+        Parameters to control the legend display. They are the
+        "other parameters" of method matplotlib.axes.Axes.legend,
+        including loc, bbox_to_anchor, ncol, prop, fontsize, etc.
+        (See
+        https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html).
+
+    axes_pos_adjust : 4-tuple or None, default None
+        Parameters to adjust the axes position (i.e., plot position)
+        when legend is displayed to prevent legend overlaying the plot.
+        The 4-tuple represents: [0] shift of left position relative to
+        width, [1] shift of bottom position relative to height, [2]
+        proportion of width, [3] proportion of height.
+        If None, no adjustment is applied, i.e., the value (0, 0, 1, 1)
+        is applied.
 
     Returns
     -------
@@ -206,6 +223,15 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels, cycled_c
     if line2d_kwargs is None:
         line2d_kwargs = {}
 
+    if legend_kwargs is None:
+        legend_kwargs = {}
+
+    if axes_pos_adjust is not None:
+        assert isinstance(axes_pos_adjust, tuple) and len(axes_pos_adjust) == 4,\
+            'axes_pos_adjust must be a tuple with length 4 if not None'
+    else:
+        axes_pos_adjust = (0, 0, 1, 1)
+
     fig, axs = plt.subplots(n_rows, n_cols, sharex='all', sharey='all', **fig_kwargs)
     plt.xlabel('Time')
     if main_title is not None:
@@ -217,8 +243,14 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels, cycled_c
             axs[i].set_prop_cycle(color=cycled_colors)
 
         for k in range(len(all_data)):
-            axs[i].plot(all_timestamp[k], all_data[k][:, i], label=legend_labels[k], **line2d_kwargs)
-            axs[i].legend()
+            axs[i].plot(all_timestamp[k], all_data[k][:, i], **line2d_kwargs)
+
+        box = axs[i].get_position()
+        axs[i].set_position([box.x0 + box.width * axes_pos_adjust[0],
+                             box.y0 + box.height * axes_pos_adjust[1],
+                             box.width * axes_pos_adjust[2],
+                             box.height * axes_pos_adjust[3]])
+        axs[i].legend(labels=legend_labels, **legend_kwargs)
 
         if channel_names is not None:
             axs[i].set_title(channel_names[i])

@@ -285,7 +285,8 @@ class EMGMeasurementCollection:
                            self.trial_names[k], self.channel_names, self.emg_plot_params)
         return m
 
-    def plot(self, is_overlapping_trials=False, cycled_colors=None):
+    def plot(self, is_overlapping_trials=False, main_title=None,
+             cycled_colors=None, legend_kwargs=None, axes_pos_adjust=None):
         """Plot all trials
 
         Parameters
@@ -293,8 +294,31 @@ class EMGMeasurementCollection:
         is_overlapping_trials : bool, default False
             Whether overlapping trials of the same channel.
 
+        main_title : str or None, default None
+            main_title is used when is_overlapping_trials is True.
+            The main title of the plot.
+
         cycled_colors : list or None, default None
+            cycled_colors is used when is_overlapping_trials is True.
             The colors for plotting overlapped trials data.
+
+        legend_kwargs : dict or None, default None
+            legend_kwargs is used when is_overlapping_trials is True.
+            Parameters to control the legend display. They are the
+            "other parameters" of method matplotlib.axes.Axes.legend,
+            including loc, bbox_to_anchor, ncol, prop, fontsize, etc.
+            (See
+            https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html).
+
+        axes_pos_adjust : 4-tuple or None, default None
+            axes_pos_adjust is used when is_overlapping_trials is True.
+            Parameters to adjust the axes position (i.e., plot position)
+            when legend is displayed to prevent legend overlaying the plot.
+            The 4-tuple represents: [0] shift of left position relative to
+            width, [1] shift of bottom position relative to height, [2]
+            proportion of width, [3] proportion of height.
+            If None, no adjustment is applied, i.e., the value (0, 0, 1, 1)
+            is applied.
 
         Returns
         -------
@@ -309,9 +333,9 @@ class EMGMeasurementCollection:
                 emg_plot_params.line2d_kwargs.pop('color', None)
 
             plot_emg_overlapping_trials(self.all_data, self.all_timestamp, self.trial_names,
-                                        cycled_colors=cycled_colors,
-                                        channel_names=self.channel_names, main_title=None,
-                                        emg_plot_params=emg_plot_params)
+                                        channel_names=self.channel_names, main_title=main_title,
+                                        emg_plot_params=emg_plot_params, cycled_colors=cycled_colors,
+                                        legend_kwargs=legend_kwargs, axes_pos_adjust=axes_pos_adjust)
         else:
             for k in range(len(self.all_data)):
                 plot_emg(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,

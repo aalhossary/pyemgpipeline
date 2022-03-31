@@ -36,7 +36,7 @@ emg_plot_params = EMGPlotParams(
     n_rows=4,
     n_cols=2,
     fig_kwargs={
-        'figsize': (7, 5),
+        'figsize': (8, 5),
         'subplotpars': SubplotParams(wspace=0.2, hspace=0.8),
     },
     line2d_kwargs={
@@ -53,8 +53,9 @@ mgr.set_data_and_params(all_data, hz=sample_rate, all_timestamp=all_timestamp,
 mgr.set_bandpass_filter(BandpassFilter(hz=sample_rate, bf_cutoff_fq_hi=495))  # can change processor's parameter
 mgr.set_amplitude_normalizer(AmplitudeNormalizer())  # add non-default processor
 mgr.show_current_processes_and_related_params()  # display current setting
-c = mgr.process_all(is_plot_processing_chain=True, is_overlapping_trials=True)
-                                                    # process with accepted EMG processing conventions,
+c = mgr.process_all(is_plot_processing_chain=True, is_overlapping_trials=True,
+                    legend_kwargs={'loc':'right', 'bbox_to_anchor':(1.4, 0.5), 'fontsize':'small'},
+                    axes_pos_adjust=(0, 0, 0.8, 1)) # process with accepted EMG processing conventions,
                                                     # plot the processing chain,
                                                     # and return an instance of the EMGMeasurementCollection class
 

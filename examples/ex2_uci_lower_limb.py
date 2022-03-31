@@ -74,4 +74,7 @@ c.apply_segmenter(all_beg_ts, all_end_ts)  # can put tighter ranges to extract t
 
 # plot the processed data
 c[1].plot()  # plot the trial 'Stand'
-c.plot(is_overlapping_trials=True, cycled_colors=['r','b','k'])  # plot all trials
+c.plot(is_overlapping_trials=True,
+       main_title='All trials', cycled_colors=['r','b','k'],
+       legend_kwargs={'loc':'right', 'bbox_to_anchor':(1.2, 0.5)},
+       axes_pos_adjust=(0, 0, 0.8, 1))  # plot all trials

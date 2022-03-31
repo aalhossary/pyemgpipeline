@@ -261,9 +261,9 @@ class DataProcessingManager:
         if self.segmenter is not None:
             print(f'Segmenter            : {self.segmenter.get_param_values_in_str()}')
 
-    def _plot_processing_chain(self, current_step,
-                               k_for_plot=None, is_overlapping_trials=False, cycled_colors=None,
-                               emg_plot_params=None):
+    def _plot_processing_chain(self, current_step, k_for_plot=None, emg_plot_params=None,
+                               is_overlapping_trials=False,
+                               cycled_colors=None, legend_kwargs=None, axes_pos_adjust=None):
         """Plot current step of the processing chain
 
         Parameters
@@ -278,15 +278,34 @@ class DataProcessingManager:
             is_overlapping_trials is False, only trial k_for_plot will
             be plotted.
 
+        emg_plot_params : EMGPlotParams or None, default None
+            See class EMGPlotParams and function emg_plot.
+
         is_overlapping_trials : bool, default False
             Whether overlapping trials of the same channel.
             If True, all trials will be plotted and overlapped.
 
         cycled_colors : list or None, default None
+            cycled_colors is used when is_overlapping_trials is True.
             The colors for plotting overlapped trials data.
 
-        emg_plot_params : EMGPlotParams or None, default None
-            See class EMGPlotParams and function emg_plot.
+        legend_kwargs : dict or None, default None
+            legend_kwargs is used when is_overlapping_trials is True.
+            Parameters to control the legend display. They are the
+            "other parameters" of method matplotlib.axes.Axes.legend,
+            including loc, bbox_to_anchor, ncol, prop, fontsize, etc.
+            (See
+            https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html).
+
+        axes_pos_adjust : 4-tuple or None, default None
+            axes_pos_adjust is used when is_overlapping_trials is True.
+            Parameters to adjust the axes position (i.e., plot position)
+            when legend is displayed to prevent legend overlaying the plot.
+            The 4-tuple represents: [0] shift of left position relative to
+            width, [1] shift of bottom position relative to height, [2]
+            proportion of width, [3] proportion of height.
+            If None, no adjustment is applied, i.e., the value (0, 0, 1, 1)
+            is applied.
 
         Returns
         -------
@@ -294,9 +313,9 @@ class DataProcessingManager:
         """
         if is_overlapping_trials:
             plot_emg_overlapping_trials(self.c.all_data, self.c.all_timestamp, self.c.trial_names,
-                                        cycled_colors=cycled_colors,
                                         channel_names=self.c.channel_names, main_title=current_step,
-                                        emg_plot_params=emg_plot_params)
+                                        emg_plot_params=emg_plot_params, cycled_colors=cycled_colors,
+                                        legend_kwargs=legend_kwargs, axes_pos_adjust=axes_pos_adjust)
         else:
             for k in range(len(self.c.all_data)):
                 if k_for_plot is not None and k != k_for_plot:
@@ -307,7 +326,8 @@ class DataProcessingManager:
                          emg_plot_params=emg_plot_params)
 
     def process_all(self, is_plot_processing_chain=False, k_for_plot=None,
-                    is_overlapping_trials=False, cycled_colors=None):
+                    is_overlapping_trials=False,
+                    cycled_colors=None, legend_kwargs=None, axes_pos_adjust=None):
         """Apply current processors to data and plot intermediate results
 
         Parameters
@@ -328,7 +348,26 @@ class DataProcessingManager:
             If True, all trials will be plotted and overlapped.
 
         cycled_colors : list or None, default None
+            cycled_colors is used when is_overlapping_trials is True.
             The colors for plotting overlapped trials data.
+
+        legend_kwargs : dict or None, default None
+            legend_kwargs is used when is_overlapping_trials is True.
+            Parameters to control the legend display. They are the
+            "other parameters" of method matplotlib.axes.Axes.legend,
+            including loc, bbox_to_anchor, ncol, prop, fontsize, etc.
+            (See
+            https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html).
+
+        axes_pos_adjust : 4-tuple or None, default None
+            axes_pos_adjust is used when is_overlapping_trials is True.
+            Parameters to adjust the axes position (i.e., plot position)
+            when legend is displayed to prevent legend overlaying the plot.
+            The 4-tuple represents: [0] shift of left position relative to
+            width, [1] shift of bottom position relative to height, [2]
+            proportion of width, [3] proportion of height.
+            If None, no adjustment is applied, i.e., the value (0, 0, 1, 1)
+            is applied.
 
         Returns
         -------
@@ -352,40 +391,40 @@ class DataProcessingManager:
                 emg_plot_params.line2d_kwargs.pop('color', None)
 
         if is_plot_processing_chain:
-            self._plot_processing_chain('Original', k_for_plot,
-                                        is_overlapping_trials, cycled_colors, emg_plot_params)
+            self._plot_processing_chain('Original', k_for_plot, emg_plot_params,
+                                        is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.dc_offset_remover is not None:
             for k in range(len(self.c.all_data)):
                 self.c.all_data[k] = self.dc_offset_remover.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After DC offset remover', k_for_plot,
-                                            is_overlapping_trials, cycled_colors, emg_plot_params)
+                self._plot_processing_chain('After DC offset remover', k_for_plot, emg_plot_params,
+                                            is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.bandpass_filter is not None:
             for k in range(len(self.c.all_data)):
                 self.c.all_data[k] = self.bandpass_filter.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After bandpass filter', k_for_plot,
-                                            is_overlapping_trials, cycled_colors, emg_plot_params)
+                self._plot_processing_chain('After bandpass filter', k_for_plot, emg_plot_params,
+                                            is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.full_wave_rectifier is not None:
             for k in range(len(self.c.all_data)):
                 self.c.all_data[k] = self.full_wave_rectifier.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After full wave rectifier', k_for_plot,
-                                            is_overlapping_trials, cycled_colors, emg_plot_params)
+                self._plot_processing_chain('After full wave rectifier', k_for_plot, emg_plot_params,
+                                            is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.linear_envelope is not None:
             for k in range(len(self.c.all_data)):
                 self.c.all_data[k] = self.linear_envelope.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After linear envelope', k_for_plot,
-                                            is_overlapping_trials, cycled_colors, emg_plot_params)
+                self._plot_processing_chain('After linear envelope', k_for_plot, emg_plot_params,
+                                            is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.end_frame_cutter is not None:
             for k in range(len(self.c.all_data)):
@@ -393,8 +432,8 @@ class DataProcessingManager:
                 self.c.all_timestamp[k] = self.end_frame_cutter.apply(self.c.all_timestamp[k])
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After end frame cutter', k_for_plot,
-                                            is_overlapping_trials, cycled_colors, emg_plot_params)
+                self._plot_processing_chain('After end frame cutter', k_for_plot, emg_plot_params,
+                                            is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.amplitude_normalizer is not None:
             max_amplitude = self.c.find_max_amplitude_of_each_channel_across_trials()
@@ -402,8 +441,8 @@ class DataProcessingManager:
                 self.c.all_data[k] = self.amplitude_normalizer.apply(self.c.all_data[k], divisor=max_amplitude)
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After amplitude normalizer', k_for_plot,
-                                            is_overlapping_trials, cycled_colors, emg_plot_params)
+                self._plot_processing_chain('After amplitude normalizer', k_for_plot, emg_plot_params,
+                                            is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.segmenter is not None and self.segmenter_all_beg_ts is not None \
                 and self.segmenter_all_end_ts is not None:
@@ -414,7 +453,7 @@ class DataProcessingManager:
                 self.c.all_timestamp[k] = Segmenter().apply(self.c.all_timestamp[k], beg_idx=beg_idx, end_idx=end_idx)
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After segmenter', k_for_plot,
-                                            is_overlapping_trials, cycled_colors, emg_plot_params)
+                self._plot_processing_chain('After segmenter', k_for_plot, emg_plot_params,
+                                            is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         return self.c
