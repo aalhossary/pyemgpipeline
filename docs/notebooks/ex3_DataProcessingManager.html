@@ -361,7 +361,7 @@ div.rendered_html tbody tr:hover {
 <div class="section" id="Package-preparation">
 <h2>Package preparation<a class="headerlink" href="#Package-preparation" title="Permalink to this headline"></a></h2>
 <p>We install and import needed packages.</p>
-<div class="nbinput docutils container">
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
@@ -369,15 +369,6 @@ div.rendered_html tbody tr:hover {
 <span></span><span class="o">!</span>pip install pyemgpipeline -q
 </pre></div>
 </div>
-</div>
-<div class="nboutput nblast docutils container">
-<div class="prompt empty docutils container">
-</div>
-<div class="output_area docutils container">
-<div class="highlight"><pre>
-     |████████████████████████████████| 51 kB 5.9 MB/s
-
-</pre></div></div>
 </div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
@@ -417,7 +408,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Signal data of each trial should be stored in a 2d ndarray with shape <em>(n_samples, n_channels)</em>, where each column represents data of one channel. Data of multiple trials are organized in a <em>list</em>.</p>
+<p>Signal data of each trial should be stored in a 2d ndarray with shape (<em>n_samples</em>, <em>n_channels</em>), where each column represents data of one channel. Data of multiple trials are organized in a list.</p>
 <p>First we set up basic information of the data, including data path, channel names, sample rate, etc.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
@@ -426,13 +417,13 @@ div.rendered_html tbody tr:hover {
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">data_folder</span> <span class="o">=</span> <span class="s1">&#39;uci_gestures/EMG_data_for_gestures-master/10&#39;</span>
 <span class="n">data_filenames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;1_raw_data_11-08_21.03.16.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;2_raw_data_11-10_21.03.16.txt&#39;</span><span class="p">]</span>
-<span class="n">all_trial_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;trial 1&#39;</span><span class="p">,</span> <span class="s1">&#39;trial 2&#39;</span><span class="p">]</span>
+<span class="n">trial_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;trial 1&#39;</span><span class="p">,</span> <span class="s1">&#39;trial 2&#39;</span><span class="p">]</span>
 <span class="n">channel_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;channel1&#39;</span><span class="p">,</span> <span class="s1">&#39;channel2&#39;</span><span class="p">,</span> <span class="s1">&#39;channel3&#39;</span><span class="p">,</span> <span class="s1">&#39;channel4&#39;</span><span class="p">,</span> <span class="s1">&#39;channel5&#39;</span><span class="p">,</span> <span class="s1">&#39;channel6&#39;</span><span class="p">,</span> <span class="s1">&#39;channel7&#39;</span><span class="p">,</span> <span class="s1">&#39;channel8&#39;</span><span class="p">]</span>
 <span class="n">sample_rate</span> <span class="o">=</span> <span class="mi">1000</span>
 </pre></div>
 </div>
 </div>
-<p>Signal data of multiple trials are stored in <em>all_data</em> of type <em>list</em>, where each element of the <em>list</em> is a 2d ndarray. Since the raw data provides the timestamp information, it is also extracted in <em>all_timestamp</em> of type <em>list</em>, where each element is a 1d ndarray.</p>
+<p>Signal data of multiple trials are stored in <em>all_data</em> of type list, where each element of the list is a 2d ndarray. Since the raw data provides the timestamp information, it is also extracted in <em>all_timestamp</em> of type list, where each element is a 1d ndarray.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
@@ -555,8 +546,8 @@ shapes of all_data: (61641, 8) (61448, 8)
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">mgr</span><span class="o">.</span><span class="n">set_data_and_params</span><span class="p">(</span><span class="n">all_data</span><span class="p">,</span> <span class="n">hz</span><span class="o">=</span><span class="n">sample_rate</span><span class="p">,</span>
-                        <span class="n">all_timestamp</span><span class="o">=</span><span class="n">all_timestamp</span><span class="p">,</span> <span class="n">channel_names</span><span class="o">=</span><span class="n">channel_names</span><span class="p">,</span>
-                        <span class="n">all_main_titles</span><span class="o">=</span><span class="n">all_trial_names</span><span class="p">,</span> <span class="n">emg_plot_params</span><span class="o">=</span><span class="n">emg_plot_params</span><span class="p">)</span>
+                        <span class="n">all_timestamp</span><span class="o">=</span><span class="n">all_timestamp</span><span class="p">,</span> <span class="n">trial_names</span><span class="o">=</span><span class="n">trial_names</span><span class="p">,</span>
+                        <span class="n">channel_names</span><span class="o">=</span><span class="n">channel_names</span><span class="p">,</span> <span class="n">emg_plot_params</span><span class="o">=</span><span class="n">emg_plot_params</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -836,7 +827,7 @@ Segmenter            : No parameters
 <img alt="../_images/notebooks_ex3_DataProcessingManager_37_7.png" src="../_images/notebooks_ex3_DataProcessingManager_37_7.png" />
 </div>
 </div>
-<p>The processed results from method <em>process_all</em> is saved in <em>c</em> of type <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.wrappers.html#emgmeasurementcollection">EMGMeasurementCollection</a>, which possesses methods <em>plot</em>, <em>export_csv</em>, and the indexing operator <em>[]</em> for furtuer use.</p>
+<p>The processed results from method <em>process_all</em> is saved in <em>c</em> of type <a class="reference external" href="https://aalhossary.github.io/pyemgpipeline/api/pyemgpipeline.wrappers.html#emgmeasurementcollection">EMGMeasurementCollection</a>, which possesses methods <em>plot</em>, <em>export_csv</em>, and the indexing operator [ ] for furtuer use.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
 </pre></div>

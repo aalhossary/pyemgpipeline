@@ -375,7 +375,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-     |████████████████████████████████| 50 kB 3.9 MB/s
+     |████████████████████████████████| 50 kB 2.3 MB/s
 
 </pre></div></div>
 </div>
@@ -417,7 +417,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Signal data of each trial should be stored in a 2d ndarray with shape <em>(n_samples, n_channels)</em>, where each column represents data of one channel. Data of multiple trials are organized in a <em>list</em>.</p>
+<p>Signal data of each trial should be stored in a 2d ndarray with shape (<em>n_samples</em>, <em>n_channels</em>), where each column represents data of one channel. Data of multiple trials are organized in a list.</p>
 <p>First we set up basic information of the data, including data path, channel names, sample rate, etc.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
@@ -432,7 +432,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>Signal data of multiple trials are stored in <em>all_data</em> of type <em>list</em>, where each element of the <em>list</em> is a 2d ndarray extracted from the raw data files of non-standard format.</p>
+<p>Signal data of multiple trials are stored in <em>all_data</em> of type list, where each element of the list is a 2d ndarray extracted from the raw data files of non-standard format.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -887,7 +887,7 @@ max_amplitude: [0.08272218 0.20556472 0.11531935 0.13300577]
 </pre></div>
 </div>
 </div>
-<p>Besides, the indexing operator <em>[]</em> can be used to extract the information of a single trial.</p>
+<p>Besides, the indexing operator [ ] can be used to extract the information of a single trial.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>

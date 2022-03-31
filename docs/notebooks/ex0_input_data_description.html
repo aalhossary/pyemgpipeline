@@ -380,8 +380,8 @@ div.rendered_html tbody tr:hover {
 <h2>Input data format of single trial<a class="headerlink" href="#Input-data-format-of-single-trial" title="Permalink to this headline"></a></h2>
 <div class="section" id="Signal-data-of-one-channel">
 <h3>Signal data of one channel<a class="headerlink" href="#Signal-data-of-one-channel" title="Permalink to this headline"></a></h3>
-<p>Signal data of the trial which has one channel should be stored in either (a) a 1d ndarray with shape (n_samples,) or (b) a 2d ndarray with shape (n_samples, 1).</p>
-<p>Here is a sample data in a 1d ndarray with shape (n_samples,), where n_samples is 20.</p>
+<p>Signal data of the trial which has one channel should be stored in either “a 1d ndarray with shape (<em>n_samples</em>,)”, or “a 2d ndarray with shape (<em>n_samples</em>, 1)”.</p>
+<p>Here is a sample data in a 1d ndarray with shape (<em>n_samples</em>,), where <em>n_samples</em> is 20.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -413,7 +413,7 @@ array([ 20.3,  41. ,  53.9,  63.3,  39.5,  24.9,  26.1,  24. ,  44.1,
          5.3,   1.4])
 </pre></div></div>
 </div>
-<p>Here is a sample data in a 2d ndarray with shape (n_samples, 1), where n_samples is 20.</p>
+<p>Here is a sample data in a 2d ndarray with shape (<em>n_samples</em>, 1), where <em>n_samples</em> is 20.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -465,8 +465,8 @@ array([[ 20.3],
 </div>
 <div class="section" id="Signal-data-of-multiple-channels">
 <h3>Signal data of multiple channels<a class="headerlink" href="#Signal-data-of-multiple-channels" title="Permalink to this headline"></a></h3>
-<p>Signal data of the trial should be stored in a 2d ndarray with shape (n_samples, n_channels).</p>
-<p>Here is a sample data in a 2d ndarray with shape (n_samples, n_channels), where n_samples is 20 and n_channels is 2.</p>
+<p>Signal data of the trial should be stored in a 2d ndarray with shape (<em>n_samples</em>, <em>n_channels</em>).</p>
+<p>Here is a sample data in a 2d ndarray with shape (<em>n_samples</em>, <em>n_channels</em>), where <em>n_samples</em> is 20 and <em>n_channels</em> is 2.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
@@ -520,8 +520,8 @@ array([[ 20.3,   1.1],
 </div>
 <div class="section" id="Timestamp-data">
 <h3>Timestamp data<a class="headerlink" href="#Timestamp-data" title="Permalink to this headline"></a></h3>
-<p>If given by the users, timestamp data of the trial should be stored in a 1d ndarray with shape (n_samples,).</p>
-<p>Here is a sample data in a 1d ndarray with shape (n_samples,), where n_samples is 20.</p>
+<p>If given by the users, timestamp data of the trial should be stored in a 1d ndarray with shape (<em>n_samples</em>,).</p>
+<p>Here is a sample data in a 1d ndarray with shape (<em>n_samples</em>,), where <em>n_samples</em> is 20.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -575,8 +575,8 @@ array([0.   , 0.001, 0.002, 0.003, 0.004, 0.005, 0.006, 0.007, 0.008,
 </pre></div>
 </div>
 </div>
-<p>If the users do not give the values of timestamp, they will be generated starting from 0 and in increments of 1/hz, where hz is the given sample frequency.</p>
-<p>For example, when n_samples is 20 and hz is 1000, timestamp will be as the following by default.</p>
+<p>If the users do not give the values of timestamp, they will be generated starting from 0 and in increments of 1/<em>hz</em>, where <em>hz</em> is the given sample frequency.</p>
+<p>For example, when <em>n_samples</em> is 20 and <em>hz</em> is 1000, timestamp will be generated as the following by default.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>

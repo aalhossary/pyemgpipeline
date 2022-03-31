@@ -45,11 +45,12 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">pyemgpipeline.plots</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#summary">Summary</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#class">Class</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#function">Function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#functions">Functions</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#emgplotparams">EMGPlotParams</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#plot-emg">plot_emg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plot-emg-overlapping-trials">plot_emg_overlapping_trials</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="pyemgpipeline.processors.html">pyemgpipeline.processors</a></li>
@@ -125,8 +126,8 @@
 </tbody>
 </table>
 </div>
-<div class="section" id="function">
-<h3>Function<a class="headerlink" href="#function" title="Permalink to this headline"></a></h3>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline"></a></h3>
 <table class="longtable docutils align-default">
 <colgroup>
 <col style="width: 10%" />
@@ -135,6 +136,9 @@
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pyemgpipeline.plots.plot_emg" title="pyemgpipeline.plots.plot_emg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_emg</span></code></a></p></td>
 <td><p>Plot EMG signals on a created matplotlib figure</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pyemgpipeline.plots.plot_emg_overlapping_trials" title="pyemgpipeline.plots.plot_emg_overlapping_trials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_emg_overlapping_trials</span></code></a></p></td>
+<td><p>Plot EMG signals on a created matplotlib figure, overlapping trials of the same channel</p></td>
 </tr>
 </tbody>
 </table>
@@ -194,6 +198,63 @@ the smallest number to fit in all channels.
 (3) If both n_rows and n_cols are None, default setting will be
 used: use one column when n_channels &lt;= 3; use two columns
 when n_channels &lt;= 10; otherwise use three columns.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="plot-emg-overlapping-trials">
+<h2>plot_emg_overlapping_trials<a class="headerlink" href="#plot-emg-overlapping-trials" title="Permalink to this headline"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="pyemgpipeline.plots.plot_emg_overlapping_trials">
+<span class="sig-prename descclassname"><span class="pre">pyemgpipeline.plots.</span></span><span class="sig-name descname"><span class="pre">plot_emg_overlapping_trials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">all_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_timestamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">main_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">emg_plot_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycled_colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend_kwargs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes_pos_adjust</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pyemgpipeline.plots.plot_emg_overlapping_trials" title="Permalink to this definition"></a></dt>
+<dd><p>Plot EMG signals on a created matplotlib figure,
+overlapping trials of the same channel</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>all_data</strong> (<em>list</em>) – Elements of all_data are signal data of the trials.
+Signal data of each trial should be ndarray of shape
+(n_samples,) or (n_samples, n_channels).
+Dimensions and n_channels (if 2-dim) of all trials should be
+the same.</p></li>
+<li><p><strong>all_timestamp</strong> (<em>list</em>) – The length of all_timestamp should be the same as the length
+of all_data.
+Elements of all_timestamp are ndarray of shape (n_samples,).</p></li>
+<li><p><strong>legend_labels</strong> (<em>list</em>) – The legend labels identify the trials which are overlapped in
+the plots.</p></li>
+<li><p><strong>channel_names</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – If list, elements are str and its length should be equal to
+n_channels.
+Channel names to be shown in plots.</p></li>
+<li><p><strong>main_title</strong> (<em>str</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – The main title of the plot.</p></li>
+<li><p><strong>emg_plot_params</strong> (<a class="reference internal" href="#pyemgpipeline.plots.EMGPlotParams" title="pyemgpipeline.plots.EMGPlotParams"><em>EMGPlotParams</em></a><em> or </em><em>None</em><em>, </em><em>default None</em>) – If this is not None, then for its n_rows and n_cols,
+(1) If n_rows and n_cols both have values, n_rows times n_cols
+should be no less than n_channels.
+(2) If exactly one of n_rows and n_cols is None, it will get
+the smallest number to fit in all channels.
+(3) If both n_rows and n_cols are None, default setting will be
+used: use one column when n_channels &lt;= 3; use two columns
+when n_channels &lt;= 10; otherwise use three columns.</p></li>
+<li><p><strong>cycled_colors</strong> (<em>list</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – The colors for plotting overlapped trials data.</p></li>
+<li><p><strong>legend_kwargs</strong> (<em>dict</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – Parameters to control the legend display. They are the
+“other parameters” of method matplotlib.axes.Axes.legend,
+including loc, bbox_to_anchor, ncol, prop, fontsize, etc.
+(See
+<a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html">https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.legend.html</a>).</p></li>
+<li><p><strong>axes_pos_adjust</strong> (<em>4-tuple</em><em> or </em><em>None</em><em>, </em><em>default None</em>) – Parameters to adjust the axes position (i.e., plot position)
+when legend is displayed to prevent legend overlaying the plot.
+The 4-tuple represents: [0] shift of left position relative to
+width, [1] shift of bottom position relative to height, [2]
+proportion of width, [3] proportion of height.
+If None, no adjustment is applied, i.e., the value (0, 0, 1, 1)
+is applied.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
