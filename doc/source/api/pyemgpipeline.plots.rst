@@ -14,13 +14,14 @@ Class
 
    EMGPlotParams
 
-Function
+Functions
 ++++++++++++++++++++
 
 .. autosummary::
    :nosignatures:
 
    plot_emg
+   plot_emg_overlapping_trials
 
 EMGPlotParams
 ----------------------------------------
@@ -33,3 +34,8 @@ plot_emg
 ----------------------------------------
 
 .. autofunction:: plot_emg
+
+plot_emg_overlapping_trials
+----------------------------------------
+
+.. autofunction:: plot_emg_overlapping_trials
