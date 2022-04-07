@@ -286,7 +286,7 @@ class EMGMeasurementCollection:
         return m
 
     def plot(self, k_for_plot=None, is_overlapping_trials=False, main_title=None,
-             cycled_colors=None, legend_kwargs=None, axes_pos_adjust=None):
+             cycled_colors=None, is_hide_legend=False, legend_kwargs=None, axes_pos_adjust=None):
         """Plot all trials
 
         Parameters
@@ -311,6 +311,9 @@ class EMGMeasurementCollection:
         cycled_colors : list or None, default None
             cycled_colors is used when is_overlapping_trials is True.
             The colors for plotting overlapped trials data.
+
+        is_hide_legend : bool, default False
+            Whether or not to hide legend.
 
         legend_kwargs : dict or None, default None
             legend_kwargs is used when is_overlapping_trials is True.
@@ -356,7 +359,8 @@ class EMGMeasurementCollection:
                                         trial_indices_for_plot, legend_labels,
                                         channel_names=self.channel_names, main_title=main_title,
                                         emg_plot_params=emg_plot_params, cycled_colors=cycled_colors,
-                                        legend_kwargs=legend_kwargs, axes_pos_adjust=axes_pos_adjust)
+                                        is_hide_legend=is_hide_legend, legend_kwargs=legend_kwargs,
+                                        axes_pos_adjust=axes_pos_adjust)
         else:
             for k in trial_indices_for_plot:
                 plot_emg(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,

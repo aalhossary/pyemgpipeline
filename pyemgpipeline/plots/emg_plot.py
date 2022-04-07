@@ -128,7 +128,8 @@ def plot_emg(x, timestamp, channel_names=None, main_title=None, emg_plot_params=
 
 def plot_emg_overlapping_trials(all_data, all_timestamp, trial_indices_for_plot, legend_labels,
                                 channel_names=None, main_title=None, emg_plot_params=None,
-                                cycled_colors=None, legend_kwargs=None, axes_pos_adjust=None):
+                                cycled_colors=None, is_hide_legend=False, legend_kwargs=None,
+                                axes_pos_adjust=None):
     """Plot EMG signals on a created matplotlib figure,
     overlapping trials of the same channel
 
@@ -174,6 +175,9 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, trial_indices_for_plot,
 
     cycled_colors : list or None, default None
         The colors for plotting overlapped trials data.
+
+    is_hide_legend : bool, default False
+        Whether or not to hide legend.
 
     legend_kwargs : dict or None, default None
         Parameters to control the legend display. They are the
@@ -254,7 +258,8 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, trial_indices_for_plot,
                              box.y0 + box.height * axes_pos_adjust[1],
                              box.width * axes_pos_adjust[2],
                              box.height * axes_pos_adjust[3]])
-        axs[i].legend(labels=legend_labels, **legend_kwargs)
+        if not is_hide_legend:
+            axs[i].legend(labels=legend_labels, **legend_kwargs)
 
         if channel_names is not None:
             axs[i].set_title(channel_names[i])
