@@ -5,7 +5,7 @@ with open('README.md', 'r', encoding='utf-8') as fh:
 
 setup(
     name='pyemgpipeline',
-    version='0.1.1',
+    version='1.0.0',
     author='tlwu et al',
     author_email='tlwu2008@gmail.com',
     description='EMG signal processing pipeline',
