@@ -261,7 +261,7 @@ class DataProcessingManager:
         if self.segmenter is not None:
             print(f'Segmenter            : {self.segmenter.get_param_values_in_str()}')
 
-    def _plot_processing_chain(self, current_step, k_for_plot=None, emg_plot_params=None,
+    def _plot_processing_chain(self, current_step, trial_indices_for_plot, emg_plot_params=None,
                                is_overlapping_trials=False,
                                cycled_colors=None, legend_kwargs=None, axes_pos_adjust=None):
         """Plot current step of the processing chain
@@ -271,19 +271,16 @@ class DataProcessingManager:
         current_step : str
             Current step in the processing chain.
 
-        k_for_plot : index of list, or None
-            If k_for_plot is None, all trials will be plotted.
-            If k_for_plot is not None, it should be an integer between
-            0 and len(all_data) - 1. In this case, if
-            is_overlapping_trials is False, only trial k_for_plot will
-            be plotted.
+        trial_indices_for_plot : list of integer
+            A list of selected indices of the self.c.all_data,
+            indicating which trials of the data to be plotted.
 
         emg_plot_params : EMGPlotParams or None, default None
             See class EMGPlotParams and function emg_plot.
 
         is_overlapping_trials : bool, default False
-            Whether overlapping trials of the same channel.
-            If True, all trials will be plotted and overlapped.
+            Whether or not to plot trials of the same channel
+            overlappingly on one (sub)figure.
 
         cycled_colors : list or None, default None
             cycled_colors is used when is_overlapping_trials is True.
@@ -312,21 +309,21 @@ class DataProcessingManager:
         None
         """
         if is_overlapping_trials:
-            plot_emg_overlapping_trials(self.c.all_data, self.c.all_timestamp, self.c.trial_names,
+            legend_labels = [self.c.trial_names[k] for k in trial_indices_for_plot]
+            plot_emg_overlapping_trials(self.c.all_data, self.c.all_timestamp,
+                                        trial_indices_for_plot, legend_labels,
                                         channel_names=self.c.channel_names, main_title=current_step,
                                         emg_plot_params=emg_plot_params, cycled_colors=cycled_colors,
                                         legend_kwargs=legend_kwargs, axes_pos_adjust=axes_pos_adjust)
         else:
-            for k in range(len(self.c.all_data)):
-                if k_for_plot is not None and k != k_for_plot:
-                    continue
+            for k in trial_indices_for_plot:
                 plot_emg(self.c.all_data[k], self.c.all_timestamp[k],
                          channel_names=self.c.channel_names,
                          main_title=f'{current_step} ({self.c.trial_names[k]})',
                          emg_plot_params=emg_plot_params)
 
-    def process_all(self, is_plot_processing_chain=False, k_for_plot=None,
-                    is_overlapping_trials=False,
+    def process_all(self, is_plot_processing_chain=False,
+                    k_for_plot=None, is_overlapping_trials=False,
                     cycled_colors=None, legend_kwargs=None, axes_pos_adjust=None):
         """Apply current processors to data and plot intermediate results
 
@@ -336,16 +333,18 @@ class DataProcessingManager:
             Whether to plot the intermediate results after each
             processing step.
 
-        k_for_plot : index of list, or None
-            If k_for_plot is None, all trials will be plotted.
-            If k_for_plot is not None, it should be an integer between
-            0 and len(all_data) - 1. In this case, if
-            is_overlapping_trials is False, only trial k_for_plot will
-            be plotted.
+        k_for_plot : integer, list of integer, or None
+            If integer, k_for_plot is an index of the list
+            self.c.all_data.
+            If list of integer, k_for_plot is a list of selected
+            indices of the list self.c.all_data.
+            If None, k_for_plot will be a list of all indices of the
+            list self.c.all_data.
+            k_for_plot sets which trials of the data to be plotted.
 
         is_overlapping_trials : bool, default False
-            Whether overlapping trials of the same channel.
-            If True, all trials will be plotted and overlapped.
+            Whether or not to plot trials of the same channel
+            overlappingly on one (sub)figure.
 
         cycled_colors : list or None, default None
             cycled_colors is used when is_overlapping_trials is True.
@@ -381,7 +380,13 @@ class DataProcessingManager:
         self.c = copy.deepcopy(self.c_raw)
 
         if k_for_plot is not None:
-            assert k_for_plot in range(len(self.c.all_data)), 'k_for_plot must be an index of all_data (a list)'
+            trial_indices_for_plot = k_for_plot
+            if not isinstance(trial_indices_for_plot, list):
+                trial_indices_for_plot = [trial_indices_for_plot]  # Now this is a list
+            for k in trial_indices_for_plot:
+                assert k in range(len(self.c.all_data)), 'Value(s) in k_for_plot must be indices of the list all_data'
+        else:
+            trial_indices_for_plot = list(range(len(self.c.all_data)))  # Now this is a list of all indices all_data
 
         emg_plot_params = copy.deepcopy(self.c.emg_plot_params)
         if is_overlapping_trials:
@@ -391,7 +396,7 @@ class DataProcessingManager:
                 emg_plot_params.line2d_kwargs.pop('color', None)
 
         if is_plot_processing_chain:
-            self._plot_processing_chain('Original', k_for_plot, emg_plot_params,
+            self._plot_processing_chain('Original', trial_indices_for_plot, emg_plot_params,
                                         is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.dc_offset_remover is not None:
@@ -399,7 +404,7 @@ class DataProcessingManager:
                 self.c.all_data[k] = self.dc_offset_remover.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After DC offset remover', k_for_plot, emg_plot_params,
+                self._plot_processing_chain('After DC offset remover', trial_indices_for_plot, emg_plot_params,
                                             is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.bandpass_filter is not None:
@@ -407,7 +412,7 @@ class DataProcessingManager:
                 self.c.all_data[k] = self.bandpass_filter.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After bandpass filter', k_for_plot, emg_plot_params,
+                self._plot_processing_chain('After bandpass filter', trial_indices_for_plot, emg_plot_params,
                                             is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.full_wave_rectifier is not None:
@@ -415,7 +420,7 @@ class DataProcessingManager:
                 self.c.all_data[k] = self.full_wave_rectifier.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After full wave rectifier', k_for_plot, emg_plot_params,
+                self._plot_processing_chain('After full wave rectifier', trial_indices_for_plot, emg_plot_params,
                                             is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.linear_envelope is not None:
@@ -423,7 +428,7 @@ class DataProcessingManager:
                 self.c.all_data[k] = self.linear_envelope.apply(self.c.all_data[k])
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After linear envelope', k_for_plot, emg_plot_params,
+                self._plot_processing_chain('After linear envelope', trial_indices_for_plot, emg_plot_params,
                                             is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.end_frame_cutter is not None:
@@ -432,7 +437,7 @@ class DataProcessingManager:
                 self.c.all_timestamp[k] = self.end_frame_cutter.apply(self.c.all_timestamp[k])
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After end frame cutter', k_for_plot, emg_plot_params,
+                self._plot_processing_chain('After end frame cutter', trial_indices_for_plot, emg_plot_params,
                                             is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.amplitude_normalizer is not None:
@@ -441,7 +446,7 @@ class DataProcessingManager:
                 self.c.all_data[k] = self.amplitude_normalizer.apply(self.c.all_data[k], divisor=max_amplitude)
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After amplitude normalizer', k_for_plot, emg_plot_params,
+                self._plot_processing_chain('After amplitude normalizer', trial_indices_for_plot, emg_plot_params,
                                             is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         if self.segmenter is not None and self.segmenter_all_beg_ts is not None \
@@ -453,7 +458,7 @@ class DataProcessingManager:
                 self.c.all_timestamp[k] = Segmenter().apply(self.c.all_timestamp[k], beg_idx=beg_idx, end_idx=end_idx)
 
             if is_plot_processing_chain:
-                self._plot_processing_chain('After segmenter', k_for_plot, emg_plot_params,
+                self._plot_processing_chain('After segmenter', trial_indices_for_plot, emg_plot_params,
                                             is_overlapping_trials, cycled_colors, legend_kwargs, axes_pos_adjust)
 
         return self.c

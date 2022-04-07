@@ -285,14 +285,24 @@ class EMGMeasurementCollection:
                            self.trial_names[k], self.channel_names, self.emg_plot_params)
         return m
 
-    def plot(self, is_overlapping_trials=False, main_title=None,
+    def plot(self, k_for_plot=None, is_overlapping_trials=False, main_title=None,
              cycled_colors=None, legend_kwargs=None, axes_pos_adjust=None):
         """Plot all trials
 
         Parameters
         ----------
+        k_for_plot : integer, list of integer, or None
+            If integer, k_for_plot is an index of the list
+            self.c.all_data.
+            If list of integer, k_for_plot is a list of selected
+            indices of the list self.c.all_data.
+            If None, k_for_plot will be a list of all indices of the
+            list self.c.all_data.
+            k_for_plot sets which trials of the data to be plotted.
+
         is_overlapping_trials : bool, default False
-            Whether overlapping trials of the same channel.
+            Whether or not to plot trials of the same channel
+            overlappingly on one (sub)figure.
 
         main_title : str or None, default None
             main_title is used when is_overlapping_trials is True.
@@ -325,6 +335,15 @@ class EMGMeasurementCollection:
         None
         """
 
+        if k_for_plot is not None:
+            trial_indices_for_plot = k_for_plot
+            if not isinstance(trial_indices_for_plot, list):
+                trial_indices_for_plot = [trial_indices_for_plot]  # Now this is a list
+            for k in trial_indices_for_plot:
+                assert k in range(len(self.all_data)), 'Value(s) in k_for_plot must be indices of the list all_data'
+        else:
+            trial_indices_for_plot = list(range(len(self.all_data)))  # Now this is a list of all indices all_data
+
         if is_overlapping_trials:
             # when overlapping trials, the color in line2d_kwargs will become invalid.
             # Colors for all trials can be set by users via cycled_colors.
@@ -332,12 +351,14 @@ class EMGMeasurementCollection:
             if emg_plot_params.line2d_kwargs is not None:
                 emg_plot_params.line2d_kwargs.pop('color', None)
 
-            plot_emg_overlapping_trials(self.all_data, self.all_timestamp, self.trial_names,
+            legend_labels = [self.trial_names[k] for k in trial_indices_for_plot]
+            plot_emg_overlapping_trials(self.all_data, self.all_timestamp,
+                                        trial_indices_for_plot, legend_labels,
                                         channel_names=self.channel_names, main_title=main_title,
                                         emg_plot_params=emg_plot_params, cycled_colors=cycled_colors,
                                         legend_kwargs=legend_kwargs, axes_pos_adjust=axes_pos_adjust)
         else:
-            for k in range(len(self.all_data)):
+            for k in trial_indices_for_plot:
                 plot_emg(self.all_data[k], self.all_timestamp[k], channel_names=self.channel_names,
                          main_title=self.trial_names[k], emg_plot_params=self.emg_plot_params)
 

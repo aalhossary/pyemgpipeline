@@ -126,7 +126,7 @@ def plot_emg(x, timestamp, channel_names=None, main_title=None, emg_plot_params=
     plt.show()
 
 
-def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels,
+def plot_emg_overlapping_trials(all_data, all_timestamp, trial_indices_for_plot, legend_labels,
                                 channel_names=None, main_title=None, emg_plot_params=None,
                                 cycled_colors=None, legend_kwargs=None, axes_pos_adjust=None):
     """Plot EMG signals on a created matplotlib figure,
@@ -145,6 +145,10 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels,
         The length of all_timestamp should be the same as the length
         of all_data.
         Elements of all_timestamp are ndarray of shape (n_samples,).
+
+    trial_indices_for_plot : list of integer
+        A list of selected indices of all_data, indicating which trials
+        of the data to be plotted.
 
     legend_labels : list
         The legend labels identify the trials which are overlapped in
@@ -242,7 +246,7 @@ def plot_emg_overlapping_trials(all_data, all_timestamp, legend_labels,
         if cycled_colors is not None:
             axs[i].set_prop_cycle(color=cycled_colors)
 
-        for k in range(len(all_data)):
+        for k in trial_indices_for_plot:
             axs[i].plot(all_timestamp[k], all_data[k][:, i], **line2d_kwargs)
 
         box = axs[i].get_position()
